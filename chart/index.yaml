@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  casewebportal:
+  - apiVersion: v1
+    created: 2017-10-23T17:25:09.954656969-07:00
+    description: A Helm chart for Kubernetes and Case Inc Web portal app
+    digest: 04e7f67a33575e1e53047ab7ab7a9bd5f95e5f04aca6f857e460ad028ce16f7a
+    name: casewebportal
+    urls:
+    - https://9.19.34.107:8443/helm-repo/charts/casewebportal-0.0.1.tgz
+    version: 0.0.1
+generated: 2017-10-23T17:25:09.953610632-07:00
