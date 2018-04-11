@@ -22,6 +22,17 @@ module.exports = function (config) {
     angularCli: {
       environment: 'dev'
     },
+    pact: [
+      {
+        consumer: 'Privacy Portal Web UI',
+        provider: 'Privacy Portal Request Service',
+        port: 1234,
+        log: process.cwd() + '/out/logs/pact/pact-unit-tests-request.log',
+        dir: process.cwd() + '/out/pact',
+        logLevel: 'WARN',
+        spec: 2
+      }
+    ],  
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
