@@ -1,0 +1,21 @@
+{
+  "secureGateway" :{
+    "url":"https://<>ibmcloud.com:16582"
+  },
+  "apiGateway" :{
+    "hostUrl": "https://172.16.50.8",
+    "url": "csplab/sb/sample-inventory-api",
+    "xibmclientid": "8fdba02b-0251-457d-ab86-ea809459c5b8",
+    "xibmclientid0": "5d2a6edb-793d-4193-b9b0-0a087ea6c123"
+  },
+  "conversationBroker" :{
+    "url":"https://refarch-wcs-broker.mybluemix.net/api/conversation"
+  },
+  "advisorBroker":{
+      "url":"https://refarch-wcs-broker.mybluemix.net/api/conversation"
+  },
+  "mode" : "cyan",
+  "environment" : "public",
+  "port" : 6100,
+  "version": "v0.0.7"
+}

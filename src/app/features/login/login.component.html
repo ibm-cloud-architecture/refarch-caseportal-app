@@ -1,3 +1,5 @@
+<h1>CASE Portal Front End</h1>
+<p>Log in to access hybrid cloud analytics demonstration</p>
 <div class="row vertical-align">
   <div class="col-md-4">
     <app-input [label]="'Username'"
@@ -16,9 +18,12 @@
       (modelChange)="onInputChange()"
       [validations]="passwordVals"></app-input>
   </div>
-  <div class="col-md-4">
-    <div style="padding-left:3px;padding-right:3px;height:50px;">
+  <div class="col-md-2">
+    <div style="padding: 6px;position: relative;margin-top: 0.7em;margin-bottom: 0.5em;">
       <button class="form-control btn btn-primary loginBtn" (click)="clickedLogin()">Log in</button>
     </div>
   </div>
 </div>
+<p>(
+  <span class="icon-required" aria-hidden="true"> Required</span>
+  <span class="hidden-accessible">dot indicates required</span>)</p>

@@ -75,6 +75,7 @@ We are proposing multiple deployment and execution environments:
 * run locally using **NGinx** docker image
 * run the application in IBM Cloud Container service
 * run the application in IBM Cloud Private
+
 ### API Connect Specifics
 The *xibmclientid* is coming from the application you defined in APIC Connect portal. So connect to the API Connect developer portal, a URL built from the organization settings, like http://172.16.254.90/csplab/sb, create a user account and define an Application. The Client ID string is accessed via the show check box:
 ![](./docs/apic-portal-app.png)

@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { RoutingModule } from './features/routing/routing.module';
 import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
+import { LoginGuard } from './features/login/login.guard';
+import { LoginService } from './features/login/login.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,7 @@ import { FeaturesModule } from './features/features.module';
     SharedModule,
     FeaturesModule
   ],
-  providers: [],
+  providers: [LoginGuard, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

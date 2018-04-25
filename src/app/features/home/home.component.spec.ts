@@ -31,6 +31,7 @@ describe('HomeComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+  
   it('should have a Welcome message with the user fist name', () => {
       expect(component.title).toContain('Welcome');
       expect(component.title).toContain('Eddie');

@@ -7,7 +7,7 @@ export class LoginService {
 
   constructor() {
     // FIXME mockup
-    this.user = new User('eddie@email.con','Eddie','pwd');
+    this.user = new User('eddie@email.com','Eddie','pwd');
   }
 
   login(uname: string, pwd: string): User {
@@ -17,5 +17,16 @@ export class LoginService {
 
   getCurrentUser(): User {
     return this.user;
+  }
+
+  isLoggedIn(): boolean {
+    if (this.getCurrentUser().email.length > 2) {
+      return true;
+    } else if (window.sessionStorage.getItem('user')) {
+      this.user = JSON.parse(window.sessionStorage.getItem('user'));
+      return true;
+    } else {
+      return false;
+    }
   }
 }
