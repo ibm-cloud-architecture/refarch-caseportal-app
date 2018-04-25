@@ -30,7 +30,7 @@ This application illustrates how to plug and play different Angular 4 module wit
 * how to integrate with back end, on-premise services using secure gateway
 * how to proxy  [Watson Conversation](https://www.ibm.com/devops/method/content/architecture/cognitiveConversationDomain2#1_1)
 * how to deploy the app as Cloud Foundry on IBM Cloud, docker container on IBM Cloud Container or Helm charts on IBM Cloud Private
-* how to use Jenkins for continuous integration
+* how to use Jenkins for continuous integration and deployment
 
 The current top level view of the home page of this application looks like:   
 
@@ -43,8 +43,8 @@ The common pre-requisites for the integration solution are defined [here](https:
 * Clone the current repository, or if you want to work on the code, fork it in your own github repository and then clone your forked repository on your local computer. If you used the `fork-repos.sh` script from the [Integration solution](https://github.com/ibm-cloud-architecture/refarch-integration) main repository, you are already set.
 
 ```
-git clone https://github.com/ibm-cloud-architecture/refarch-caseinc-app
-cd refarch-caseinc-app
+git clone https://github.com/ibm-cloud-architecture/refarch-caseportal-app
+cd refarch-caseportal-app
 npm install
 ```
 * You need to install Angular 5 command line interface if you do not have it yet: see the [cli.angular.io website](http://cli.angular.io)
@@ -53,7 +53,7 @@ npm install
  ```
  on Mac, as a global install you need to be `root` user or a "sudoer" user.
 * As we are using docker to build different images, you need docker engine on your laptop.
-* To do consumer driven contract and contract testing you need to install Pact.
+* [Optional] To do consumer driven contract and contract testing you need to install Pact.
 ```
 FIXME
 ```
@@ -296,4 +296,5 @@ The portal application includes a simple chat bot integration to ask IT support 
 For the conversation demo script please refers to this [node](https://github.com/ibm-cloud-architecture/refarch-cognitive-conversation-broker/blob/master/doc/demoflow.md)
 
 ## Compendium
-* [Angular 4 tutorial from the angular site](https://angular.io/tutorial) this tutorial is updated with new release and covers the most important features used in our angular app.
+* [Angular 2.4 tutorial from the angular site](https://angular.io/tutorial) this tutorial is updated with new release and covers the most important features used in our angular app.
+* [NG Develop](https://www.ngdevelop.tech/) to learn the latest news on Angular and its tutorial

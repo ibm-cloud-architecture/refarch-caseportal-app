@@ -31,7 +31,7 @@ For each component develop a `spec.ts` file. The base template is in `app.compon
   it(`should have as title 'Case Portal' and version`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('Case Portal');
+    expect(app.title).toContain('Portal');
     expect(app.version).toContain('v0');
   }));
 ```
@@ -81,7 +81,7 @@ it('should have a Welcome message with the user fist name', () => {
  * keep user in browser session
  * get a login service to get user information, and later to support authentication.
 
-1. Add missing pieces: First we add a User.ts class and then add a user field in the home.component:
+1. Adding a User.ts class and then add a user field in the home.component:
 ```JavaScript
 export class User {
   email: string;
@@ -104,87 +104,104 @@ export class User {
  Now the test succeed. But we need a login service.
 
 ### Add login feature
-So we need to add a new feature to support login and add the user to browser session.
+We need to add a new feature to support login mechanism which return a User and add it to the browser session.
 
-1. Using Angular CLI we first create a module: it is good to package feature as module so the code management will be simpler.
+* Using Angular CLI we first create a module: it is good to package feature as module so the code management will be simpler.
 ```
 ng g module features/login
 ```
-Then add a service
+* Then add a service
 ```
 ng g service features/login
 ```
 
- Okay so we have code template let add service using TDD: we want to get a User from a login operation:
+ Okay so we have code template, let add service using TDD: we want to get a User from a login operation:
 ```JavaScript
 fit('should get a user when calling login given username and password', () => {
   const user: User = loginService.login("eddie@email.com","pwd");
   expect(user.firstname).toEqual('Eddie');
 });
 ```
-We use the Jasmine `fit` function to focus on this test so we do not need to run all the tests while developing a new function. We need to add the login function in the service, import the user, etc... so the test can compile:
-```JavaScript
-import { User } from '../../shared/User';
+We use the Jasmine `fit` function to focus on this test so we do not need to run all the tests while developing a new function. We need to add the login function in the service, import the user, etc... so the test can compile. In the LoginService add the mockup implementation:
 
-@Injectable()
-export class LoginService {
+ ```JavaScript
+  import { User } from '../../shared/User';
 
-  constructor() { }
+  @Injectable()
+  export class LoginService {
 
-  login(uname: string, pwd: string): User {
-    return new User('eddie@email.con','Eddie','pwd');
+    constructor() { }
+
+    login(uname: string, pwd: string): User {
+      return new User('eddie@email.con','Eddie','pwd');
+    }
   }
-}
-```
+ ```
 Service test succeed but we need to get the user injected in the home page. To do so we add the login service as private argument of the home component. As service is @Injectable it will be accessible to the home page.
-```JavaScript
-export class HomeComponent {
-  user:User;
-  title:string;
-  constructor(private loginService) {
-    this.user = loginService.getCurrentUser();
-    this.title = 'Welcome ' + this.user.firstname;
+
+  ```javascript
+  export class HomeComponent {
+    user:User;
+    title:string;
+    constructor(private loginService) {
+      this.user = loginService.getCurrentUser();
+      this.title = 'Welcome ' + this.user.firstname;
+    }
   }
-}
-```
+  ```
 Oops the home test fails now... with an error like
 ```
 	Error: No provider for LoginService!
 ```
-To fix this issue we need to import the LoginService in `home.component.spec.ts` and then configure the TestBed to inject it via the providers list:
-```json
-   declarations: [
-        HomeComponent
-      ],
-      providers: [
-        LoginService
-      ]
-```
-The test succeed, but this is not perfect, because we are dragging the login component into the home component test. When the login component will have the code for making remote calls via HTTP our home tests will be impacted. We need to mockup the login service.
-Jasmine offers capabilities to develop stub, mockups. So let add a loginStub and use jasmine create spy object API to specify we want to support the getCurrentUser method and return our test user as:
-```JavaScript
-let loginStub;
+To fix this issue we need to import the LoginService in `home.component.spec.ts` and then configure the TestBed to inject it via the **providers** list:
 
-beforeEach(async(() => {
-  loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
-  loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
-  // ...
-}))
-```
+  ```json
+     declarations: [
+          HomeComponent
+        ],
+        providers: [
+          LoginService
+        ]
+  ```
+The test succeed, but this is not perfect, because we are dragging the login component into the home component test. When the login component will have the code for making remote calls via HTTP our home tests will be impacted.
+* Adding mockups  
+We need to mockup the login service.
+Jasmine offers capabilities to develop stub, mockups. So let add a loginStub and use jasmine create spy object API to specify we want to support the getCurrentUser method and return our test user as:
+
+  ```JavaScript
+  let loginStub;
+
+  beforeEach(async(() => {
+    loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
+    loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
+    // ...
+  }))
+  ```
 modify the providers list now
 ```
 providers: [
   { provide: LoginService, useValue: loginStub }
 ]
 ```
+* Adding more tests to login component
+The login component is to get username as email address and password with a minimum of constraints like length and special characters. In the login.component.spec.ts let add user name to be a mandatory field. To do that we use the Angular **By** feature, to access HTML element using their CSS id. and then we use a special input type with validation rule.
+  ```
+  it('should have username as mandatory field', () => {
+      const userNameElement = fixture.debugElement.query(By.css(('#usernameInput')));
+      // the requirement is not on the input as html element attribute but in validation rule
+      const componentInstance = userNameElement.componentInstance;
+      expect(componentInstance.validations[0].type).toEqual('required');
+    });
+  ```
+For the custom input element and validation rule see [the explanations in this article](./angularhowtos/custominput.md). In the HTML page we need to add the input for the username and password and then the model element in the component. The code is self explanatory and we are providing some details in [this note](./angularhowtos/loginui.md)
 
+@@@ stopped here!  
 Angular Mocks is an Angular module that is used to mock components that already exist in the application. Its role is to inject various components of the Angular application (controllers, services, factories, directives, filters) and make them available for unit tests.
 
 
-## Consumer driven Contract
+## Consumer Driven Contract
 To develop the service interface, we are using the [consumer driven contracts]() pattern introduced by Martin Fowler to develop tests for each operation the user interface will reach, and define contract (HTTP verb, url, error reporting and data payload schema) from a consumer needs so the provider can support it. It is like applying customer focus practice to service development.
 Using [Pact](https://docs.pact.io/) from Pact Foundation, is a nice framework to define and test contracts. The major advantage is to split the tests into consumer and provider tests. Each tests run against mockup so it is easy to keep development in synch but not by dragging a lot of component and integration during the development and TDD phases. Both consumer and provider mocks access the same contract.
-
 
 
 ### Use Pact into Angular test
@@ -197,7 +214,7 @@ We need to include following dependencies into devDependencies of the package.js
 ```
 * Pact-node helps to run mock provider and create contract files.
 * Karma-pact is a Karma plugin that launches the mock provider before running actual tests.
-* PackWeb is used to define contracts as Interaction and send the, to a pack-node server.
+* PackWeb is used to define contracts as Interaction and send the HTTP request, to a pack-node server.
 
 Then we need to configure Karma to use Pact node by defining which port to start the mock server, and proxy rule to route url to the mock provider.
 ```
@@ -213,11 +230,11 @@ pact: [
     },
 ]
 proxies: {
+  ''
     }
 
 ```
 
-### Define tests
 
 ## Future readings
 * https://angular.io/guide/testing

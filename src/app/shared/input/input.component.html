@@ -1,0 +1,11 @@
+<div class="{{getContainerClasses()}}">
+  <label for="{{id}}" class="input-container__label">
+    {{label}}
+    <span *ngIf="isRequired" class="label__required" aria-label="Required"></span>
+    <span class="hidden-accessible">{{errorMsg}}</span>
+  </label>
+  <input #input type="{{type}}" id="{{id}}" disabled="{{disabled}}" name="{{name}}" class="input-container__input" (focus)="focus()" (blur)="blur()" (ngModelChange)="change(input.value)" [ngModel]="model" />
+  <span class="input-container__error">
+    {{errorMsg}}
+  </span>
+</div>

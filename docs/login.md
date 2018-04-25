@@ -1,5 +1,5 @@
 # Login implementation
-This article addresses in detail how login is supported in the Case Inc Portal by using different practices for service encapsulation, Oauth, API authorization, on-premise LDAP integration, and the use of passport.js expressjs middleware.
+This article addresses in detail how login is supported in the Case Inc Portal by using different practices for service encapsulation, OAuth, API authorization, on-premise LDAP integration, and the use of passport.js expressjs middleware.
 
 ## Table of contents
 * [Requirements to support](#requirements)
@@ -14,7 +14,7 @@ We want to support the following requirements:
 * The authentication is supported by adding an API (/login), on the API Connect server running on-premise
 * The returned response from this authentication service is a Oauth access token that will be used as authorization Bearer token to any call to the back end services like the *inventory API*.
 * A login page is used in the Angular 2 to get username and password.
-* The BFF server exposes API for the user interface that needs to be accessible only if the user was previously authenticated
+* The BFF server exposes APIs for the user interface which can to be accessible only if the user is previously authenticated
 
 ## API definition
 A new url path is added to the API Connect *inventory* product to support login as illustrated in figure below:

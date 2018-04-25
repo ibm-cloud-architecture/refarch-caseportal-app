@@ -1,5 +1,10 @@
 # User interface tricks
-As Angular 2 is still recent, this note presents some tricks we have to follow to do some of the user interface controls.
+In this chapter we are covering some Angular 5 tricks and practices we have to follow to do the user interface of our project. We try to regroup the different approaches presented by different blogger and Angular Experts. This is not a deep dive into Angular internal components, but more an intermediate level for UI application developers.
+
+## Error: model not found on input element
+* The error message looks like
+	Can't bind to 'ngModel' since it isn't a known property of 'input'. ("ss="input-container__input" (focus)="focus()" (blur)="blur()" (ngModelChange)="change(input.value)" [ERROR ->][ngModel]="model" />
+ The solution is to import FormModule in the module that uses input element. 
 
 ## Code explanation
 

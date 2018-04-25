@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {User} from './shared/User';
-import {LoginService} from './features/login/login.service';
+import { Component } from '@angular/core';
+import {User} from '../../shared/User';
+import {LoginService} from '../login/login.service';
 
 @Component({
-  selector: 'home',
+  selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

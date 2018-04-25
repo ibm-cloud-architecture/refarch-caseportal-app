@@ -10,3 +10,8 @@ export class User {
     this.password = pwd;
   }
 }
+
+export interface LoginRequest {
+  userName: string;
+  password: string;
+}

@@ -1,0 +1,147 @@
+.input-container {
+  padding: 3px;
+  position: relative;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  text-align: left;
+}
+
+.input-container.input-container--invalid .input-container__error {
+    display: block;
+}
+
+.input-container.input-container--invalid .input-container__label {
+    color: #C30019;
+}
+
+.input-container.input-container--invalid .input-container__input {
+    border-color: #C30019;
+}
+
+.input-container .input-container__input {
+    box-sizing: border-box;
+    background-color: transparent;
+    border-style: solid;
+    display: block;
+    font-family: 'AmericanSans', sans-serif;
+    font-size: 1em;
+    width: 100%;
+}
+
+.input-container .input-container__input:focus {
+    outline: none;
+}
+
+.input-container__error {
+    color: #C30019;
+    display: none;
+    font-family: 'AmericanSans', sans-serif;
+    font-size: 12px;
+    margin-top: 6px;
+    padding-left: 5px;
+}
+
+.input-container .input-container__label .label__required {
+    background-color: #C30019;
+    border-radius: 50%;
+    bottom: 2.5px;
+    display: inline-block;
+    height: 6px;
+    position: relative;
+    width: 6px;
+}
+
+.input-container.input-container--required.input-container--focused .input-container__label::after {
+    color: #C30019;
+}
+
+.input-container.input-container--focused .input-container__label, .input-container.input-container--set .input-container__label {
+  transform: translateY(28px) scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.input-container.input-container--focused:not(.input-container--invalid) .input-container__label {
+  color: #0078D2;
+  transform: translateY(28px) scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.input-container.input-container--focused:not(.input-container--invalid) .input-container__input {
+    border-color: #0078D2;
+    transition: border-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.input-container:not(.input-container--invalid) .input-container__input:hover:not(:disabled):not([disabled]):not(:read-only):not([readonly]) {
+    border-color: #627A88;
+}
+
+.input-container .input-container__label {
+    bottom: 100%;
+    color: #627A88;
+    font-family: 'AmericanSans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    left: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 11px;
+    position: absolute;
+    right: auto;
+    transform: translateY(38px) scale(1);
+    transform-origin: left top;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    width: 95%;
+    z-index: -1;
+}
+
+.input-container .input-container__label .label__tooltip {
+    color: #0078D2;
+    position: absolute;
+    left: auto;
+    right: 12px;
+}
+
+.input-container .input-container__input {
+    border-color: #D0DAE0;
+    border-radius: 2px;
+    border-width: 1px;
+    color: #36495A;
+    font-size: 15px;
+    font-weight: 300;
+    height: 50px;
+    padding-top: 23px;
+    padding-left: 7px;
+}
+
+.input-container .input-container__input:disabled,
+.input-container .input-container__input[disabled],
+.input-container .input-container__input:read-only,
+.input-container .input-container__input[readonly] {
+    cursor: default;
+    background-color: #EBEFF0;
+    border-color: #EBEFF0;
+}
+
+
+.input-container .input-container__input::-webkit-input-placeholder {
+    color: #9DA6AB;
+}
+
+.input-container .input-container__input:-moz-placeholder {
+    color: #9DA6AB;
+}
+
+.input-container .input-container__input:-ms-input-placeholder {
+    color: #9DA6AB;
+}
+
+.input-container .input-container__icon {
+    bottom: 100%;
+    color: #0078D2;
+    left: auto;
+    position: absolute;
+    right: 12px;
+    transform: translate3d(0, 47.5px, 0) scale(1);
+    transform-origin: left top;
+    z-index: -1;
+}
