@@ -1,0 +1,10 @@
+applications:
+- path: .
+  name: refarch-caseportal-app
+  host: caseportal
+  instances: 1
+  domain: mybluemix.net
+  memory: 256M
+  disk_quota: 1024M
+  services:
+    - ITSupportConversation

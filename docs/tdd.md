@@ -9,11 +9,7 @@ The project was created using `ng new` command so Karma, Jasmine are added autom
 Karma is the test server. It watches for changes in your testing and application files, and when such changes occur, it runs them in a browser and checks for mistakes.
 Jasmine is an unit testing framework for JavaScript, to describe tests and expected results.
 
-## Code Structure
-The src includes the following folders for better code management:
-* **core** folder for: All services which have to have one and only one instance per application (singleton services) should be implemented here.
-* **shared**: All the “dumb” components and pipes should be implemented here. These components don’t import and inject services from core or other features in their constructors. They should receive all data though attributes in the template of the component using them.
-* **features**: all business logic/ UI controller and services to implement the different app features.
+
 
 ## TDD for angular component
 Let start by the first user story:

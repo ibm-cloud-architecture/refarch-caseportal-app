@@ -12,14 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *  * Jerome Boyer IBM boyerje@us.ibm.com 
+ *  * Jerome Boyer IBM boyerje@us.ibm.com
  */
 var https=require('https');
 
 const request = require('request').defaults({strictSSL: false});
 var fs = require('fs');
 var path = require('path');
-var caCerts =fs.readFileSync(path.resolve(__dirname, '../../../ssl/ca.all.crt.pem'));
+// var caCerts =fs.readFileSync(path.resolve(__dirname, '../../../ssl/ca.all.crt.pem'));
 
 
 /**

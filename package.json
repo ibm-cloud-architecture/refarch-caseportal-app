@@ -4,13 +4,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibm-cloud-architecture/refarch-caseinc-app.git"
+    "url": "https://github.com/ibm-cloud-architecture/refarch-caseportal-app.git"
+  },
+  "engines": {
+    "node": "^8.9.4",
+    "npm": ">=4.2.0"
   },
   "scripts": {
     "ng": "ng",
     "start": "node server/server",
-    "dev": "concurrently \"ng build\" \"nodemon server/server\"",
-    "devui": "concurrently \"npm run build:watch\" \"ng serve\"",
+    "dev": "npm-run-all  build start",
+    "devui": "ng serve",
     "build": "ng build",
     "test": "ng test --browser ChromeHeadless --single-run",
     "watch": "ng test --browser ChromeHeadless",
@@ -72,6 +76,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
+    "npm-run-all": "^4.1.2",
     "typescript": "~2.3.3"
   }
 }

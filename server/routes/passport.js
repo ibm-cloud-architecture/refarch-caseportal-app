@@ -18,8 +18,8 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var request = require('request').defaults({strictSSL: false});
 //var request = require('request');
-var https=require('https');
-var fs = require('fs');
+// var https=require('https');
+// var fs = require('fs');
 var path = require('path');
 //var config = require('./env.json');
 var querystring = require('querystring');
@@ -62,7 +62,10 @@ module.exports = function(passport,config) {
           }
         }
         console.log('Login call '+username+ " options "+ JSON.stringify(options));
-        if ("tester" === username) {
+        if ( "tester" === username
+            || "bobbuilder@email.com" === username
+            || "eddie@email.com" === username
+            || "jane@email.com" === username ) {
           done(null,user)
         } else {
           request(options, function(error, response, body){
