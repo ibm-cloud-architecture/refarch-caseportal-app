@@ -15,7 +15,7 @@
  */
 
 module.exports = function(app, passport){
-  app.get('/logout', function(req, res){
+  app.get('/bff/logout', function(req, res){
     if(req.user){
       console.log('logging out user:', req.user);
     }
@@ -24,7 +24,8 @@ module.exports = function(app, passport){
         res.status(200).send({loggedOut: true});
     });
   })
-  app.post('/login', passport.authenticate('local', { failureFlash: 'Invalid username or password.' }), function(req, res){
+  // { successRedirect: '/', failureRedirect: '/login'}
+  app.post('/bff/login', passport.authenticate('local', { failureFlash: 'Invalid username or password.' }), function(req, res) {
     console.log('User Authenticated Successfully:', req.user)
     res.status(200).send(req.user);
   })

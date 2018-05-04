@@ -9,23 +9,24 @@ This article addresses in detail how login is supported in the Case Inc Portal b
 
 ## Requirements
 We want to support the following requirements:
-* The portal application has a login page, then once authenticated the user is routed to a home page where he can access a set of business functions
+* The portal application has a login page to get email and password then once authenticated the user is routed to a home page where he can access a set of business functions.
 * Userid and password are persisted in a LDAP server running on-premise
 * The authentication is supported by adding an API (/login), on the API Connect server running on-premise
 * The returned response from this authentication service is a Oauth access token that will be used as authorization Bearer token to any call to the back end services like the *inventory API*.
-* A login page is used in the Angular 2 to get username and password.
 * The BFF server exposes APIs for the user interface which can to be accessible only if the user is previously authenticated
 
 ## API definition
-A new url path is added to the API Connect *inventory* product to support login as illustrated in figure below:
+A new url path is added to the IBM API Connect *inventory* product to support "/login", as illustrated in figure below:
 ![](api-login-path.png)  
+Classical username / password input. Here is the choice was to use query parameters, but it will be the same to use a JSON object in the body payload.
 
-The logic to support this API has to do a call to the LDAP server and do some data transformation using XSLT to deliver a Oauth token:  
+The logic to support this API has to do a call to the LDAP server and do some data transformation using XSLT to deliver a Oauth token. Below the flow diagram in API Connect  illustrates this logic:  
 ![](api-login-assemble.png)  
 
 The XSLT transformation is executed on the API Gateway appliance.
 
 When deployed on IBM Cloud the web application accesses the login URL via the IBM Secure Gateway running on IBM Cloud (cap-sg-prd-5.integration.ibmcloud.com). The URL will be in the form of: https://cap-sg-prd-5.integration.ibmcloud.com:16582/csplab/sb/sample-inventory-api/login?username=<>&password=<>
+When deployed to IBM Cloud Private the URL end point is the one exposed by API gateway.
 
 The returned object is a Json object with access token like below:
 ```Json
@@ -38,23 +39,46 @@ The returned object is a Json object with access token like below:
 ```
 The access token is used as authorization attribute inside the HTTP header, we will detail that later.
 
-Once the login mechanism is in place all other APIs defined in the `Inventory product` are secured: in API connect management, the option `Use API security definitions` is checked for each API exposed, like the `/items` :
+Once the login mechanism is in place all other APIs defined in the `Inventory product` are secured: in API connect management, the option `Use API security definitions` is checked for each API exposed, like the `/items`:
 ![](api-security.png)  
 
-And the Security definition specifies what to use: oauth, X-IBM-Client-Id, and scope.
+And the Security definition specifies what to use: the oauth, X-IBM-Client-Id, and scope options.  
 ![](api-security-reqs.png)  
 
 
-## BFF Server login proxy
+## [BFF](../bff.md) Server login proxy
 On the web server side we are using [Passport.js](http://www.passportjs.org/) to simplify the express.js middleware management. The package.json includes the dependency to get the passport.js.
 
-Before asking Passport to authenticate a request, the strategy used by our application must be configured. So the first component to add to the nodejs server is the **passport.js**  which wraps the passport module so we can inject end point URL from **config** object and overwrite the local strategy by calling the remote API.
+In the server we need to import passport and specify that the workload will be parsed from the http body part. To do so we need to add body parser and set the Type
 
+```javascript
+const passport = require('passport');
+const bodyParser =   require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// configure the passport strategy, specifying the login end point from the config
+var config = require('./config/config');
+require('./routes/passport')(passport,config)
+```
+The **passport** variable is passed to the authentication module we named routes/passport
 
+The other component to add to the nodejs server is the **userlogin.js**  which exposes the two URLs needed to support authentication and logout.
+```
+require('./routes/userlogin')(app, passport);
+app.use(passport.initialize());
+app.use(passport.session())
+```
+`passport.initialize()` middleware is required to initialize Passport and as our application uses persistent login sessions, `passport.session()` middleware must also be used.
+
+Before asking Passport to authenticate a request, the strategy used by our application must be configured to inject end point URL from **config** object and overwrite the local strategy by calling the remote authentication API we defined in API Connect. The config object helps us to control end points according to the deployment target: IBM Cloud or IBM Cloud Private.
+
+The code in routes/passport.js defines the Strategy and what to do with input data. The first argument for the strategy constructor is an option json object to specify for example the attribute name to consider is you are not using default  username, password, or to pass the entire request to the `done` callback.
 
 ```javascript
 passport.use('local', new LocalStrategy({
-    passReqToCallback : true // allows us to pass back the entire request to the callback
+    passReqToCallback : true, // allows us to pass back the entire request to the callback
+    usernameField: 'userName',
+    passwordField: 'password'
 },
   function(req, username, password, done) {
     var user = { username:username,password:password}
@@ -69,13 +93,11 @@ passport.use('local', new LocalStrategy({
         'Content-Type' : 'application/x-www-form-urlencoded'
       }
     }
-    console.log('Login call '+username+ " options "+ JSON.stringify(options));
     request(options, function(error, response, body){
       if(error){
         console.error('ERROR CONTACTING LOGIN API', error);
         return done(error);
       }
-      console.log('Login body:', JSON.stringify(body));
       if (body.httpCode == 500) {
         console.log("Server error");
         done(error)
@@ -88,24 +110,15 @@ passport.use('local', new LocalStrategy({
 ```
 This is the code you may want to change to adopt another strategy or end point.
 
-Our passport is used as part of the middleware definition in the server.js. passport.initialize() middleware is required to initialize Passport and as our application uses persistent login sessions, passport.session() middleware must also be used.
-```javascript
-const passport = require('passport');
+Finally we need to specify the URL end point (**/bff/login**) to process the login request from the Angular client. This is done in `routes/userlogin.js` code.
 
-//...
-require('./routes/userlogin')(app, passport);
-app.use(passport.initialize());
-app.use(passport.session())
-```
-The **passport** variable is passed
-
-The other component to add to the nodejs server is the **userlogin.js**  which exposes the two URLs needed to support authentication and logout. This code is used as part of the middleware definition in the server.js
 ```javascript
-app.post('/login', passport.authenticate('local'), function(req, res){
+app.post('/bff/login', passport.authenticate('local'), function(req, res){
   console.log('User Authenticated Successfully:', req.user)
   res.status(200).send(req.user);
 })
 ```
+
 Authenticating requests is as simple as calling passport.authenticate() and specifying which strategy to use. Here it uses 'local'. The function as parameter will be called if the authentication is successful. The req.user includes the authenticated user.
 After successful authentication, Passport will establish a persistent login session.
 
@@ -143,7 +156,7 @@ app.get('/api/i/items', isLoggedIn, (req,res) => {
 To logout, we just need to call the passport logout function and destroy the session:
 ```javascript
 // userlogin.js
-app.get('/logout', function(req, res){
+app.get('/bff/logout', function(req, res){
   req.logout();
   req.session.destroy(function (err) {
       res.status(200).send({loggedOut: true});
@@ -163,31 +176,32 @@ getItems : function(req,res){
 
 
 ## Web Client Side
-The login is supported by a specific Angular module with a route based on the url **/log**. In app.module.js the Login component declaration is added, with the route definition. The approach is to protect any route access if the user is not logged in. This is done by using the AuthGard component. So each route definition is active if the user was authenticated before.
+The login is supported by a specific Angular module with a route based on the url `#/login`. In `routing.module.js` the Login component declaration is added, with the route definition.
+Each other internal routes are access protected if the user is not logged in. This is done by using the LoginGuard service. So each route definition is active if the user was authenticated before.
 
 ```javascript
 import { LoginComponent }  from './login/login.component';
-import { AuthGuard }       from './login/auth.guard';
+import { LoginGuard }       from './login/login.guard';
 
  // ...
 const routes: Routes = [
-  { path: 'home', component: HomeComponent ,canActivate: [AuthGuard]},
-  { path: 'log', component: LoginComponent },
-  { path: 'inventory', component: InventoryComponent, canActivate: [AuthGuard]},
+  { path: 'home', component: HomeComponent ,canActivate: [LoginGuard]},
+  { path: 'login', component: LoginComponent },
+  { path: 'inventory', component: InventoryComponent, canActivate: [LoginGuard]},
 ],
 // ...
 @NgModule({
     declarations: [
     LoginComponent],
-    providers: [AuthGuard]
+    providers: [LoginGuard]
 })
 ```  
 
-The auth guard is used to prevent unauthenticated users from accessing restricted routes, it assesses if the user is logged by using the authentication service:
+The login guard is used to prevent unauthenticated users from accessing restricted routes, it assesses if the user is logged by using the authentication service:
 ```javascript
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
 
-    constructor(private router: Router, private authService: AuthenticationService){ }
+    constructor(private router: Router, private authService: LoginService){ }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean  {
       return this.authService.authenticated()
@@ -200,16 +214,15 @@ export class AuthGuard implements CanActivate {
         })})}
 ```
 
-The second change in AuthenticationService that is meaningful is the addition of the following function:
+The second change in LoginService that is meaningful is the addition of the following function:
 ```javascript
-//authentication.service
 authenticated() {
   return this.http.get('/api/authenticated', <RequestOptionsArgs>{ withCredentials: true })
     .map((res: Response) => res.json())
 }
 ```
 
-From the auth.guard, we now will use this function to hit a new api endpoint which will simply let us know if the user is logged in or not, therefore allowed to access the page protected by this guard.
+From the login.guard, we now will use this function to hit a new api endpoint which will simply let us know if the user is logged in or not, therefore allowed to access the page protected by this guard.
 
-## SSL Certificate
-The communication between the nodejs web server, IBM secure gateway and then API Connect on premise is using SSL. As it is little bit complex we have create a separate note to explain what was performed to make this communication working. So see the detail [here](ssl.md)
+## SSL
+When deploying this webapp to IBM Cloud public, the communication between the nodejs web server, IBM secure gateway and API Connect gateway running on premise is using SSL. As it is little bit complex we have create a [separate note](ssl.md) to explain what we did to make this communication working.

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Router } from '@angular/router';
 import { InputComponent } from '../../shared/input/input.component';
 import { User, LoginRequest } from '../../shared/User';
 import { LoginService } from './login.service';
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   @ViewChildren(InputComponent) components: QueryList<InputComponent>;
   // model to keep userid and password
   loginRequest: LoginRequest = {
-      userName: '',
+      email: '',
       password: ''
   };
   // constraints on the input fields used in the page
@@ -27,7 +28,9 @@ export class LoginComponent implements OnInit {
 
   errorMsg: string;
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService,
+    private router: Router,) {
+    }
 
   ngOnInit() {
   }
@@ -38,12 +41,28 @@ export class LoginComponent implements OnInit {
   }
 
   clickedLogin() {
-    // do not allow login with empty username or password
-    if (!Boolean(this.loginRequest.userName) || !Boolean(this.loginRequest.password)) {
-      this.components.forEach(
-        (input: InputComponent) => input.validate()
-      );
+    if (!Boolean(this.loginRequest.email) || !Boolean(this.loginRequest.password)) {
       return;
+    } else {
+      this.components.forEach(
+        (input: InputComponent) => {
+          if (! input.validate()) return;
+        }
+      );
     }
+    this.loginService.login(this.loginRequest.email, this.loginRequest.password).subscribe(
+      () => {
+        this.router.navigate(['/home']);
+      },
+      error => {
+        if (error.status === 401) {
+          this.errorMsg = 'Your username or password does not match the record';
+        } else if (error.status === 403) {
+          this.errorMsg = 'For your security, we\'ve locked your privacy portal account. Please contact ….';
+        } else {
+          throw error;
+        }
+      }
+    );
   }
 }

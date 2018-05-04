@@ -157,12 +157,6 @@ export class InputComponent implements OnInit {
             this.errorMsg = validation.msg;
           }
           break;
-        case 'aaMemberIDValidity':
-          const isValidAAMemberID = /^[a-zA-Z0-9_]{7}$/.test(this.model);
-          if (!isValidAAMemberID) {
-            this.errorMsg = validation.msg;
-          }
-          break;
         case 'length':
           const maxLength = (validation.length) ? validation.length : 1;
           if (this.model.length > maxLength) {

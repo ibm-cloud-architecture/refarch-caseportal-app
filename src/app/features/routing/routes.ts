@@ -4,7 +4,8 @@ import { LoginComponent } from '../login/login.component';
 import { LoginGuard } from '../login/login.guard';
 
 export const routes: Routes = [
-    { path: 'home', component: HomeComponent, canActivate: [LoginGuard]},
+    // {  path: 'home', component: HomeComponent, canActivate: [LoginGuard]},
+    { path: 'home', component: HomeComponent },
     { path: 'login', component: LoginComponent},
     { path: '**', redirectTo: '/home', pathMatch: 'full'}
 ];

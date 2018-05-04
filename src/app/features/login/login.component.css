@@ -1,0 +1,17 @@
+h1 {
+  margin-top: 34px;
+  margin-bottom: 21px;
+  color: #0078d2;
+}
+
+label {
+  margin-top: 13px;
+  margin-bottom: 3px;
+}
+
+.loginBtn {
+  margin: 0px 0px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.13);
+  height: 100%;
+  width: 100%;
+}

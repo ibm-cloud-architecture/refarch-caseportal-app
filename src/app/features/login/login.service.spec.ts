@@ -18,7 +18,8 @@ describe('LoginService', () => {
   }));
 
   it('should get a user when calling login given username and password', () => {
-    const user: User = loginService.login("eddie@email.com","pwd");
+    let user: User;
+    loginService.login("eddie@email.com","pwd").subscribe( rep => user = rep);
     expect(user.firstname).toEqual('Eddie');
   });
 

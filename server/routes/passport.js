@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-//passport.js
+
 var LocalStrategy = require('passport-local').Strategy;
 
 var request = require('request').defaults({strictSSL: false});
-//var request = require('request');
-// var https=require('https');
-// var fs = require('fs');
-var path = require('path');
-//var config = require('./env.json');
-var querystring = require('querystring');
-//var caCerts =fs.readFileSync(path.resolve(__dirname, '../../ssl/ca.all.crt.pem'));
 
-//var apiUrl=config.secureGateway.url+config.apiGateway.url+"/login";
+var path = require('path');
+var querystring = require('querystring');
 
 module.exports = function(passport,config) {
     // =========================================================================
@@ -45,9 +39,12 @@ module.exports = function(passport,config) {
     });
 
     passport.use('local', new LocalStrategy({
-        passReqToCallback : true // allows us to pass back the entire request to the callback
+        passReqToCallback : true, // allows us to pass back the entire request to the callback
+        // specify the attribute name to consider is you are not using default  username, password
+        usernameField: 'userName',
+		    passwordField: 'password'
     },
-      function(req, username, password, done) {
+      function( req, username, password, done) {
         //process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         var user = { username:username,password:password,email:username}
         var builtUrl=config.getLoginUrl()+"?"+querystring.stringify(user);
@@ -62,10 +59,12 @@ module.exports = function(passport,config) {
           }
         }
         console.log('Login call '+username+ " options "+ JSON.stringify(options));
+        // bypass for certain users to simplify the demo
         if ( "tester" === username
             || "bobbuilder@email.com" === username
             || "eddie@email.com" === username
             || "jane@email.com" === username ) {
+          user.token = "1234567";
           done(null,user)
         } else {
           request(options, function(error, response, body){

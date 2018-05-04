@@ -18,7 +18,7 @@ const express = require('express');
 const path = require('path');
 
 const passport = require('passport');
-
+const flash = require('connect-flash');
 const session = require('express-session');
 const MemoryStore = require('session-memory-store')(session);
 
@@ -26,7 +26,7 @@ const MemoryStore = require('session-memory-store')(session);
 const app = express();
 app.disable('x-powered-by');
 
-const bodyParser =   require('body-parser');
+// configure the passport strategy, specifying the login end point from the config
 var config = require('./config/config');
 require('./routes/passport')(passport,config)
 
@@ -37,11 +37,13 @@ app.use(session({
   saveUninitialized: false,
 	store: new MemoryStore()
 }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 app.use(require('cookie-parser')());
 // Parsers for POST JSON PAYLOAD
+const bodyParser =   require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //app.use(session({resave: 'true', saveUninitialized: 'true' , secret: 'keyboard cat', cookie:{secure: false}}));

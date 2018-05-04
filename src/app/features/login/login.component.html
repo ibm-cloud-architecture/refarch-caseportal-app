@@ -1,15 +1,17 @@
-<h1>CASE Portal Front End</h1>
-<p>Log in to access hybrid cloud analytics demonstration</p>
-<div class="row vertical-align">
-  <div class="col-md-4">
+<div class="row">
+  <div class="col-md-7">
+    <h4><i>Welcome to the Case Inc Portal Application!</i></h4>
+    <h4>News</h4>
+    <p>This application illustrates different use case for hybrid integration, chatbots, and machine learning model deployed as service with public and private cloud</p>
+  </div>
+  <div class="col-md-5">
+    <p>Log in to access hybrid cloud analytics demonstration</p>
     <app-input [label]="'Username'"
       [id]="'usernameInput'"
       [name]="'username'"
-      [(model)]="loginRequest.userName"
+      [(model)]="loginRequest.email"
       (modelChange)="onInputChange()"
       [validations]="usernameVals"></app-input>
-  </div>
-  <div class="col-md-4">
     <app-input [label]="'Password'"
       [id]="'passwordInput'"
       [name]="'password'"
@@ -17,8 +19,6 @@
       [(model)]="loginRequest.password"
       (modelChange)="onInputChange()"
       [validations]="passwordVals"></app-input>
-  </div>
-  <div class="col-md-2">
     <div style="padding: 6px;position: relative;margin-top: 0.7em;margin-bottom: 0.5em;">
       <button class="form-control btn btn-primary loginBtn" (click)="clickedLogin()">Log in</button>
     </div>
