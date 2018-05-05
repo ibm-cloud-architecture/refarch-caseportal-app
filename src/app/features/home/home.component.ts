@@ -3,6 +3,8 @@ import { Router }   from '@angular/router';
 import { LoginService } from '../login/login.service';
 import { HomeService }  from './home.service';
 import { User } from '../../shared/User';
+import { TileComponent } from '../../shared/tile/tile.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -23,21 +25,11 @@ export class HomeComponent {
         error => {console.log(error);}
       )
   }
-  // each features is a tile
-  inventory(){
-    this.router.navigate(['inventory']);
-  }
-
-
-  itSupport(){
-    this.router.navigate(['itSupport']);
-  }
-  // ADD Here methods to be called from HTLM button to route to other component
 
   logout(){
       localStorage.removeItem('currentUser');
       this.user = new User();
-      this.router.navigate(['log']);
+      this.router.navigate(['login']);
   }
 
   dcm(){
