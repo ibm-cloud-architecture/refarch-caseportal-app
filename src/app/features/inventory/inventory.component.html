@@ -1,8 +1,12 @@
 
+<ol class="breadcrumb">
+  <li><a (click)="home()">Home</a></li>
+  <li><a (click)="logout()">Logout</a></li>
+</ol>
 <h2>Items <i *ngIf="loading" class="fa fa-cog fa-spin fa-3x fa-fw"></i> <span><button class="btn btnbg glyphicon glyphicon-plus" type="button" (click)="add()"></button></span></h2>
 <div class="row">
   <p>{{message}}</p>
-  <div class="col-md-8" *ngIf="!loading">
+  <div class="col-md-8" *ngIf="items">
       <table id="dataTable" class="table table-striped table-condensed">
         <thead>
           <tr>

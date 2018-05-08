@@ -4,7 +4,16 @@ In this chapter we are covering some Angular 5 tricks and practices we have to f
 ## Error: model not found on input element
 * The error message looks like
 	Can't bind to 'ngModel' since it isn't a known property of 'input'. ("ss="input-container__input" (focus)="focus()" (blur)="blur()" (ngModelChange)="change(input.value)" [ERROR ->][ngModel]="model" />
- The solution is to import FormModule in the module that uses input element. 
+ The solution is to import FormsModule in the module that uses input element.
+ ```javascript
+ import { FormsModule } from '@angular/forms';
+ @NgModule({
+   imports: [
+     CommonModule,
+     SharedModule,
+     FormsModule,
+	 ]})
+ ```
 
 ## Code explanation
 

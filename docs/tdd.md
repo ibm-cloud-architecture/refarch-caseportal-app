@@ -7,11 +7,10 @@ Angular 4 offers excellent support to do testing of any of its elements such as 
 
 The project was created using `ng new` command so Karma, Jasmine are added automatically and test specs are done for the app component. We can start from there to implement the first user story.
 Karma is the test server. It watches for changes in your testing and application files, and when such changes occur, it runs them in a browser and checks for mistakes.
-Jasmine is an unit testing framework for JavaScript, to describe tests and expected results.
-
-
+[Jasmine](https://jasmine.github.io/) is an unit testing framework for JavaScript, to describe tests and expected results.
 
 ## TDD for angular component
+We strongly recommend to study [this tutorial](https://angular.io/guide/testing)
 Let start by the first user story:
 ```
 As a end user, Bob want to access the set of features offered by the portal from a central page, with nice layout with simple navigation, so that he can easily with ambiguity select the function he wants.
@@ -113,10 +112,10 @@ ng g service features/login
 
  Okay so we have code template, let add service using TDD: we want to get a User from a login operation:
 ```JavaScript
-fit('should get a user when calling login given username and password', () => {
+ it('should get a user when calling login given username and password', () => {
   const user: User = loginService.login("eddie@email.com","pwd");
   expect(user.firstname).toEqual('Eddie');
-});
+ });
 ```
 We use the Jasmine `fit` function to focus on this test so we do not need to run all the tests while developing a new function. We need to add the login function in the service, import the user, etc... so the test can compile. In the LoginService add the mockup implementation:
 
@@ -159,10 +158,10 @@ To fix this issue we need to import the LoginService in `home.component.spec.ts`
           LoginService
         ]
   ```
-The test succeed, but this is not perfect, because we are dragging the login component into the home component test. When the login component will have the code for making remote calls via HTTP our home tests will be impacted.
+The test succeed, but this is not perfect, because we are dragging the login component into the home component test. When the login component will have the code for making remote calls via HTTP our home tests will be impacted. We need to mockup the login service.
+
 * Adding mockups  
-We need to mockup the login service.
-Jasmine offers capabilities to develop stub, mockups. So let add a loginStub and use jasmine create spy object API to specify we want to support the getCurrentUser method and return our test user as:
+Jasmine offers capabilities to develop stub, mockups. So let add a loginStub and use jasmine create spy object API to specify we want to support the getCurrentUser method and return our test user as illustrated below:
 
   ```JavaScript
   let loginStub;
@@ -173,12 +172,13 @@ Jasmine offers capabilities to develop stub, mockups. So let add a loginStub and
     // ...
   }))
   ```
-modify the providers list now
+modify the providers list now by referencing the stub:
 ```
 providers: [
   { provide: LoginService, useValue: loginStub }
 ]
 ```
+
 * Adding more tests to login component
 The login component is to get username as email address and password with a minimum of constraints like length and special characters. In the login.component.spec.ts let add user name to be a mandatory field. To do that we use the Angular **By** feature, to access HTML element using their CSS id. and then we use a special input type with validation rule.
   ```
@@ -189,11 +189,85 @@ The login component is to get username as email address and password with a mini
       expect(componentInstance.validations[0].type).toEqual('required');
     });
   ```
-For the custom input element and validation rule see [the explanations in this article](./angularhowtos/custominput.md). In the HTML page we need to add the input for the username and password and then the model element in the component. The code is self explanatory and we are providing some details in [this note](./angularhowtos/loginui.md)
+For the custom input element and validation rule see [the explanations in this article](./angularhowtos/custominput.md). In the HTML page we need to add the input for the username and password and then the model element in the component. The code is self explanatory and we are providing some details in [this note](./login/README.md)
+
+### Testing with HostComponent
+When developing lower level component that is included in other page, we can use the concept fo 'host' component in the test and play with it. As an example, we want to define a Tile element that will represent a reusable control with title, short description and a button to route to another internal element. It will be used in the homw page to access the list of features. The Tile has input elements. Once the Tile component is added with 'ng g component shared/tile' command we can start by the test and add a Host component:
+```JavaScript
+describe('TileComponent', () => {
+  let component: TileComponent,
+    router: Router;
+  let fixture: ComponentFixture<HostComponent>;
+
+  @Component({
+      template: '<app-tile title="Some title" description="Some message." color="red"></app-tile>'
+  })
+  class HostComponent {}
+})
+```
+Be sure to declare the HostComponent in the TestBed module:
+```JavaScript
+describe('TileComponent', () => {
+  let component: HostComponent,
+    router: Router;
+  let fixture: ComponentFixture<HostComponent>;
+
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+          RouterTestingModule.withRoutes([])
+      ],
+      declarations: [ HostComponent ]
+    })
+    .compileComponents();
+  }));
+})
+```
+Then we create an instance and validate the parameters are set:
+```JavaScript
+  fixture = TestBed.createComponent(HostComponent);
+  it('should contain style with red color', () => {
+        const tile = fixture.debugElement.query(By.css('#firstTile'));
+        const tileComponent = tile.componentInstance;
+        expect(tileComponent.color).toBe('red');
+
+  });
+```
+
+### Testing Service doing http calls
+The LoginService includes HTTP call to the BFF server. To avoid doing test to remote server in Jasmine unit test, Angular offers a HttpClientTestingModule module that needs to be imported in the service tests. One of the module class is the
+[HttpTestingController](https://angular.io/api/common/http/testing/HttpTestingController) which allows for mocking and flushing of requests. In the test below the approach is to test login function and verify the user is returned. So using the controller mockup we can verify the login URL is called, the request is a POST , and return a response with the expected data.
+
+```JavaScript
+httpMock = TestBed.get(HttpTestingController);
+// ..
+it('should get a user when calling login given username and password', () => {
+    let user: User;
+    loginService.login("eddie@email.com","pwd").subscribe(
+      user => {
+          expect(user.firstname).toEqual('Eddie');
+      },
+      err => {
+        fail('Unexpected error: ' + err);
+      });
+      const req = httpMock.expectOne(loginService.loginUrl);
+      expect(req.request.method).toEqual('POST');
+      req.flush({firstname: "Eddie", email: "eddie@email.com"});
+});
+
+```
+From this test we can implement the function. The back end is returning a User data which we need to keep in session so page can access common data element like firstname or jwtToken. The SessionStorage is used for that.
+
+We will use the jasmine spy method. So when there is a call on setItem on the sessionStorage, instead of using the window's one, we can use a mockSessionStorage object.
+
+```
+spyOn(window.sessionStorage, 'setItem')
+  .and.callFake(mockSessionStorage.setItem);
+```
+We recommend to go over the login.service.spec.ts file now that the main concepts are introduced.
 
 @@@ stopped here!  
-Angular Mocks is an Angular module that is used to mock components that already exist in the application. Its role is to inject various components of the Angular application (controllers, services, factories, directives, filters) and make them available for unit tests.
-
 
 ## Consumer Driven Contract
 To develop the service interface, we are using the [consumer driven contracts]() pattern introduced by Martin Fowler to develop tests for each operation the user interface will reach, and define contract (HTTP verb, url, error reporting and data payload schema) from a consumer needs so the provider can support it. It is like applying customer focus practice to service development.
@@ -234,4 +308,5 @@ proxies: {
 
 ## Future readings
 * https://angular.io/guide/testing
+* https://programmingcroatia.wordpress.com/2017/09/22/angular-2-jasmine-testing/
 * https://reflectoring.io/consumer-driven-contracts-with-angular-and-pact/

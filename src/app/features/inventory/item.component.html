@@ -1,0 +1,29 @@
+<div *ngIf="item" class="row">
+  <h2>{{item.name}} details!</h2>
+  <p>{{message}}</p>
+  <div><label>id: </label>{{item.id}}</div>
+  <div class="form-group">
+      <label for="name">Name</label>
+      <input autofocus type="text" class="form-control" required [(ngModel)]="item.name" name="name" id="name">
+  </div>
+  <div class="form-group">
+      <label for="description">Description</label>
+      <textarea  class="form-control" rows="6" columns="70" [(ngModel)]="item.description" name="description" id="description"></textarea>
+  </div>
+  <div class="form-group">
+      <label for="imgAlt">Image Alternate Name</label>
+      <input  type="text" class="form-control" required [(ngModel)]="item.imgAlt" name="imgAlt" id="imgAlt">
+  </div>
+  <div class="form-group">
+      <label for="price">Price</label>
+      <input  type="text" class="form-control" required [(ngModel)]="item.price" name="price" id="price">
+  </div>
+  <div class="form-group">
+      <label for="type">Product Type</label>
+      <input  type="text" class="form-control" required [(ngModel)]="item.producttype" name="producttype" id="producttype">
+  </div>
+  <div>
+      <button class="btn btn-primary" type="button" (click)="save()">Save</button>
+      <button class="btn glyphicon glyphicon-upload" type="button" (click)="upload()"></button>
+  </div>
+</div>

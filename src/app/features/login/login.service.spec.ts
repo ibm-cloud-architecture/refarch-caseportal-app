@@ -1,31 +1,74 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LoginService } from './login.service';
 import { User } from '../../shared/user';
 
 describe('LoginService', () => {
   let loginService: LoginService;
+  let httpMock: HttpTestingController;
+  let store = {};
+  const mockSessionStorage = {
+    getItem: (key: string): string => {
+      return key in store ? store[key] : null;
+    },
+    setItem: (key: string, value: string) => {
+      store[key] = `${value}`;
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [LoginService]
     });
+    spyOn(window.sessionStorage, 'getItem')
+      .and.callFake(mockSessionStorage.getItem);
+    spyOn(window.sessionStorage, 'setItem')
+      .and.callFake(mockSessionStorage.setItem);
+    spyOn(window.sessionStorage, 'removeItem')
+      .and.callFake(mockSessionStorage.removeItem);
+    spyOn(window.sessionStorage, 'clear')
+      .and.callFake(mockSessionStorage.clear);
     loginService = TestBed.get(LoginService);
+    httpMock = TestBed.get(HttpTestingController);
   });
+
+
+  afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
+    // assess if there is no more outstanding http request
+    httpMock.verify();
+    // better to clean the SessionStorage
+    mockSessionStorage.clear();
+  }));
+
 
   it('should be created', inject([LoginService], (service: LoginService) => {
     expect(service).toBeTruthy();
   }));
 
   it('should get a user when calling login given username and password', () => {
-    let user: User;
-    loginService.login("eddie@email.com","pwd").subscribe( rep => user = rep);
-    expect(user.firstname).toEqual('Eddie');
+      let user: User;
+      loginService.login("eddie@email.com","pwd").subscribe(
+        user => {
+            expect(user.firstname).toEqual('Eddie');
+        },
+        err => {
+          fail('Unexpected error: ' + err);
+        });
+        const req = httpMock.expectOne(loginService.loginUrl);
+        expect(req.request.method).toEqual('POST');
+        req.flush({firstname: "Eddie", email: "eddie@email.com"});
   });
 
-  it('should get a user when calling login get current user', () => {
-    const user: User = loginService.getCurrentUser();
-    expect(user.firstname).toEqual('Eddie');
-  });
-
+ it('should have loggedIn being true when user is logged in', () => {
+   mockSessionStorage.setItem('user', '{"lastname": "biloute","firstname": "eddir","email": "eddie@email.com"}');
+   expect(loginService.isLoggedIn()).toBeTruthy();
+ });
 });

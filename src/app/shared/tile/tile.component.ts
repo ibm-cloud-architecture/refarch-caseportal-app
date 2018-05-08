@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { DomSanitizer, SafeStyle }  from '@angular/platform-browser';
 import { Router }   from '@angular/router';
 
 @Component({
@@ -17,14 +18,16 @@ export class TileComponent implements OnInit {
   buttonName: string = 'Submit';
   @Input()
   urlPath: string = 'home';
-
+  style: string;
   constructor(private router: Router) { }
 
   ngOnInit() {
+    this.style = '10px 10px 3px ' + this.color;
   }
 
   submit() {
-      this.router.navigate([this.urlPath]);
+    console.log('Go to ' + this.urlPath);
+    this.router.navigate([this.urlPath]);
   }
 
 }

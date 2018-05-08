@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {   RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { LoginComponent } from './login.component';
 import { LoginService } from './login.service';
@@ -17,7 +18,8 @@ describe('LoginComponent', () => {
     loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
     loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
     TestBed.configureTestingModule({
-      imports: [ SharedModule ],
+      imports: [ SharedModule,
+        RouterTestingModule ],
       declarations: [ LoginComponent ],
       providers: [
           { provide: LoginService, useValue: loginStub }

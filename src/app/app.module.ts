@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { RoutingModule } from './features/routing/routing.module';
+import { InventoryModule } from './features/inventory/inventory.module';
 import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
 import { LoginGuard } from './features/login/login.guard';
@@ -16,7 +17,8 @@ import { LoginService } from './features/login/login.service';
     BrowserModule,
     RoutingModule,
     SharedModule,
-    FeaturesModule
+    FeaturesModule,
+    InventoryModule,
   ],
   providers: [LoginGuard, LoginService],
   bootstrap: [AppComponent]

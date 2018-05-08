@@ -3,29 +3,32 @@ import {Component} from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TileComponent } from './tile.component';
+import { By } from '@angular/platform-browser';
 
-fdescribe('TileComponent', () => {
-  let component: TileComponent,
+@Component({
+    template: '<app-tile id="firstTile" title="Some title" description="Some message." color="red"></app-tile>'
+})
+class HostComponent {}
+
+describe('TileComponent', () => {
+  let component: HostComponent,
     router: Router;
-  let fixture: ComponentFixture<TileComponent>;
+  let fixture: ComponentFixture<HostComponent>;
 
-  @Component({
-      template: '<app-tile title="Some title" description="Some message."></app-tile>'
-  })
-  class HostComponent {}
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
           RouterTestingModule.withRoutes([])
       ],
-      declarations: [ TileComponent ]
+      declarations: [ TileComponent, HostComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TileComponent);
+    // fixture = TestBed.createComponent(TileComponent);
+    fixture = TestBed.createComponent(HostComponent);
     router = TestBed.get(Router);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -35,8 +38,16 @@ fdescribe('TileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain correct header', () => {
+  it('should contain a default title', () => {
         const element = fixture.debugElement.nativeElement.querySelector('h2');
-        expect(element.textContent).toBe('title');
+        expect(element.textContent).toBe('Some title');
   });
+
+  it('should contain style with red color', () => {
+        const tile = fixture.debugElement.query(By.css('#firstTile'));
+        const tileComponent = tile.componentInstance;
+        expect(tileComponent.color).toBe('red');
+  });
+  
+
 });

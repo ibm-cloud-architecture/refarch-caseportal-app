@@ -4,7 +4,7 @@ import { SharedModule } from './shared/shared.module';
 import { FeaturesModule } from './features/features.module';
 import { AppComponent } from './app.component';
 
-describe('Validate App Component', () => {
+describe('Validate Main App Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [

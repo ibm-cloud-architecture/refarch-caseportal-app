@@ -18,8 +18,8 @@
         "url":"http://172.16.40.131/caseserv/api",
         "host":"customer.green.case"
     },
-    "mode" : "cyan",
+    "mode" : "brown",
     "environment" : "private",
     "port" : 6100,
-    "version": "v0.1.1"
+    "version": "v0.2.0"
 }
