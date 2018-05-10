@@ -11,21 +11,19 @@ export class InventoryService {
   private invUrl ='/api/i';
 
   constructor(private http: Http) {
-
   };
 
-  getItems(): Observable<any>{
+  getItems(): Observable<Item[]>{
     return this.http.get(this.invUrl+'/items')
          .map((res:Response) =>
           res.json())
   }
 
-  saveItem(i) : Observable<any> {
-
+  saveItem(i) : Observable<Item> {
     return this.http.post(this.invUrl+'/items',{item:i}).map((res:Response) => res.json());
   }
 
-  updateItem(i) : Observable<any> {
+  updateItem(i) : Observable<Item> {
     return this.http.put(this.invUrl+'/items',{item:i}).map((res:Response) => res.json());
   }
 

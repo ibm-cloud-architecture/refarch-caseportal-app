@@ -24,7 +24,8 @@ const router = express.Router();
 // The application can be the front end to two different color compute model: Brown for integration focus and Orange for integration and cognitive. The mode attribute in the env.json set this
 var fs = require('fs');
 var path = require('path');
-const inventory    = require('./features/inventoryProxy');
+// const inventory    = require('./features/inventoryProxy');
+const inventory    = require('./mockup/inventory');
 const customer    = require('./features/customerProxy');
 const conversation = require('./features/conversation');
 const advisor = require('./features/advisor');
@@ -85,6 +86,7 @@ module.exports = function(app,config){
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()){
+      console.log("authenticated user");
       return next();
     }
     res.status(401).send('unauthenticated');

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
@@ -14,9 +14,8 @@ export class HomeService {
     };
 
     // this method is used to control the user interface features.
-    getMode(): Observable<any>{
-      return this.http.get(this.bffUrl + '/mode')
-           .map((res: Response) => res.json())
+    getMode(): Observable<string>{
+      return this.http.get(this.bffUrl + '/mode');
     }
 
 }

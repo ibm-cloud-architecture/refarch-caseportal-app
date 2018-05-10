@@ -8,6 +8,8 @@ import { InventoryModule } from './inventory/inventory.module';
 import { HomeService } from './home/home.service';
 import { InventoryService } from './inventory/inventory.service';
 import { HttpModule } from '@angular/http';
+import { ConversationComponent } from './conversation/conversation.component';
+import { TelcochatComponent } from './telcochat/telcochat.component';
 
 @NgModule({
   imports: [
@@ -16,7 +18,7 @@ import { HttpModule } from '@angular/http';
     HttpModule,
     SharedModule
   ],
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, ConversationComponent, TelcochatComponent],
   exports: [HomeComponent, LoginModule, InventoryModule],
   providers: [ HomeService, InventoryService ]
 })

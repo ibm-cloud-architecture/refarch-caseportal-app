@@ -102,7 +102,7 @@ export class InventoryComponent implements OnInit {
         console.error('ERROR SAVING ITEM', response.error);
         alert(`Error Saving Item: (${response.error.status}) ${response.error.statusText}`);
         if(response.error.status == 401){
-          this.router.navigate(['log'], { queryParams: { returnUrl: '/inventory' } });
+          this.router.navigate(['login'], { queryParams: { returnUrl: '/inventory' } });
         }
       }
     } // item update

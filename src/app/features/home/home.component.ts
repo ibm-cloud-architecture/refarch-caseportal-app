@@ -22,7 +22,8 @@ export class HomeComponent {
     this.user = loginService.getCurrentUser();
     this.title = 'Welcome ' + this.user.firstname;
     this.homeService.getMode().subscribe(
-        data => {this.mode = data.mode;},
+        data => {this.mode = data;
+        console.log(this.mode)},
         error => {console.log(error);}
       )
   }
