@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   errorMsg: string;
 
   constructor(private loginService: LoginService,
-    private router: Router,) {
+    private router: Router) {
     }
 
   ngOnInit() {

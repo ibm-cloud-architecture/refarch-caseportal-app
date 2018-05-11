@@ -8,18 +8,18 @@ import { InventoryModule } from './inventory/inventory.module';
 import { HomeService } from './home/home.service';
 import { InventoryService } from './inventory/inventory.service';
 import { HttpModule } from '@angular/http';
-import { ConversationComponent } from './conversation/conversation.component';
+import { ConversationModule } from './conversation/conversation.module';
+import { ConversationService } from './conversation/conversation.service';
 import { TelcochatComponent } from './telcochat/telcochat.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    LoginModule,
     HttpModule,
     SharedModule
   ],
-  declarations: [HomeComponent, ConversationComponent, TelcochatComponent],
-  exports: [HomeComponent, LoginModule, InventoryModule],
-  providers: [ HomeService, InventoryService ]
+  declarations: [HomeComponent, TelcochatComponent],
+  exports: [HomeComponent, LoginModule, InventoryModule, ConversationModule],
+  providers: [ HomeService, InventoryService, ConversationService ]
 })
 export class FeaturesModule { }

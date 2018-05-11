@@ -1,6 +1,4 @@
-<ol class="breadcrumb">
-  <li><a (click)="logout()">Logout</a></li>
-</ol>
+
 <div class="row">
   <h3 *ngIf="user">Welcome {{user.email}} to the Case Inc Portal</h3>
   <app-tile [color]="'#8c4507'" [title]="'Inventory Plus'" [description]="'Manage product inventory and suppliers'" [buttonName]="'Inventory Plus'" [urlPath]="'inventory'"></app-tile>

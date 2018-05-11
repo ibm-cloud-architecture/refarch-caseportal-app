@@ -53,7 +53,9 @@
     "session-memory-store": "^0.2.2",
     "watson-developer-cloud": "^2.32.x",
     "webpack": "^2.2.0-rc",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "handlebars": "^4.0.0",
+    "hoek": "^4.2.1"
   },
   "devDependencies": {
     "@angular/cli": "1.2.6",

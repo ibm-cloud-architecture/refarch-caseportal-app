@@ -28,21 +28,4 @@ export class HomeComponent {
       )
   }
 
-  logout(){
-      localStorage.removeItem('currentUser');
-      this.user = new User();
-      this.router.navigate(['login']);
-  }
-
-  dcm(){
-      this.router.navigate(['dcm']);
-  }
-
-  hcAdvise(){
-    this.router.navigate(['advisor']);
-  }
-
-  customer(){
-    this.router.navigate(['customer']);
-  }
 }

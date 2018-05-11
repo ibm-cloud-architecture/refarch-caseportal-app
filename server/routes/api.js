@@ -43,16 +43,13 @@ module.exports = function(app,config){
   app.get('/api/mode', isLoggedIn, (req,res) => {
     res.send({"mode":config.getMode()});
   })
-  if (config.getMode() == 'cyan') {
-    app.post('/api/c/conversation',isLoggedIn,(req,res) => {
-      conversation.itSupport(config,req,res)
-    });
-  }
-  if (config.getMode() == 'cyan') {
-    app.post('/api/advisor',isLoggedIn,(req,res) => {
-      advisor.advise(config,req,res)
-    });
-  }
+  app.post('/api/c/conversation',isLoggedIn,(req,res) => {
+    conversation.itSupport(config,req,res)
+  });
+  app.post('/api/advisor',isLoggedIn,(req,res) => {
+    advisor.advise(config,req,res)
+  });
+
   // those API are used in the UI they are not the same as backend APIs
   app.get('/api/i/items', isLoggedIn, (req,res) => {
     inventory.getItems(config,req,res);
