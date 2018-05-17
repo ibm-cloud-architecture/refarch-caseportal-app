@@ -10,7 +10,8 @@ import { InventoryService } from './inventory/inventory.service';
 import { HttpModule } from '@angular/http';
 import { ConversationModule } from './conversation/conversation.module';
 import { ConversationService } from './conversation/conversation.service';
-import { TelcochatComponent } from './telcochat/telcochat.component';
+import { TelcoDemoModule } from './telcodemo/telcodemo.module';
+import { TelcoDemoService } from './telcodemo/telcodemo.service';
 
 @NgModule({
   imports: [
@@ -18,8 +19,8 @@ import { TelcochatComponent } from './telcochat/telcochat.component';
     HttpModule,
     SharedModule
   ],
-  declarations: [HomeComponent, TelcochatComponent],
-  exports: [HomeComponent, LoginModule, InventoryModule, ConversationModule],
-  providers: [ HomeService, InventoryService, ConversationService ]
+  declarations: [HomeComponent],
+  exports: [HomeComponent, LoginModule, InventoryModule, ConversationModule, TelcoDemoModule],
+  providers: [ HomeService, InventoryService, ConversationService, TelcoDemoService ]
 })
 export class FeaturesModule { }

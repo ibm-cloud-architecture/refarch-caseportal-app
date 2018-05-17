@@ -9,6 +9,8 @@ import { Router }   from '@angular/router';
 })
 export class TileComponent implements OnInit {
   @Input()
+  id: string = '';
+  @Input()
   color: string = '#8c4507';
   @Input()
   title: string = 'title';

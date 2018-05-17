@@ -21,7 +21,12 @@ The src includes the following folders for better code management:
 #### [Login](./login/README.md)
 
 #### Home page
-The home page layout is to present a set of tile per major features.
+The home page layout is to present a set of tile per major features. To do we have added a tile component in the shared folder and then use it in the home page. Here is an example on how to use it:
+```
+  <app-tile [color]="'#8c4507'" [title]="'Inventory Plus'" [description]="'Manage product inventory and suppliers'" [buttonName]="'Inventory Plus'" [urlPath]="'inventory'"></app-tile>
+```
+
+The tile uses the angular input and output function to control the attribute.
 
 #### Inventory Management
 

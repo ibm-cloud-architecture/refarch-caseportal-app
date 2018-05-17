@@ -10,7 +10,8 @@ Karma is the test server. It watches for changes in your testing and application
 [Jasmine](https://jasmine.github.io/) is an unit testing framework for JavaScript, to describe tests and expected results.
 
 ## TDD for angular component
-We strongly recommend to study [this tutorial](https://angular.io/guide/testing)
+We strongly recommend to study [this tutorial](https://angular.io/guide/testing) and this article about [TDD tutorial](https://www.ibm.com/cloud/garage/tutorials/introduction-to-test-driven-development)
+
 Let start by the first user story:
 ```
 As a end user, Bob want to access the set of features offered by the portal from a central page, with nice layout with simple navigation, so that he can easily with ambiguity select the function he wants.
@@ -97,6 +98,32 @@ export class User {
  ```
 
  Now the test succeed. But we need a login service.
+
+### Add logout and home navigation in header
+So we want to validate there is a logout hyper link and clicking on it move the route to login page.
+To do so we need to have the RouterTesting imported in the spec:
+```javascript
+imports: [
+    RouterTestingModule.withRoutes([])
+]
+```
+Then write the test taking the logout HTML element using an id, and then clicking on the link and wait for the event propagation.
+
+```javascript
+it('should go to logout url when clicking on logout link', () => {
+  const link = fixture.nativeElement.querySelector('#logout-link');
+  link.click();
+  fixture.whenStable().then(() => {
+      const routerService = TestBed.get(Router);
+      expect(routerService.navigate.calls.any()).toBe(true, 'navigate called');
+  })
+});
+```
+
+The html looks like
+```html
+  <li><a id='logout-link' (click)="logout">Logout</a></li>
+```
 
 ### Add login feature
 We need to add a new feature to support login mechanism which return a User and add it to the browser session.
@@ -267,46 +294,12 @@ spyOn(window.sessionStorage, 'setItem')
 ```
 We recommend to go over the login.service.spec.ts file now that the main concepts are introduced.
 
-@@@ stopped here!  
-
-## Consumer Driven Contract
-To develop the service interface, we are using the [consumer driven contracts]() pattern introduced by Martin Fowler to develop tests for each operation the user interface will reach, and define contract (HTTP verb, url, error reporting and data payload schema) from a consumer needs so the provider can support it. It is like applying customer focus practice to service development.
-Using [Pact](https://docs.pact.io/) from Pact Foundation, is a nice framework to define and test contracts. The major advantage is to split the tests into consumer and provider tests. Each tests run against mockup so it is easy to keep development in synch but not by dragging a lot of component and integration during the development and TDD phases. Both consumer and provider mocks access the same contract.
-
-
-### Use Pact into Angular test
-We need to include following dependencies into devDependencies of the package.json:
-```
-  "@pact-foundation/karma-pact": "2.1.3",
-  "@pact-foundation/pact": "^5.5.0",
-  "@pact-foundation/pact-node": "6.7.4",
-  "@pact-foundation/pact-web": "5.3.2",
-```
-* Pact-node helps to run mock provider and create contract files.
-* Karma-pact is a Karma plugin that launches the mock provider before running actual tests.
-* PackWeb is used to define contracts as Interaction and send the HTTP request, to a pack-node server.
-
-Then we need to configure Karma to use Pact node by defining which port to start the mock server, and proxy rule to route url to the mock provider.
-```
-pact: [
-    {
-      consumer: 'Case Portal UI',
-      provider: 'Inventory Service',
-      port: 1234,
-      log: process.cwd() + '/out/logs/pact/pact-tests-inventory.log',
-      dir: process.cwd() + '/out/pact',
-      logLevel: 'WARN',
-      spec: 2
-    },
-]
-proxies: {
-  ''
-    }
-
-```
+## Testing how to
+### Testing clicking a button
 
 
 ## Future readings
 * https://angular.io/guide/testing
 * https://programmingcroatia.wordpress.com/2017/09/22/angular-2-jasmine-testing/
 * https://reflectoring.io/consumer-driven-contracts-with-angular-and-pact/
+*

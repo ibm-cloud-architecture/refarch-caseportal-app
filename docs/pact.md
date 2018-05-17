@@ -50,3 +50,40 @@ $ docker run --name pactbroker --link pactbroker-db:postgres -e PACT_BROKER_DATA
   * NodePort exposure
 
 At the high level, for the consumer side you develop a test script which defines the contract.  
+
+
+## Consumer Driven Contract
+To develop the service interface, we are using the [consumer driven contracts]() pattern introduced by Martin Fowler to develop tests for each operation the user interface will reach, and define contract (HTTP verb, url, error reporting and data payload schema) from a consumer needs so the provider can support it. It is like applying customer focus practice to service development.
+Using [Pact](https://docs.pact.io/) from Pact Foundation, is a nice framework to define and test contracts. The major advantage is to split the tests into consumer and provider tests. Each tests run against mockup so it is easy to keep development in synch but not by dragging a lot of component and integration during the development and TDD phases. Both consumer and provider mocks access the same contract.
+
+
+### Use Pact into Angular test
+We need to include following dependencies into devDependencies of the package.json:
+```
+  "@pact-foundation/karma-pact": "2.1.3",
+  "@pact-foundation/pact": "^5.5.0",
+  "@pact-foundation/pact-node": "6.7.4",
+  "@pact-foundation/pact-web": "5.3.2",
+```
+* Pact-node helps to run mock provider and create contract files.
+* Karma-pact is a Karma plugin that launches the mock provider before running actual tests.
+* PackWeb is used to define contracts as Interaction and send the HTTP request, to a pack-node server.
+
+Then we need to configure Karma to use Pact node by defining which port to start the mock server, and proxy rule to route url to the mock provider.
+```
+pact: [
+    {
+      consumer: 'Case Portal UI',
+      provider: 'Inventory Service',
+      port: 1234,
+      log: process.cwd() + '/out/logs/pact/pact-tests-inventory.log',
+      dir: process.cwd() + '/out/pact',
+      logLevel: 'WARN',
+      spec: 2
+    },
+]
+proxies: {
+  ''
+    }
+
+```

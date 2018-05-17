@@ -18,7 +18,6 @@ import { LoginService } from './features/login/login.service';
     RoutingModule,
     SharedModule,
     FeaturesModule,
-    InventoryModule,
   ],
   providers: [LoginGuard, LoginService],
   bootstrap: [AppComponent]

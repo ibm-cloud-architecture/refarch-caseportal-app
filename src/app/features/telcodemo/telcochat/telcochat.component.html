@@ -1,0 +1,44 @@
+<div class='row'>
+  <div class='col-xs-4'>
+    <p>Welcome to Green Telco Support ChatBot: Try the following sentences to demonstrate the capabilities:</p>
+    <ul>
+      <li><b>I was oversea and the data network was poor, slow</b>: The bot will respond with generic answer which should upset you</li>
+      <li><b>I want to know the status of my phone reimbursement request</b>: The bot is querying the trouble ticket service and return unpleasant status</li>
+      <li><b>what? the sale rep told me it will be free, this is a scandal very frustrating, what can be done?</b> Now you are upset, the bot transfert to a human</li>
+      <li><b>I want to move</b>: This use case if to demonstrate product recommendation with ODM</li>
+    </ul>
+  <br/>
+  </div>
+  <div class="col-xs-8">
+     <div class="conversation-container">
+        <div class="scrolling-box">
+          <div *ngFor="let p of currentDialog">
+             <div class="message-box">
+               <div class="{{p.direction}}">
+                  <div class="{{p.direction+'-icon'}}" >
+                    <span *ngIf="p.direction === 'to-watson'" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <div *ngIf="p.direction === 'from-watson'" class="from-watson-icon">
+                      <img src='assets/images/watson-globe.png' style='width:50px'>
+                    </div>
+                  </div>
+                  <div class="{{p.direction+'-text'}}" [innerHTML]="p.text">
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <form class="form-inline" autocomplete="off" (keydown)="keyMessage($event)">
+            <div class="form-group " style="padding:20px">
+                <input class="form-control message-box"
+                       type="text"
+                       size="60"
+                       [(ngModel)]="queryString"
+                       placeholder="Send a message to Support Bot!"
+                       name="queryString"
+                       autocomplete="off"/>
+                <button class="btn btn-primary" (click)="submit()" type="button">Send</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
