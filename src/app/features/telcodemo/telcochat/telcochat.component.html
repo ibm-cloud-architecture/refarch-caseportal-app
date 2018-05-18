@@ -10,7 +10,7 @@
   <br/>
   </div>
   <div class="col-xs-8">
-     <div class="conversation-container">
+     <div class="conversation-container" style="box-shadow: 3px 3px 1px #05870b; border-color: #05870b;">
         <div class="scrolling-box">
           <div *ngFor="let p of currentDialog">
              <div class="message-box">
@@ -21,8 +21,15 @@
                       <img src='assets/images/watson-globe.png' style='width:50px'>
                     </div>
                   </div>
-                  <div class="{{p.direction+'-text'}}" [innerHTML]="p.text">
+                  <div class="{{p.direction+'-text'}}">
+                    <div [innerHTML]="p.text"></div>
+                    <div *ngIf="p.options">
+                      <div *ngFor="let c of p.options">
+                          <br/>
+                        <button type="button" (click)="advisorResponse(c)" class="btn btn-primary">{{c}}</button>
+                      </div>
                   </div>
+                </div>
                 </div>
             </div>
           </div>

@@ -37,5 +37,22 @@ module.exports = {
       }
       res.send(body);
     });
+  },
+  // The approach is to use directly WCS API
+  telcoChat : function(config,req,res){
+    request({
+      method: 'POST',
+      url: config.getConversationBrokerUrl(),
+        timeout: 10000,
+      json: true,
+      body: req.body
+    }, function (error, response, body) {
+      console.log("@@ in conversation proxy "+JSON.stringify(response,null,2));
+      if (error) {
+        console.log(error);
+        res.status(500).send([{"text":"Error contacting Conversation broker"}]);
+      }
+      res.send(body);
+    });
   }
 };
