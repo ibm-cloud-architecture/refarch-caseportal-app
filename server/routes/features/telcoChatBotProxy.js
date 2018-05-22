@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  /**
- Product Recommendation Proxy. Access to micro services
+Telco Demo Chat Bot Proxy. Access to micro services
   boyerje@us.ibm.com
 */
 var http=require('http');
