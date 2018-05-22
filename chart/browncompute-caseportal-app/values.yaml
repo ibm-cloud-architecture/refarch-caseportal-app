@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: greencluster.icp:8500/browncompute/caseportal
+  repository: ibmcase/casewebportal 
   tag: latest
   pullPolicy: Always
 service:
