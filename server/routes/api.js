@@ -44,11 +44,16 @@ module.exports = function(app,config){
     res.send({"mode":config.getMode()});
   })
   app.post('/api/c/conversation',isLoggedIn,(req,res) => {
-    conversation.itSupport(config,req,res)
+    req.body.context.convType = 'itSupport';
+    conversation.chat(config,req,res)
   });
-  app.post('/api/advisor',isLoggedIn,(req,res) => {
-    advisor.advise(config,req,res)
+
+  app.post('/api/c/telcochat',isLoggedIn,(req,res) => {
+    req.body.context.convType = 'productRecommendation';
+    conversation.chat(config,req,res)
   });
+
+
 
   // those API are used in the UI they are not the same as backend APIs
   app.get('/api/i/items', isLoggedIn, (req,res) => {

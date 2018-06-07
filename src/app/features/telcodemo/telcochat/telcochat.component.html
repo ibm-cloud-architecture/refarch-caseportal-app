@@ -1,15 +1,35 @@
 <div class='row'>
   <div class='col-xs-4'>
-    <p>Welcome to Green Telco Support ChatBot: Try the following sentences to demonstrate the capabilities:</p>
+    <p>Welcome to Green Telco Support ChatBot: Try the following sentence to demonstrate the capabilities:</p>
     <ul>
-      <li><b>I was oversea and the data network was poor, slow</b>: The bot will respond with generic answer which should upset you</li>
+  <!--    <li><b>I was oversea and the data network was poor, slow</b>: The bot will respond with generic answer which should upset you</li>
       <li><b>I want to know the status of my phone reimbursement request</b>: The bot is querying the trouble ticket service and return unpleasant status</li>
       <li><b>what? the sale rep told me it will be free, this is a scandal very frustrating, what can be done?</b> Now you are upset, the bot transfert to a human</li>
+    -->
       <li><b>I want to move</b>: This use case if to demonstrate product recommendation with ODM</li>
+
+
+
     </ul>
   <br/>
   </div>
   <div class="col-xs-8">
+
+
+    <div>
+                 <label> Please select a profile </label>
+             <select  [(ngModel)] = 'selectedProfile'>
+               <option *ngFor = 'let p of profiles' [value] = 'p.value'> {{p.viewValue}}
+               </option>
+              </select>
+
+      <!--<button class="btn btn-primary" (click)="debugFunc()" type="button">debugger</button> -->
+
+    </div>
+
+
+
+
      <div class="conversation-container" style="box-shadow: 3px 3px 1px #05870b; border-color: #05870b;">
         <div class="scrolling-box">
           <div *ngFor="let p of currentDialog">

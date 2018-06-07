@@ -14,10 +14,39 @@
     "advisorBroker":{
         "url":"https://refarch-wcs-broker.mybluemix.net/api/advisor"
     },
+    "supportConversation" :{
+      "version" : "v1",
+      "versionDate":"2017-05-26",
+      "username":"291d9397-073f-46d9-b0d2-11b54e6ae533",
+      "password":"aDFBIIPYkQlD",
+      "conversationId":"SupportHelpDesk",
+      "workspace":"1a3b01f3-4757-444d-a933-a1e648babfc1",
+      "usePersistence": false
+    },
+
+    "watsonAssistant" :{
+      "version" : "v1",
+      "versionDate":"2017-05-26",
+      "username":"291d9397-073f-46d9-b0d2-11b54e6ae533",
+      "password":"aDFBIIPYkQlD",
+      "conversationId":"Complex Relocation",
+      "workspace":"a97a02e3-d3c3-48de-8e64-20502819e582",
+      "usePersistence": false
+    },
+
     "customerAPI":{
         "url":"http://172.16.40.131/caseserv/api",
         "host":"customer.green.case"
     },
+
+    "odm" : {
+      "hostname": "172.16.40.41",
+      "port": 31154,
+      "protocol": "http:",
+      "path": "/DecisionService/rest/v1/ProductRecommendationRuleApp/1.0/ProductRecommendation/1.0/WADL",
+      "authtoken":"Basic cmVzQWRtaW46MWpldzFyNTc1enU1ZA=="
+    },
+
     "mode" : "brown",
     "environment" : "private",
     "port" : 6100,

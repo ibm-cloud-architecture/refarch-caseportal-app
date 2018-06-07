@@ -17,7 +17,8 @@
 const express = require('express');
 const router = express.Router();
 var request = require('request');
-
+const AssistantV1 = require('watson-developer-cloud/assistant/v1');
+var odmclient = require('./ODMClient');
 /**
 Conversation delegates to the Conversation Broker Micro Service.
 */
@@ -35,7 +36,12 @@ module.exports = {
         console.log(error);
         res.status(500).send([{"text":"Error contacting advisor broker"}]);
       }
+
+      if(res.context.action )
+
+
       res.send(body);
     });
   }
-};
+
+}

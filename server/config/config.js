@@ -4,6 +4,8 @@ var apiUrl= config.secureGateway.url;
 if (config.environment === "private") {
   apiUrl= config.apiGateway.hostUrl;
 }
+
+
 module.exports = {
   getLoginUrl : function(){
     return apiUrl+config.apiGateway.url+"/login";
@@ -36,3 +38,7 @@ module.exports = {
     return config.customerAPI.host;
   }
 }
+
+module.exports.supportConversation = config.supportConversation;
+module.exports.watsonAssistant = config.watsonAssistant;
+module.exports.odm = config.odm;
