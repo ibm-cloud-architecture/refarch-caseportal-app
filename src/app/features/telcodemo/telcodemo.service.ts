@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http,Response,RequestOptions } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Observable} from 'rxjs/Rx';
-
 
 @Injectable()
 export class TelcoDemoService {
@@ -11,7 +9,7 @@ export class TelcoDemoService {
   constructor(private http: HttpClient) {
   };
 
-  submitMessage(msg:string,ctx:any): Observable<any>{
+  submitMessage(msg:string,ctx:any) {
     let bodyString = JSON.stringify(  { text:msg,context:ctx });
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });

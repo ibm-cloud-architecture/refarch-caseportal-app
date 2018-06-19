@@ -63,14 +63,14 @@ describe('LoginComponent', () => {
       });
     });
 
-    it('should have no error message when email is valid', () => {
-        const userNameElement = fixture.debugElement.query(By.css(('#usernameInput')));
-        const componentInstance = userNameElement.componentInstance;
-        expect(componentInstance.errorMsg).toEqual('');
-        componentInstance.change('valid@email.com');
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-            expect(componentInstance.errorMsg).toEqual('');
-        });
+  it('should have no error message when email is valid', () => {
+      const userNameElement = fixture.debugElement.query(By.css(('#usernameInput')));
+      const componentInstance = userNameElement.componentInstance;
+      expect(componentInstance.errorMsg).toEqual('');
+      componentInstance.change('valid@email.com');
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+          expect(componentInstance.errorMsg).toEqual('');
       });
+  });
 });

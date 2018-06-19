@@ -2,10 +2,10 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HomeService } from './home.service';
 
-describe('HomeService', () => {
+fdescribe('HomeService', () => {
+  let httpMock: HttpTestingController;
+  let homeService: HomeService;
   beforeEach(() => {
-    let httpMock: HttpTestingController;
-    let homeService: HomeService;
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [HomeService]
@@ -18,5 +18,10 @@ describe('HomeService', () => {
     expect(service).toBeTruthy();
   }));
 
-
+  it('should get a valid mode', () => {
+    homeService.getMode().toEqual('green');
+    const req = httpMock.expectOne(homeService.bffUrl);
+    expect(req.request.method).toEqual('GET');
+    req.flush({mode:"green"});
+  });
 });

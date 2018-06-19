@@ -1,8 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http,Response,RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
-import {Observable} from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Item } from "./Item";
 import { User } from "../../shared/User";
 
@@ -10,26 +7,22 @@ import { User } from "../../shared/User";
 export class InventoryService {
   private invUrl ='/api/i';
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   };
 
-  getItems(): Observable<Item[]>{
-    return this.http.get(this.invUrl+'/items')
-         .map((res:Response) =>
-          res.json())
+  getItems() {
+    return this.http.get<Item[]>(this.invUrl+'/items');
   }
 
-  saveItem(i) : Observable<Item> {
-    return this.http.post(this.invUrl+'/items',{item:i}).map((res:Response) => res.json());
+  saveItem(i) {
+    return this.http.post(this.invUrl+'/items',{item:i});
   }
 
-  updateItem(i) : Observable<Item> {
-    return this.http.put(this.invUrl+'/items',{item:i}).map((res:Response) => res.json());
+  updateItem(i) {
+    return this.http.put(this.invUrl+'/items',{item:i});
   }
 
-  deleteItem(idx) : Observable<any> {
-    return this.http.delete(this.invUrl+'/items/'+idx)
-    .map((res:Response) =>
-       res.json());
+  deleteItem(idx) {
+    return this.http.delete(this.invUrl+'/items/'+idx);
   }
 }

@@ -12,12 +12,8 @@ sessions the behavior could easily be changed by storing user details somewhere
 */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/switchMap';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from '../../shared/User';
 
 @Injectable()
@@ -29,19 +25,21 @@ export class LoginService {
   constructor(private http: HttpClient) {
   }
 
-  login(username: string, password: string): Observable<User> {
+  login(username: string, password: string) {
     const headers = new HttpHeaders()
         .set('Content-Type', 'application/json');
 
-      const userData = { userName: username, password: password };
+    const userData = { userName: username, password: password };
 
-      return this.http.post(this.loginUrl, userData, { headers: headers, withCredentials: true })
-        // .do is a pass-through. Pull the token out and store it (always there)
-        .do((userInfo: User) => {
-          window.sessionStorage.setItem('jwtToken', userInfo.token);
-          this.user = userInfo;
-          window.sessionStorage.setItem('user', JSON.stringify(userInfo));
-        })
+    return this.http.post<User>(this.loginUrl, userData, { headers: headers, withCredentials: true })
+        .pipe(map(userInfo => {
+          if (userInfo && userInfo.token) {
+            window.sessionStorage.setItem('jwtToken', userInfo.token);
+            this.user = userInfo;
+            window.sessionStorage.setItem('user', JSON.stringify(userInfo));
+          }
+          return userInfo;
+        }))
     }
 
 
@@ -58,5 +56,9 @@ export class LoginService {
     } else {
       return false;
     }
+  }
+
+  logout() {
+    window.sessionStorage.removeItem('user');
   }
 }

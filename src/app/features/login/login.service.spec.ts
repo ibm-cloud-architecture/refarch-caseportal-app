@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { LoginService } from './login.service';
-import { User } from '../../shared/user';
+import { User } from '../../shared/User';
 
 describe('LoginService', () => {
   let loginService: LoginService;
@@ -62,9 +62,9 @@ describe('LoginService', () => {
         err => {
           fail('Unexpected error: ' + err);
         });
-        const req = httpMock.expectOne(loginService.loginUrl);
-        expect(req.request.method).toEqual('POST');
-        req.flush({firstname: "Eddie", email: "eddie@email.com"});
+      const req = httpMock.expectOne(loginService.loginUrl);
+      expect(req.request.method).toEqual('POST');
+      req.flush({firstname: "Eddie", email: "eddie@email.com"});
   });
 
  it('should have loggedIn being true when user is logged in', () => {

@@ -2,8 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {  RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { HomeComponent } from './home.component';
 import { HomeService } from './home.service';
@@ -21,7 +20,7 @@ describe('HomeComponent', () => {
     loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
     loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
     homeServiceStub = jasmine.createSpyObj('homeServiceStub', ['getMode']);
-    homeServiceStub.getMode.and.returnValue( Observable.of('brown'));
+    homeServiceStub.getMode.and.returnValue( of('brown'));
 
     TestBed.configureTestingModule({
       imports: [ SharedModule,
