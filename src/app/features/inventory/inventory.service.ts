@@ -15,7 +15,7 @@ export class InventoryService {
   }
 
   saveItem(i) {
-    return this.http.post(this.invUrl+'/items',{item:i});
+    return this.http.post<Item>(this.invUrl+'/items',{item:i});
   }
 
   updateItem(i) {

@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit,AfterViewChecked } from '@angu
 import { TelcoDemoService }  from '../telcodemo.service';
 import { FormControl } from '@angular/forms';
 import { Sentence } from "../../conversation/Sentence";
+import { ChatResponse } from './chatresponse';
 
 @Component({
   selector: 'app-telcochat',
@@ -48,8 +49,6 @@ export class TelcoChatComponent implements OnInit {
           this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
       } catch(err) { }
   }
-
-
 
 
   callConversationBFF(msg:string) {

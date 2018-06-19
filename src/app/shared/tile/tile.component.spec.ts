@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {Component} from '@angular/core';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from "@angular/common";
 import { RouterTestingModule } from '@angular/router/testing';
 import { TileComponent } from './tile.component';
 import { By } from '@angular/platform-browser';
@@ -12,26 +13,29 @@ import { By } from '@angular/platform-browser';
 })
 class HostComponent {}
 
-describe('TileComponent', () => {
+fdescribe('TileComponent', () => {
   let component: HostComponent,
     router: Router;
+  let location: Location;
   let fixture: ComponentFixture<HostComponent>;
 
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-          RouterTestingModule.withRoutes([])
+          RouterTestingModule.withRoutes([  { path: 'home', component: HostComponent}])
       ],
       declarations: [ TileComponent, HostComponent ]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     // fixture = TestBed.createComponent(TileComponent);
     fixture = TestBed.createComponent(HostComponent);
     router = TestBed.get(Router);
+    router.initialNavigation();
+    location = TestBed.get(Location);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -77,12 +81,11 @@ describe('TileComponent', () => {
   });
 
   it('should route to the url when button clicked', () => {
-      const button = fixture.nativeElement.querySelector('button');
+      const button = fixture.nativeElement.querySelector('#button');
       expect(button).toBeDefined();
       button.click();
       fixture.whenStable().then(() => {
-          const routerService = TestBed.get(Router);
-          expect(routerService.navigate.calls.any()).toBe(true, 'navigate called');
+          expect(location.path()).toBe('/home');
       })
   });
 });

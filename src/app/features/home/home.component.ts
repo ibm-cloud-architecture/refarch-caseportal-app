@@ -5,6 +5,7 @@ import { LoginService } from '../login/login.service';
 import { HomeService }  from './home.service';
 import { User } from '../../shared/User';
 import { TileComponent } from '../../shared/tile/tile.component';
+import { first, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -21,11 +22,10 @@ export class HomeComponent {
               private homeService : HomeService ) {
     this.user = loginService.getCurrentUser();
     this.title = 'Welcome ' + this.user.firstname;
-    this.homeService.getMode().subscribe(
-        data => {this.mode = data.mode;
-        console.log(this.mode)},
-        error => {console.log(error);}
-      )
+    this.homeService.getMode().pipe(first()).subscribe(
+      data => { this.mode = data.mode;},
+      error => { this.mode = "all"}
+    );
   }
 
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http,Response,RequestOptions } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ChatResponse } from './telcochat/chatresponse';
 
 @Injectable()
 export class TelcoDemoService {
@@ -13,6 +14,6 @@ export class TelcoDemoService {
     let bodyString = JSON.stringify(  { text:msg,context:ctx });
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(this.convUrl,bodyString,{ headers: headers });
+    return this.http.post<ChatResponse>(this.convUrl,bodyString,{ headers: headers });
   }
 }

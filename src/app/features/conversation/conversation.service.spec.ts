@@ -5,7 +5,7 @@ import { ConversationService } from './conversation.service';
 
 
 describe('ConversationService', () => {
-  let convServ = ConversationService;
+  let convServ: ConversationService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -22,7 +22,9 @@ describe('ConversationService', () => {
   }));
 
   it('should send a chat message via POST', () => {
-    convServ.submitMessage("I need help",{}).toEqual('How can I help you');
+    convServ.submitMessage("I need help",{}).subscribe(
+      data => {expect(data.message).toEqual('How can I help you');}
+    );
     const req = httpMock.expectOne(convServ.convUrl);
     expect(req.request.method).toEqual('POST');
     req.flush({message: "How can I help you", context: {}});
