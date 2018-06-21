@@ -14,5 +14,6 @@ export const routes: Routes = [
     { path: 'telcohome', component: TelcoHomeComponent,canActivate: [LoginGuard]},
     { path: 'telcoChat', component: TelcoChatComponent,canActivate: [LoginGuard]},
     { path: 'itSupport', component: ConversationComponent,canActivate: [LoginGuard]},
-    { path: '**', redirectTo: '/home', pathMatch: 'full'}
+    { path: '', redirectTo: '/home',pathMatch: 'full'},
+    { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
