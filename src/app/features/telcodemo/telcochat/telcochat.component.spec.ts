@@ -2,16 +2,22 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TelcoChatComponent } from './telcochat.component';
 import { TelcoDemoService } from '../telcodemo.service';
+import { Observable, of } from 'rxjs';
 
-fdescribe('TelcoChatComponent', () => {
+export class ConvStub {
+  public submitMessage(msg: string, ctx: any): Observable<any> {
+    return of({});
+  }
+}
+
+describe('TelcoChatComponent', () => {
   let component: TelcoChatComponent;
   let fixture: ComponentFixture<TelcoChatComponent>;
-  let telcoService : TelcoDemoService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TelcoChatComponent ],
-      providers: [  { provide: TelcoDemoService, useValue: userStub }]
+      providers: [  { provide: TelcoDemoService, useClass: ConvStub }]
 
     })
     .compileComponents();

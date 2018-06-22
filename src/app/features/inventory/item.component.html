@@ -4,23 +4,23 @@
   <div><label>id: </label>{{item.id}}</div>
   <div class="form-group">
       <label for="name">Name</label>
-      <input autofocus type="text" class="form-control" required [(ngModel)]="item.name" name="name" id="name">
+      <input autofocus type="text" class="form-control" required (ngModel)="item.name" name="name" id="name">
   </div>
   <div class="form-group">
       <label for="description">Description</label>
-      <textarea  class="form-control" rows="6" columns="70" [(ngModel)]="item.description" name="description" id="description"></textarea>
+      <textarea  class="form-control" rows="6" columns="70" (ngModel)="item.description" name="description" id="description"></textarea>
   </div>
   <div class="form-group">
       <label for="imgAlt">Image Alternate Name</label>
-      <input  type="text" class="form-control" required [(ngModel)]="item.imgAlt" name="imgAlt" id="imgAlt">
+      <input  type="text" class="form-control" required (ngModel)="item.imgAlt" name="imgAlt" id="imgAlt">
   </div>
   <div class="form-group">
       <label for="price">Price</label>
-      <input  type="text" class="form-control" required [(ngModel)]="item.price" name="price" id="price">
+      <input  type="text" class="form-control" required (ngModel)="item.price" name="price" id="price">
   </div>
   <div class="form-group">
       <label for="type">Product Type</label>
-      <input  type="text" class="form-control" required [(ngModel)]="item.producttype" name="producttype" id="producttype">
+      <input  type="text" class="form-control" required (ngModel)="item.producttype" name="producttype" id="producttype">
   </div>
   <div>
       <button class="btn btn-primary" type="button" (click)="save()">Save</button>

@@ -9,56 +9,52 @@
     </ul>
   <br/>
   </div>
+
   <div class="col-xs-8">
-
-
     <div>
       <label> Please select a profile </label>
-      <select  [(ngModel)] = 'selectedProfile'>
+      <select  (ngModel) = "selectedProfile">
          <option *ngFor = 'let p of profiles' [value] = 'p.value'> {{p.viewValue}}
          </option>
       </select>
-  </div>
+    </div>
 
-
-
-
-     <div class="conversation-container" style="box-shadow: 3px 3px 1px #05870b; border-color: #05870b;">
-        <div class="scrolling-box">
-          <div *ngFor="let p of currentDialog">
-             <div class="message-box">
-               <div class="{{p.direction}}">
-                  <div class="{{p.direction+'-icon'}}" >
-                    <span *ngIf="p.direction === 'to-watson'" class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    <div *ngIf="p.direction === 'from-watson'" class="from-watson-icon">
-                      <img src='assets/images/watson-globe.png' style='width:50px'>
+    <div class="conversation-container" style="box-shadow: 3px 3px 1px #05870b; border-color: #05870b;">
+      <div class="scrolling-box">
+        <div *ngFor="let p of currentDialog">
+           <div class="message-box">
+             <div class="{{p.direction}}">
+                <div class="{{p.direction+'-icon'}}" >
+                  <span *ngIf="p.direction === 'to-watson'" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                  <div *ngIf="p.direction === 'from-watson'" class="from-watson-icon">
+                    <img src='assets/images/watson-globe.png' style='width:50px'>
+                  </div>
+                </div>
+                <div class="{{p.direction+'-text'}}">
+                  <div [innerHTML]="p.text"></div>
+                  <div *ngIf="p.options">
+                    <div *ngFor="let c of p.options">
+                        <br/>
+                      <button type="button" (click)="advisorResponse(c)" class="btn btn-primary">{{c}}</button>
                     </div>
-                  </div>
-                  <div class="{{p.direction+'-text'}}">
-                    <div [innerHTML]="p.text"></div>
-                    <div *ngIf="p.options">
-                      <div *ngFor="let c of p.options">
-                          <br/>
-                        <button type="button" (click)="advisorResponse(c)" class="btn btn-primary">{{c}}</button>
-                      </div>
-                  </div>
                 </div>
-                </div>
-            </div>
+              </div>
+              </div>
           </div>
         </div>
-        <form class="form-inline" autocomplete="off" (keydown)="keyMessage($event)">
-            <div class="form-group " style="padding:20px">
-                <input class="form-control message-box"
-                       type="text"
-                       size="60"
-                       [(ngModel)]="queryString"
-                       placeholder="Send a message to Support Bot!"
-                       name="queryString"
-                       autocomplete="off"/>
-                <button class="btn btn-primary" (click)="submit()" type="button">Send</button>
-            </div>
-        </form>
+      </div>
+      <form class="form-inline" autocomplete="off" (keydown)="keyMessage($event)">
+        <div class="form-group " style="padding:20px">
+            <input class="form-control message-box"
+                   type="text"
+                      size="60"
+                      (ngModel)="queryString"
+                      placeholder="Send a message to Support Bot!"
+                      name="queryString"
+                      autocomplete="off"/>
+            <button class="btn btn-primary" (click)="submit()" type="button">Send</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
