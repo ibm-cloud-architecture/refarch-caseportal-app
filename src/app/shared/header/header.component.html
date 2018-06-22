@@ -2,7 +2,7 @@
   <h2 style="color:white">{{title}}</h2>
 </div>
 <ol class="breadcrumb">
-  <li><a id='home-link'[routerLink]="['/home']">Home</a></li>
+  <li><a id='home-link' (click)="home()">Home</a></li>
   <li><a id='logout-link' (click)="logout()">Logout</a></li>
 
 </ol>

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {  RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
@@ -15,21 +16,23 @@ describe('HomeComponent', () => {
 
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let loginStub, homeServiceStub;
+  let loginStub, homeServiceStub, mockRouter;
+
+
   beforeEach(async(() => {
     loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
     loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
     homeServiceStub = jasmine.createSpyObj('homeServiceStub', ['getMode']);
     homeServiceStub.getMode.and.returnValue( of('brown'));
-
+    mockRouter = {navigate: jasmine.createSpy('navigate')};
     TestBed.configureTestingModule({
       imports: [ SharedModule,
-           RouterTestingModule,
            HttpClientTestingModule ],
       declarations: [ HomeComponent ],
       providers: [
           { provide: LoginService, useValue: loginStub },
-          { provide: HomeService, useValue: homeServiceStub }
+          { provide: HomeService, useValue: homeServiceStub },
+          { provide: Router, useValue: mockRouter }
       ]
 
     })
@@ -57,8 +60,7 @@ describe('HomeComponent', () => {
     expect(tile.componentInstance.urlPath).toContain('inventory');
     tile.nativeElement.querySelector('#button').click();
     fixture.whenStable().then(() => {
-        const routerService = TestBed.get(Router);
-        expect(routerService.navigate.calls.any()).toBe(true, 'navigate called');
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['inventory']);
     })
   });
 
@@ -68,8 +70,7 @@ describe('HomeComponent', () => {
     expect(tile.componentInstance.urlPath).toContain('itSupport');
     tile.nativeElement.querySelector('#button').click();
     fixture.whenStable().then(() => {
-        const routerService = TestBed.get(Router);
-        expect(routerService.navigate.calls.any()).toBe(true, 'navigate called');
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['itSupport']);
     })
   });
 
@@ -79,8 +80,7 @@ describe('HomeComponent', () => {
     expect(tile.componentInstance.urlPath).toContain('telcohome');
     tile.nativeElement.querySelector('#button').click();
     fixture.whenStable().then(() => {
-        const routerService = TestBed.get(Router);
-        expect(routerService.navigate.calls.any()).toBe(true, 'navigate called');
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['telcohome']);
     })
   });
 });

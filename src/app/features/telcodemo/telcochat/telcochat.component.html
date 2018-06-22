@@ -2,14 +2,10 @@
   <div class='col-xs-4'>
     <p>Welcome to Green Telco Support ChatBot: Try the following sentence to demonstrate the capabilities:</p>
     <ul>
-  <!--    <li><b>I was oversea and the data network was poor, slow</b>: The bot will respond with generic answer which should upset you</li>
+      <li><b>I was oversea and the data network was poor, slow</b>: The bot will respond with generic answer which should upset you</li>
       <li><b>I want to know the status of my phone reimbursement request</b>: The bot is querying the trouble ticket service and return unpleasant status</li>
       <li><b>what? the sale rep told me it will be free, this is a scandal very frustrating, what can be done?</b> Now you are upset, the bot transfert to a human</li>
-    -->
-      <li><b>I want to move</b>: This use case if to demonstrate product recommendation with ODM</li>
-
-
-
+      <li><b>I want to move</b>: This use case is to demonstrate product recommendation using IBM Operational Decision Managment: When the bot detects that the customer of a telco provider, wants to relocate, it  asks about the target zipcode as well as the anticipated move date, and uses this data, combined with existing customer data, to offer a personalised recommendation on which new telco service and price the customer should get at his new address. See <a href="https://github.com/ibm-cloud-architecture/refarch-cognitive-prod-recommendations">[this github repository]</a></li>
     </ul>
   <br/>
   </div>
@@ -17,15 +13,12 @@
 
 
     <div>
-                 <label> Please select a profile </label>
-             <select  [(ngModel)] = 'selectedProfile'>
-               <option *ngFor = 'let p of profiles' [value] = 'p.value'> {{p.viewValue}}
-               </option>
-              </select>
-
-      <!--<button class="btn btn-primary" (click)="debugFunc()" type="button">debugger</button> -->
-
-    </div>
+      <label> Please select a profile </label>
+      <select  [(ngModel)] = 'selectedProfile'>
+         <option *ngFor = 'let p of profiles' [value] = 'p.value'> {{p.viewValue}}
+         </option>
+      </select>
+  </div>
 
 
 

@@ -5,7 +5,7 @@ import { ChatResponse } from './telcochat/chatresponse';
 
 @Injectable()
 export class TelcoDemoService {
-  private convUrl ='/api/c/telcochat/';
+  public convUrl ='/api/c/telcochat/';
 
   constructor(private http: HttpClient) {
   };

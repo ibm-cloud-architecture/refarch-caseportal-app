@@ -6,13 +6,16 @@ import { HeaderComponent } from './header.component';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-
+  let mockRouter;
   beforeEach(async(() => {
+    mockRouter = {navigate: jasmine.createSpy('navigate')};
     TestBed.configureTestingModule({
       imports: [
-          RouterTestingModule.withRoutes([])
+
       ],
-      declarations: [ HeaderComponent ]
+      declarations: [ HeaderComponent],
+      providers: [
+        { provide: Router, useValue: mockRouter } ]
     })
     .compileComponents();
   }));
@@ -35,13 +38,16 @@ describe('HeaderComponent', () => {
     const link = fixture.nativeElement.querySelector('#logout-link');
     link.click();
     fixture.whenStable().then(() => {
-        const routerService = TestBed.get(Router);
-        expect(routerService.navigate.calls.any()).toBe(true, 'navigate called');
+        expect(mockRouter.navigate).toHaveBeenCalledWith(['login']);
     })
   });
 
   it('should go to home url when clicking on home link', () => {
     const link = fixture.nativeElement.querySelector('#home-link');
-    expect(link.getAttribute('href')).toContain('/home');
+    link.click();
+    fixture.whenStable().then(() => {
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['home']);
+    })
+
   });
 });
