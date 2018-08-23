@@ -1,11 +1,9 @@
 # Case Inc Portal App
-In this project we are presenting how to develop an Angular 5 single page application using a Test Driven Development approach. The Back end For Front end is done using nodejs / expressjs.
-
-We are covering the following:
-* use angular CLI to create modules, components and service for the user interface
-* use karma and jasmine to test driven each components
+In this project we are presenting how to develop an Angular 5 single page application using a Test Driven Development approach. The Back end For Front component is done using nodejs / expressjs. The code is under server folder.
 
 *This project is part of the 'IBM Integration Reference Architecture' suite, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration) and implements the 'cloud native' web application with a set of features to demonstrate all the use case for hybrid cloud, cognitive and analytics. It should be considered as an internal portal application for CASE Inc internal staff to access a set of internal features.*
+
+Update 08/21/2018
 
 ## Target audiences
 
@@ -33,7 +31,7 @@ The main target of this project and all the related content is developer, who wa
 * [Compendium](#compendium)
 
 ## Introduction
-This application illustrates how to plug and play different Angular modules with different back ends of IBM Cloud reference architecture, and specifically addresses:
+This application illustrates how to plug and play different Angular modules with different back ends of IBM Cloud hybrid integration and analytics reference architecture, and specifically addresses:
 * the inventory management feature to demonstrate hybrid integration as presented in the [hybrid integration reference architecture center web site](https://www.ibm.com/devops/method/content/architecture/hybridArchitecture). This is a simple front end to manage old computers inventory, which is persisted in DB2, exposed via SOAP data access layer service, and with ESB mediation flow and API management. The Angular code is under `src/app/features/inventory` folder, and for the server part it is in `server/routes/feature/inventory.js`.
 * how to support login with a LDAP server running on-premise and exposed via IBM API connect: Angular feature in `src/app/features/login` and corresponding server code in passport.js, see [this article for details]()
 * how to develop with Angular a simple user interface, with the master-detail pattern for Item and Inventory.
@@ -46,7 +44,7 @@ The current top level view of the home page of this application looks like:
 
 ![home page](docs/homepage.png)  
 
-For public cloud deployment the application is up and running at the following address: http://caseincapp.mybluemix.net/. When deployed on IBM Cloud Private the URL is http://portal.brown.case. You will need some DNS or hosts mapping to support this direct access.
+For public cloud deployment the application is up and running at the following address: http://caseincapp.mybluemix.net/. When deployed on IBM Cloud Private the URL is http://portal.brown.case. You will need some DNS or hosts mapping in your `/etc/hosts` to support this direct access.
 
 ## Pre-requisites
 The common pre-requisites for the integration solution are defined [here](https://github.com/ibm-cloud-architecture/refarch-integration#prerequisites), so be sure to get them done.
@@ -57,6 +55,8 @@ git clone https://github.com/ibm-cloud-architecture/refarch-caseportal-app
 cd refarch-caseportal-app
 npm install
 ```
+The package.json defines dependencies for the nodejs server component and the Angular application.
+
 * You need to install Angular 5 command line interface if you do not have it yet: see the [cli.angular.io website](http://cli.angular.io)
  ```
  sudo  npm install -g @angular/cli
@@ -71,13 +71,13 @@ To build the angular app locally run the command:
 $ ng build
 ```
 
-When involving a continuous integration using Jenkins the jenkins file executes the scripts defined in the scripts folder. The stages are build, and deploy to ICP. See jenkins file.
+When involving a continuous integration using Jenkins the jenkins file executes the scripts defined in the scripts folder. The stages are build, and deploy to ICP. See the [jenkinsfile]().
 
 When compiling the angular typescripts the javascript code generated is saved under `dist` folder.
 
 ## Run
-We are proposing multiple deployment and execution environments:
-* run locally using `npm run start` or `node server/server`, then load the http://localhost:6100 URL in your web browser.
+We are proposing multiple deployments and execution environments:
+* run locally using `npm run start` or `node server/server`, then load the http://localhost:6100 URL in your web browser. 
 * run the application in IBM Cloud Container service
 * run the application in IBM Cloud Private
 * run the application as a cloud foundry app on IBM Cloud

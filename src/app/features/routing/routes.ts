@@ -6,6 +6,7 @@ import { ConversationComponent } from '../conversation/conversation.component';
 import { LoginGuard } from '../login/login.guard';
 import { TelcoHomeComponent } from '../telcodemo/telcohome.component';
 import { TelcoChatComponent } from '../telcodemo/telcochat/telcochat.component';
+import { AccountComponent } from '../telcodemo/account/account.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [LoginGuard]},
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'inventory', component: InventoryComponent,canActivate: [LoginGuard]},
     { path: 'telcohome', component: TelcoHomeComponent,canActivate: [LoginGuard]},
     { path: 'telcoChat', component: TelcoChatComponent,canActivate: [LoginGuard]},
+    { path: 'account', component: AccountComponent,canActivate: [LoginGuard]},
     { path: 'itSupport', component: ConversationComponent,canActivate: [LoginGuard]},
     { path: '', redirectTo: '/home',pathMatch: 'full'},
     { path: '**', redirectTo: '', pathMatch: 'full'}
