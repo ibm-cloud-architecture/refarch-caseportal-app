@@ -1,0 +1,46 @@
+<div class="container">
+  <h3>Inventory   <a (click)="add()"><span><i class="material-icons">add</i></span></a></h3>
+      <mat-card-content *ngIf="loading">
+        <mat-progress-spinner
+          [mode]="'indeterminate'">
+       </mat-progress-spinner>
+
+       </mat-card-content>
+
+  <div class="row">
+    <p>{{message}}</p>
+    <div class="col-md-8" *ngIf="entries">
+      <table id="dataTable" class="table table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Site</th>
+            <th>Supplier</th>
+            <th>Item ID</th>
+            <th>Quantity</th>
+            <th>Update Date</th>
+            <th style="background-color: white; border-width:0;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="entries" *ngFor="let entry of entries;let i = index">
+            <td>{{entry.id}}</td>
+            <td>{{entry.site}}</td>
+            <td>{{entry.supplierId}}</td>
+            <td>{{entry.itemId}}</td>
+            <td>{{entry.quantity}}</td>
+            <td>{{entry.updateDate}}</td>
+            <td style="background-color: white; border-width:0;">
+              <a (click)="edit(entry)"><span><i class="material-icons">edit</i></span></a>
+              <a (click)="remove(i)"><span><i class="material-icons">delete</i></span></a>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4" *ngIf="selectedEntry">
+      <entry-detail [entry]="selectedEntry" [newEntry]="newEntry" (onComplete)="entryUpdateComplete($event)"></entry-detail>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,9 @@
 import { Injectable }    from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Item } from "./Item";
+import { Entry } from "./inventory/Entry";
+import { Item } from "./items/Item";
 import { User } from "../../shared/User";
-
+import { Supplier } from './suppliers/Supplier';
 @Injectable()
 export class InventoryService {
   private invUrl ='/api/i';
@@ -24,5 +25,29 @@ export class InventoryService {
 
   deleteItem(idx) {
     return this.http.delete(this.invUrl+'/items/'+idx);
+  }
+
+  getInventory() { // /api/i/entries
+    return this.http.get<Entry[]>(this.invUrl+'/entries');
+  }
+
+  saveInventory(s) {
+    return this.http.post<Entry>(this.invUrl+'/entries',{entry:s});
+  }
+
+  updateInventory(s) {
+    return this.http.put(this.invUrl+'/entries',{entry:s});
+  }
+
+  getSuppliers() { // /api/i/entries
+    return this.http.get<Supplier[]>(this.invUrl+'/suppliers');
+  }
+
+  saveSupplier(s) {
+    return this.http.post<Supplier>(this.invUrl+'/suppliers',{supplier:s});
+  }
+
+  updateSupplier(s) {
+    return this.http.put(this.invUrl+'/suppliers',{supplier:s});
   }
 }

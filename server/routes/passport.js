@@ -60,11 +60,11 @@ module.exports = function(passport,config) {
         }
         console.log('Login call '+username+ " options "+ JSON.stringify(options));
         // bypass for certain users to simplify the demo
-        if ( "tester" === username
-            || "bobbuilder@email.com" === username
+        if ( "bobbuilder@email.com" === username
             || "eddie@email.com" === username
             || "jane@email.com" === username ) {
-          user.token = "1234567";
+          user.access_token = "1234567";
+          user.firstname = password;
           done(null,user)
         } else {
           request(options, function(error, response, body){

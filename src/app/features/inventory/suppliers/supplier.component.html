@@ -1,0 +1,29 @@
+<div *ngIf="supplier" class="row">
+  <h2>{{supplier.name}} details!</h2>
+  <p>{{message}}</p>
+  <div><label>id: </label>{{supplier.id}}</div>
+  <div class="form-group">
+      <label for="name">Name</label>
+      <input autofocus type="text" class="form-control" required [(ngModel)]="supplier.name" name="name" id="name">
+  </div>
+  <div class="form-group">
+      <label for="type">Type</label>
+      <input  class="form-control" type="text" [(ngModel)]="supplier.type" name="type" id="type">
+  </div>
+  <div class="form-group">
+      <label for="city">City</label>
+      <input  class="form-control" type="text" required [(ngModel)]="supplier.city" name="city" id="city">
+  </div>
+  <div class="form-group">
+      <label for="zipcode">Zipcode</label>
+      <input  type="text" class="form-control" required [(ngModel)]="supplier.zipcode" name="zipcode" id="zipcode">
+  </div>
+  <div class="form-group">
+      <label for="state">State</label>
+      <input  type="text" class="form-control" required [(ngModel)]="supplier.state" name="state" id="state">
+  </div>
+  <div>
+      <a (click)="save()"><span><i class="material-icons">save</i></span></a>
+      <a (click)="back()"><span><i class="material-icons">clear</i></span></a>
+  </div>
+</div>

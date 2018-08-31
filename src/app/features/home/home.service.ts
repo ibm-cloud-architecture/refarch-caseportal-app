@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Observable, of } from 'rxjs';
 
 export class OperationMode {
   mode: string = "all";
@@ -16,8 +16,12 @@ export class HomeService {
     };
 
     // this method is used to control the user interface features.
-    getMode() {
-      return this.http.get<OperationMode>(this.bffUrl);
+    getMode(): Observable<OperationMode> {
+      let resp = this.http.get<OperationMode>(this.bffUrl);
+      if (resp !== undefined) {
+        return resp;
+      }
+      return of(new OperationMode());
     }
 
 }

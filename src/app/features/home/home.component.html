@@ -1,10 +1,22 @@
-
+<mat-toolbar style=" border-bottom: 1px dotted blue;">
+  <a href="#/home"><i class="material-icons">home</i></a>
+<span class="subheader-spacer"></span>
+<div (click)="logout()"><i class="material-icons subheader-icon">cloud_off</i></div>
+</mat-toolbar>
 <div class="row">
-  <h3 *ngIf="user">Welcome {{user.email}} to the Case Inc Portal</h3>
-  <app-tile id="inventory" [color]="'#8c4507'" [title]="'Inventory Plus'" [description]="'Manage product inventory and suppliers'" [buttonName]="'Inventory Plus'" [urlPath]="'inventory'"></app-tile>
+  <h3 *ngIf="user">Welcome {{user.firstname}} to the Case Inc Portal</h3>
 
-  <app-tile id="itSupport"[color]="'#10d1d1'" [title]="'Help@Case'" [description]="'Get support to your IT question'" [buttonName]="'Ask me'" [urlPath]="'itSupport'"></app-tile>
+  <app-tilecard  id="inventory" [title]="'Inventory Plus'" [description]="'Manage product inventory using hybrid cloud integration...'"
+  [smImg]="'assets/images/integration.png'" [buttonName]="'Inventory Plus'" [color]="'#8c4507'" [urlPath]="'inventory'">
+  </app-tilecard>
 
-  <app-tile id="telcoDemo" [color]="'green'" [title]="'Green Telco'" [description]="'Demonstrate product recommendation and churn risk scoring'" [buttonName]="'Telco'" [urlPath]="'telcohome'"></app-tile>
+
+  <app-tilecard  id="chatbot" [title]="'AI - Chatbot'" [description]="'Get support to your IT questions using AI...'"
+  [smImg]="'assets/images/ai.png'" [buttonName]="'Ask me'" [color]="'#10d1d1'" [urlPath]="'itSupport'">
+  </app-tilecard>
+
+  <app-tilecard id="telcoDemo" [color]="'green'" [title]="'Green Telco'" [description]="'Demonstrate product recommendation and churn risk scoring with machine learning...'" [buttonName]="'Telco'" [smImg]="'assets/images/analytics.png'" [urlPath]="'telcohome'"></app-tilecard>
+
+
 
 </div>

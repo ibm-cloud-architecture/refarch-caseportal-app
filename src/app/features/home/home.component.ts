@@ -24,8 +24,11 @@ export class HomeComponent {
     this.title = 'Welcome ' + this.user.firstname;
     this.homeService.getMode().pipe(first()).subscribe(
       data => { this.mode = data.mode;},
-      error => { this.mode = "all"}
     );
   }
 
+  logout() {
+    this.user = null;
+    this.router.navigate(['/login']);
+  }
 }

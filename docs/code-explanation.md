@@ -1,7 +1,7 @@
 # Code explanation
 Most of the interactions the user is doing on the Browser are supported by [Angular 2](http://angular.io) javascript library, with its Router mechanism and the DOM rendering capabilities via directives and components. When there is a need to access data from one of on-premise servers, or use public service an AJAX call is done to the server, and  the server will respond asynchronously later on. The components involved are presented in the figure below in a generic way
 
-![Angular 2 App](docs/ang-node-comp.png)
+![Angular 2 App](ang-node-comp.png)
 To clearly separate codebases for front- and back-ends the `src` folder defines the angular 2 code while the `server` folder includes the REST api for front end implemented with expressjs and javascript.
 
 ## Angular app
@@ -18,7 +18,8 @@ The src includes the following folders for better code management:
 * **features**: all business logic/ UI controller and services to implement the different app features.
 
 ### Some specifics features
-#### [Login](./login/README.md)
+
+#### For the [Login page we documented in a separate detail note:](./login/README.md)
 
 #### Home page
 The home page layout is to present a set of tile per major features. To do we have added a tile component in the shared folder and then use it in the home page. Here is an example on how to use it:

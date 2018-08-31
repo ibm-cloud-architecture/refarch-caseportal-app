@@ -1,3 +1,4 @@
+<!--
 <div class="jumbotron" style="background-image: url(assets/images/top.png)">
   <h2 style="color:white">{{title}}</h2>
 </div>
@@ -6,3 +7,17 @@
   <li><a id='logout-link' (click)="logout()">Logout</a></li>
 
 </ol>
+-->
+<mat-toolbar>
+ <img src="assets/images/logo.png" height="64">
+ <span class="header-spacer"></span>
+ <img src="assets/images/case.png" height="64">
+</mat-toolbar>
+<!--
+<mat-toolbar style=" border-bottom: 1px dotted blue;" *ngIf="logged">
+  <a href="#/home"><i class="material-icons">home</i></a>
+<span class="subheader-spacer"></span>
+<div (click)="logout()"><i class="material-icons subheader-icon">cloud_off</i></div>
+
+</mat-toolbar>
+-->

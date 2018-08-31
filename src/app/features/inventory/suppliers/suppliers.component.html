@@ -1,0 +1,45 @@
+<div class="container">
+<mat-card>
+  <h3>Suppliers  <a (click)="add()"><span><i class="material-icons">add</i></span></a></h3>
+    <mat-card-content *ngIf="loading">
+      <mat-progress-spinner
+      [mode]="'indeterminate'">
+     </mat-progress-spinner>
+    </mat-card-content>
+</mat-card>
+<div class="row">
+  <p>{{message}}</p>
+  <div class="col-md-8" *ngIf="suppliers">
+      <table id="dataTable" class="table table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th style="background-color: white; border-width:0;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="suppliers" *ngFor="let supplier of suppliers;let i = index">
+             <td>{{supplier.id}}</td>
+             <td>{{supplier.name}}</td>
+             <td>{{supplier.city}}</td>
+             <td>{{supplier.state}}</td>
+             <td>{{supplier.type}}</td>
+             <td>{{supplier.status}}</td>
+             <td style="background-color: white; border-width:0;">
+               <a (click)="edit(supplier)"><span><i class="material-icons">edit</i></span></a>
+               <a (click)="remove(i)"><span><i class="material-icons">delete</i></span></a>
+             </td>
+           </tr>
+         </tbody>
+       </table>
+     </div>
+     <div class="col-md-4" *ngIf="selectedSupplier">
+       <supplier-detail [supplier]="selectedSupplier" [newSupplier]="newSupplier" (onComplete)="supplierUpdateComplete($event)"></supplier-detail>
+     </div>
+</div>
+</div>

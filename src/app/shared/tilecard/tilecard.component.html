@@ -1,0 +1,18 @@
+<mat-card class="jbcard col-md-4" style={{style}}>
+  <mat-card-header>
+    <div mat-card-avatar ></div>
+    <mat-card-title><h3 [ngStyle]="titleStyle"> {{title}}</h3></mat-card-title>
+    <mat-card-subtitle  *ngIf="subTitle">{{subTitle}}</mat-card-subtitle>
+  </mat-card-header>
+  <img class="centerred" mat-card-image src={{smImg}} style="width:100px;height:100px;">
+  <mat-card-content>
+    <p>
+      {{description}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button *ngIf="urlMdPath" (click)="openDialog()">{{buttonName}}</button>
+    <button mat-raised-button *ngIf="!externalUrl && ! urlMdPath" (click)="submit()">{{buttonName}}</button>
+    <a *ngIf="externalUrl" href={{urlPath}}>{{buttonName}}</a>
+  </mat-card-actions>
+</mat-card>

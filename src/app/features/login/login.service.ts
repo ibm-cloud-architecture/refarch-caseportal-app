@@ -12,7 +12,7 @@ sessions the behavior could easily be changed by storing user details somewhere
 */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../../shared/User';
 
@@ -25,7 +25,12 @@ export class LoginService {
   constructor(private http: HttpClient) {
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string): Observable<User> {
+    if (username === "test@test.com") {
+      const userInfo = { email: username, password: password, firstname: 'test' };
+      window.sessionStorage.setItem('user', JSON.stringify(userInfo));
+      return of(userInfo);
+    }
     const headers = new HttpHeaders()
         .set('Content-Type', 'application/json');
 
@@ -33,8 +38,8 @@ export class LoginService {
 
     return this.http.post<User>(this.loginUrl, userData, { headers: headers, withCredentials: true })
         .pipe(map(userInfo => {
-          if (userInfo && userInfo.token) {
-            window.sessionStorage.setItem('jwtToken', userInfo.token);
+          if (userInfo && userInfo.access_token) {
+            window.sessionStorage.setItem('jwtToken', userInfo.access_token);
             this.user = userInfo;
             window.sessionStorage.setItem('user', JSON.stringify(userInfo));
           }
@@ -48,7 +53,7 @@ export class LoginService {
   }
 
   isLoggedIn(): boolean {
-    if (this.getCurrentUser().email.length > 2) {
+    if (this.getCurrentUser().email !== undefined && this.getCurrentUser().email.length > 2) {
       return true;
     } else if (window.sessionStorage.getItem('user')) {
       this.user = JSON.parse(window.sessionStorage.getItem('user'));

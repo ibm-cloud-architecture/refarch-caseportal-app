@@ -36,7 +36,15 @@ module.exports = {
   },
   getCustomerAPIHost : function(){
     return config.customerAPI.host;
+  },
+   getInventoryUrl:function(){
+      return apiUrl+config.inventory.url;
+  },
+
+  getInventoryDAL: function() {
+    return config.inventoryDAL.hostUrl + config.inventoryDAL.url;
   }
+
 }
 
 module.exports.supportConversation = config.supportConversation;

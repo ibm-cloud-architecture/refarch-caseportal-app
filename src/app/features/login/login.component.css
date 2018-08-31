@@ -3,6 +3,11 @@ h1 {
   margin-bottom: 21px;
   color: #0078d2;
 }
+.login-container {
+    position: relative;
+    text-align: left;
+    color: white;
+}
 
 label {
   margin-top: 13px;
@@ -14,4 +19,24 @@ label {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.13);
   height: 100%;
   width: 100%;
+}
+
+.subheader-spacer {
+  flex: 1 1 auto;
+}
+
+.subheader-icon {
+  padding: 0 14px;
+}
+
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
 }

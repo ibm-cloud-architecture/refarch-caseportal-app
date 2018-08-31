@@ -25,7 +25,8 @@ const router = express.Router();
 var fs = require('fs');
 var path = require('path');
 // const inventory    = require('./features/inventoryProxy');
-const inventory    = require('./mockup/inventory');
+const inventory    = require('./features/inventoryDALClient');
+// const inventory    = require('./mockup/inventory');
 const customer    = require('./features/customerProxy');
 const conversation = require('./features/conversation');
 const advisor = require('./features/advisor');
@@ -40,7 +41,7 @@ module.exports = function(app,config){
     }
     res.status(200).json(response);
   })
-  app.get('/api/mode', isLoggedIn, (req,res) => {
+  app.get('/api/mode', (req,res) => {
     res.send({"mode":config.getMode()});
   })
   app.post('/api/c/conversation',isLoggedIn,(req,res) => {
@@ -63,12 +64,32 @@ module.exports = function(app,config){
     inventory.deleteItem(config,req,res);
   })
   app.put('/api/i/items', isLoggedIn, (req,res) => {
-
     inventory.saveItem(config,req,res);
   })
   app.post('/api/i/items', isLoggedIn, (req,res) => {
     inventory.newItem(config,req,res);
   })
+
+  app.get('/api/i/entries', isLoggedIn, (req,res) => {
+    inventory.getEntries(config,req,res);
+  })
+  app.put('/api/i/entries', isLoggedIn, (req,res) => {
+    inventory.saveInventory(config,req,res);
+  })
+  app.post('/api/i/entries', isLoggedIn, (req,res) => {
+    inventory.newInventory(config,req,res);
+  })
+
+  app.get('/api/i/suppliers', isLoggedIn, (req,res) => {
+    inventory.getSuppliers(config,req,res);
+  })
+  app.put('/api/i/suppliers', isLoggedIn, (req,res) => {
+    inventory.saveSupplier(config,req,res);
+  })
+  app.post('/api/i/suppliers', isLoggedIn, (req,res) => {
+    inventory.newSupplier(config,req,res);
+  })
+
   app.get('/api/cust/customers', isLoggedIn,(req,res) => {
     customer.getCustomers(config,req,res);
   })

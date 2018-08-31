@@ -1,0 +1,11 @@
+.jbcard {
+  max-width: 300px;
+  max-height: 400px;
+  margin-left: 5px;
+}
+
+img.centerred {
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}

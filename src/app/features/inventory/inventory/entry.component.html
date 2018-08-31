@@ -1,0 +1,25 @@
+<div *ngIf="entry" class="row">
+  <h2>{{entry.name}} details!</h2>
+  <p>{{message}}</p>
+  <div><label>id: </label>{{entry.id}}</div>
+  <div class="form-group">
+      <label for="site">Site</label>
+      <input  type="text" class="form-control" required [(ngModel)]="entry.site" name="site" id="site">
+  </div>
+  <div class="form-group">
+      <label for="supplier">Supplier ID</label>
+      <input  type="text" class="form-control" required [(ngModel)]="entry.supplierId" name="supplierId" id="supplierId">
+  </div>
+  <div class="form-group">
+      <label for="item">Item ID</label>
+      <input  type="text" class="form-control" required [(ngModel)]="entry.itemId" name="itemId" id="itemId">
+  </div>
+  <div class="form-group">
+      <label for="quantity">Quantity</label>
+      <input  type="text" class="form-control" required [(ngModel)]="entry.quantity" name="quantity" id="quantity">
+  </div>
+  <div>
+      <a (click)="save()"><span><i class="material-icons">save</i></span></a>
+      <a (click)="back()"><span><i class="material-icons">clear</i></span></a>
+  </div>
+</div>

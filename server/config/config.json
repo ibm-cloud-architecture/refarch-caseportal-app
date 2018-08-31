@@ -8,6 +8,10 @@
       "xibmclientid": "59a3a4cb-db42-40ff-bf22-b8c3b5e9eedb",
       "xibmclientid0": "5d2a6edb-793d-4193-b9b0-0a087ea6c123"
     },
+    "inventoryDAL" :{
+      "hostUrl": "http://dal.brown.case",
+      "url": "/inventory/ws"
+    },
     "conversationBroker" :{
       "url":"https://refarch-wcs-broker.mybluemix.net/api/conversation"
     },
@@ -36,7 +40,8 @@
 
     "customerAPI":{
         "url":"http://172.16.40.131/caseserv/api",
-        "host":"customer.green.case"
+        "host":"customer.green.case",
+        "api": "caseserv/api"
     },
 
     "odm" : {
@@ -47,8 +52,8 @@
       "authtoken":"Basic cmVzQWRtaW46MWpldzFyNTc1enU1ZA=="
     },
 
-    "mode" : "brown",
+    "mode" : "all",
     "environment" : "private",
     "port" : 6100,
-    "version": "v0.0.2"
+    "version": "v0.0.5"
 }

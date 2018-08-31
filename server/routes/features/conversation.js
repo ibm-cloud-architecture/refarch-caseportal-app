@@ -73,9 +73,6 @@ function sendToWCSAndBackToUser(config, req, res){
     conversationInfo = config.supportConversation
   }
 
-
-  //
-
   sendMessage(config,req.body,res,conversationInfo).then(function(response) {
     if (config.debug) {console.log("\n <<< From WCS "+JSON.stringify(response,null,2));}
     response.text="<p>"+response.output.text[0]+"</p>";

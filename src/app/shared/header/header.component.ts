@@ -8,13 +8,17 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   title:string = 'CASE Portal';
-  constructor(private router: Router) { }
+  logged:boolean = false;
+
+  constructor(private router: Router) { };
+
 
   ngOnInit() {
+    this.logged = (localStorage.getItem('user') !== undefined);
   }
 
   logout() {
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem('user');
       this.router.navigate(['login']);
   }
 

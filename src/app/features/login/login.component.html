@@ -1,29 +1,42 @@
-<div class="row">
-  <div class="col-md-7">
+<mat-toolbar style=" border-bottom: 1px dotted blue;">
+  <a href="#/home"><i class="material-icons">home</i></a>
+<span class="subheader-spacer"></span>
+<a href="#/login"><i class="material-icons subheader-icon">account_box</i></a>
+<span>{{title}}</span>
+</mat-toolbar>
+<div class="login-container">
+  <img src="assets/images/architecture.png" width="100%">
+  <div class="col-md-8 top-left">
+    <h2>Architecture Center Reference Implementations</h2>
     <h4><i>Welcome to the Case Inc Portal Application!</i></h4>
+    <br/>
     <h4>News</h4>
-    <p>This application illustrates different use case for hybrid integration, chatbots, and machine learning model deployed as service with public and private cloud</p>
+    <p>This application illustrates different use cases for the hybrid integration, Artificial Intelligence, and machine learning solution implementation demonstrations:</p>
+    <ul>
+      <li>Inventory management to present hybrid integration</li>
+      <li>Chat bot for IT Support with broker microservices</li>
+      <li>Telco demo 'putting all together'</li>
+    </ul>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-4 top-right">
     <p>Log in to access hybrid cloud analytics demonstration</p>
     <app-input [label]="'Username'"
       [id]="'usernameInput'"
       [name]="'username'"
+      [label]="'email'"
       [(model)]="loginRequest.email"
       (modelChange)="onInputChange()"
       [validations]="usernameVals"></app-input>
     <app-input [label]="'Password'"
       [id]="'passwordInput'"
-      [name]="'password'"
+      [label]="'password'"
       [type]="'password'"
       [(model)]="loginRequest.password"
       (modelChange)="onInputChange()"
       [validations]="passwordVals"></app-input>
     <div style="padding: 6px;position: relative;margin-top: 0.7em;margin-bottom: 0.5em;">
-      <button class="form-control btn btn-primary loginBtn" (click)="clickedLogin()">Log in</button>
+      <button class="form-control loginBtn" (click)="clickedLogin()">Log in</button>
     </div>
   </div>
 </div>
-<p>(
-  <span class="icon-required" aria-hidden="true"> Required</span>
-  <span class="hidden-accessible"> dot indicates required</span>)</p>
+<p>
