@@ -9,7 +9,7 @@
       "xibmclientid0": "5d2a6edb-793d-4193-b9b0-0a087ea6c123"
     },
     "inventoryDAL" :{
-      "hostUrl": "http://dal.brown.case",
+      "hostUrl": "http://green.csplab.local",
       "url": "/inventory/ws"
     },
     "conversationBroker" :{
@@ -39,11 +39,8 @@
     },
 
     "customerAPI":{
-        "url":"http://172.16.40.131/caseserv/api",
-        "host":"customer.green.case",
-        "api": "caseserv/api"
+        "url": "http://green.csplab.local/caseserv/api"
     },
-
     "odm" : {
       "hostname": "172.16.40.41",
       "port": 31154,

@@ -29,8 +29,7 @@ var buildOptions=function(met,aPath,config){
     //ca: caCerts,
     headers: {
       accept: 'application/json',
-      'Content-Type': 'application/json',
-      Host: config.getCustomerAPIHost(),
+      'Content-Type': 'application/json'
     }
   }
 }
@@ -58,6 +57,12 @@ module.exports = {
   },
   getCustomer : function(config,req,res){
     var opts = buildOptions('GET','/customers/'+req.params.id,config);
+    opts.headers['Content-Type']='multipart/form-data';
+    processRequest(res,opts);
+  },
+
+  getCustomerByEmail: function(config,req,res){
+    var opts = buildOptions('GET','/customers/email'+req.params.email,config);
     opts.headers['Content-Type']='multipart/form-data';
     processRequest(res,opts);
   },

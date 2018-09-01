@@ -16,7 +16,7 @@ data:
         "xibmclientid0": "5d2a6edb-793d-4193-b9b0-0a087ea6c123"
       },
       "inventoryDAL": {
-        "hostUrl": "http://dal.brown.case",
+        "hostUrl": "http://green.csplab.local",
         "url": "/inventory/ws"
       },
       "conversationBroker": {

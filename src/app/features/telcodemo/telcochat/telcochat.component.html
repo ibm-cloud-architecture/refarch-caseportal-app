@@ -1,3 +1,7 @@
+<mat-toolbar style=" border-bottom: 1px dotted blue;">
+  <a href="#/home"><i class="material-icons">home</i></a>
+  <a href="#/telcohome"><i class="material-icons">phone_android</i></a>
+</mat-toolbar>
 <div class='row'>
   <div class='col-xs-4'>
     <p>Welcome to Green Telco Support ChatBot: Try the following sentence to demonstrate the capabilities:</p>
@@ -11,14 +15,27 @@
   </div>
 
   <div class="col-xs-8">
-    <div>
+    <div class="row">
       <label> Please select a profile </label>
       <select  (ngModel) = "selectedProfile">
          <option *ngFor = 'let p of profiles' [value] = 'p.value'> {{p.viewValue}}
          </option>
       </select>
     </div>
+    <div class="row">
+        <h4>For the product recommendation demonstration only</h4>
+      <mat-form-field>
+          <mat-label>Select Predefined Customer Profile</mat-label>
+          <mat-select  [formControl]="profileControl"  [(value)]="selectedProfile">
+           <mat-option *ngFor="let p of profiles" [value]="p.value">
+             {{ p.viewValue }}
+           </mat-option>
 
+         </mat-select>
+       </mat-form-field>
+     </div>
+
+<div class="row">
     <div class="conversation-container" style="box-shadow: 3px 3px 1px #05870b; border-color: #05870b;">
       <div class="scrolling-box">
         <div *ngFor="let p of currentDialog">
@@ -48,7 +65,7 @@
             <input class="form-control message-box"
                    type="text"
                       size="60"
-                      (ngModel)="queryString"
+                      [(ngModel)]="queryString"
                       placeholder="Send a message to Support Bot!"
                       name="queryString"
                       autocomplete="off"/>

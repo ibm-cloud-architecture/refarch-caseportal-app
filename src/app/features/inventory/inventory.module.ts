@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule,
          MatDialogModule,
-         MatTabsModule, 
+         MatTabsModule,
+         MatIconModule,
          MatProgressSpinnerModule,
          MatCardModule } from '@angular/material';
 import { InventoryComponent } from './inventory/inventory.component';
@@ -22,6 +23,7 @@ import { SupplierDetailComponent } from './suppliers/supplier.component';
     MatDialogModule,
     MatTabsModule,
     MatCardModule,
+    MatIconModule,
     MatProgressSpinnerModule
   ],
   declarations: [InventoryComponent,

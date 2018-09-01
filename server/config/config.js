@@ -34,9 +34,6 @@ module.exports = {
   getCustomerAPIURL : function(){
     return config.customerAPI.url;
   },
-  getCustomerAPIHost : function(){
-    return config.customerAPI.host;
-  },
    getInventoryUrl:function(){
       return apiUrl+config.inventory.url;
   },

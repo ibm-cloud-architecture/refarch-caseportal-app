@@ -7,6 +7,12 @@
   border-color: #blue;
 }
 
+
+.outer {
+  outline: 20px;
+}
+
+
 .scrolling-box {
   padding: 0px 5px;
   height: calc(100vh - 200px);

@@ -90,19 +90,22 @@ module.exports = function(app,config){
     inventory.newSupplier(config,req,res);
   })
 
-  app.get('/api/cust/customers', isLoggedIn,(req,res) => {
+  app.get('/api/customers', isLoggedIn,(req,res) => {
     customer.getCustomers(config,req,res);
   })
-  app.post('/api/cust/customers',isLoggedIn, (req,res) => {
+  app.post('/api/customers',isLoggedIn, (req,res) => {
     customer.newCustomer(config,req,res);
   })
-  app.get('/api/cust/customers/:id',isLoggedIn, (req,res) => {
+  app.get('/api/customers/:id',isLoggedIn, (req,res) => {
     customer.getCustomer(config,req,res);
   })
-  app.put('/api/cust/customers', isLoggedIn,(req,res) => {
+  app.get('/api/customers/email/:email',isLoggedIn, (req,res) => {
+    customer.getCustomerByEmail(config,req,res);
+  })
+  app.put('/api/customers', isLoggedIn,(req,res) => {
     customer.saveCustomer(config,req,res);
   })
-  app.delete('/api/cust/customers/:id', isLoggedIn, (req,res) => {
+  app.delete('/api/customers/:id', isLoggedIn, (req,res) => {
     customer.deleteCustomer(config,req,res);
   })
 } // exports

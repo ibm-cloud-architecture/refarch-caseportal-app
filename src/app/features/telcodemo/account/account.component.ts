@@ -15,7 +15,7 @@ export class AccountComponent implements OnInit {
   error: String;
 
   constructor(customerService : CustomersService) {
-    this.user = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.user = JSON.parse(sessionStorage.getItem('user'));
     if(this.user && 'email' in this.user) {
       customerService.getCustomerByEmail(this.user.email).subscribe(
           data => {

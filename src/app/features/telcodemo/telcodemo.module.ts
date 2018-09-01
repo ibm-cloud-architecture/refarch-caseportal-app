@@ -1,6 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule,
+         MatDialogModule,
+         MatTabsModule,
+         MatIconModule,
+         MatSelectModule,
+         MatFormFieldModule,
+         MatProgressSpinnerModule,
+         MatCardModule } from '@angular/material';
 import { TelcoHomeComponent } from './telcohome.component';
 import { TelcoChatComponent } from './telcochat/telcochat.component';
 import { AccountComponent } from './account/account.component';
@@ -13,7 +21,16 @@ import { CustomerDetailComponent}    from './customer/customer.component';
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule
+    ReactiveFormsModule,
+    SharedModule,
+    MatToolbarModule,
+    MatDialogModule,
+    MatTabsModule,
+    MatCardModule,
+    MatIconModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ],
   declarations: [TelcoHomeComponent,
     TelcoChatComponent,

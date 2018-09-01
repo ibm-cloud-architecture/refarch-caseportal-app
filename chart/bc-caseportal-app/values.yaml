@@ -15,7 +15,7 @@ ingress:
   enabled: true
   # Used to create Ingress record (should used with service.type: ClusterIP).
   hosts:
-    - portal.brown.case
+    - green.csplab.lcal
   annotations:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"

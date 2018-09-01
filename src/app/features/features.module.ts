@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { MatToolbarModule, MatDialogModule, MatIconModule } from '@angular/material';
-
+import { MatToolbarModule,
+         MatDialogModule,
+         MatTabsModule,
+         MatIconModule,
+         MatProgressSpinnerModule,
+         MatCardModule } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../shared/shared.module';
@@ -23,7 +27,10 @@ import { LoginService } from './login/login.service';
     SharedModule,
     MatToolbarModule,
     MatDialogModule,
-    MatIconModule
+    MatTabsModule,
+    MatCardModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   declarations: [HomeComponent,LoginComponent],
   exports: [HomeComponent, LoginComponent, InventoryModule, ConversationModule, TelcoDemoModule],
