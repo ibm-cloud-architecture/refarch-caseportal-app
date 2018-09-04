@@ -47,13 +47,13 @@ module.exports = function(passport,config) {
       function( req, username, password, done) {
         //process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         var user = { username:username,password:password,email:username}
-        var builtUrl=config.getLoginUrl()+"?"+querystring.stringify(user);
+        var builtUrl=config.apiGateway.url+"/login?"+querystring.stringify(user);
         var options={
           uri: builtUrl,
           method: 'GET',
           rejectUnauthorized: true,
           headers: {
-            'X-IBM-Client-Id': config.getAPICClientId(),
+            'X-IBM-Client-Id': config.apiGateway.xibmclientid,
             'Accept': 'application/json',
             'Content-Type' : 'application/x-www-form-urlencoded'
           }

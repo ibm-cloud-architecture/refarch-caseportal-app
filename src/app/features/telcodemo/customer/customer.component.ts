@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CustomersService }  from './customers.service';
-import { Customer } from './Customer';
+import { TelcoDemoService }  from '../telcodemo.service';
+import { Customer } from './customer';
 
 @Component({
   selector: 'customer-detail',
@@ -16,7 +16,7 @@ export class CustomerDetailComponent {
   account : boolean= false;
 
   // delegate the call to BFF via local service
-  constructor(private customerService : CustomersService){
+  constructor(private customerService : TelcoDemoService){
   }
 
   save(): void  {

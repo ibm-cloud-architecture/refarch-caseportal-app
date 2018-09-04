@@ -31,7 +31,14 @@
                       <img src='assets/images/watson-globe.png' style='width:50px'>
                     </div>
                   </div>
-                  <div class="{{p.direction+'-text'}}" [innerHTML]="p.text">
+                  <div class="{{p.direction+'-text'}}">
+                        <div [innerHTML]="p.text"></div>
+                        <div *ngIf="p.options">
+                          <div *ngFor="let c of p.options">
+                              <br/>
+                            <button type="button" (click)="advisorResponse(c)" class="btn btn-primary">{{c}}</button>
+                          </div>
+                      </div>
                   </div>
                 </div>
             </div>

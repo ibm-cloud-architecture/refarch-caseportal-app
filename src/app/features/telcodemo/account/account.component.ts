@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomersService }  from '../customer/customers.service';
-import { Customer } from "../customer/Customer";
+import { TelcoDemoService }  from '../telcodemo.service';
+import { Customer } from '../customer/customer';
 import { User } from "../../login/User";
 
 @Component({
@@ -14,9 +14,9 @@ export class AccountComponent implements OnInit {
   customer: Customer;
   error: String;
 
-  constructor(customerService : CustomersService) {
+  constructor(customerService : TelcoDemoService) {
     this.user = JSON.parse(sessionStorage.getItem('user'));
-    if(this.user && 'email' in this.user) {
+    if( ( this.customer === undefined) && this.user && 'email' in this.user) {
       customerService.getCustomerByEmail(this.user.email).subscribe(
           data => {
             this.customer=data;

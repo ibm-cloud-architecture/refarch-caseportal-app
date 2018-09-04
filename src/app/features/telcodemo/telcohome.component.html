@@ -2,12 +2,10 @@
   <a href="#/home"><i class="material-icons">home</i></a>
 </mat-toolbar>
 <div class="row">
-  <h3 *ngIf="user">Welcome to the new myGreen Telco {{user.firstname}} </h3>
-</div>
-<div class="row">
 
-  <app-tile id="account" [color]="'#05870b'" [title]="'Your Account'" [description]="'Your plan, account and devices'" [buttonName]="'account'" [urlPath]="'account'"></app-tile>
+  <app-tilecard  id="chatbot" [title]="'Telco Chatbot'" [description]="'Need help about your device or account?...'"
+  [smImg]="'assets/images/ai.png'" [buttonName]="'Ask me'" [color]="'#05870b'" [urlPath]="'telcoChat'">
+  </app-tilecard>
 
-  <app-tile id="chat" [color]="'#05870b'" [title]="'Support Help'" [description]="'Need help about your device or account?'" [buttonName]="'Ask me about TelcoChat'" [urlPath]="'telcoChat'"></app-tile>
-
+  <app-tilecard id="account" [color]="'#05870b'" [title]="'Your Account'" [description]="'Your plan, account and devices...'" [buttonName]="'Open'" [smImg]="'assets/images/analytics.png'" [urlPath]="'account'"></app-tilecard>
 </div>

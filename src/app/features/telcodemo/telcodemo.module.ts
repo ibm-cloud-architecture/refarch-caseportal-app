@@ -14,7 +14,7 @@ import { TelcoChatComponent } from './telcochat/telcochat.component';
 import { AccountComponent } from './account/account.component';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomersComponent}     from './customer/customers.component';
-import { CustomersService }      from './customer/customers.service';
+import { TelcoDemoService }      from './telcodemo.service';
 import { CustomerDetailComponent}    from './customer/customer.component';
 
 @NgModule({
@@ -37,7 +37,7 @@ import { CustomerDetailComponent}    from './customer/customer.component';
     AccountComponent,
     CustomersComponent,
     CustomerDetailComponent],
-  providers: [CustomersService],
+  providers: [TelcoDemoService],
   exports: [TelcoHomeComponent, TelcoChatComponent, AccountComponent, CustomersComponent, CustomerDetailComponent]
 })
 export class TelcoDemoModule { }

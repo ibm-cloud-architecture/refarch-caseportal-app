@@ -27,7 +27,7 @@ const app = express();
 app.disable('x-powered-by');
 
 // configure the passport strategy, specifying the login end point from the config
-var config = require('./config/config');
+var config = require('./config/config.json');
 require('./routes/passport')(passport,config)
 
 app.use(session({
@@ -59,9 +59,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-const port = process.env.PORT || config.getPort();
+const port = process.env.PORT || config.port;
 var server=app.listen(port, '0.0.0.0', function() {
-  console.log("BFF for CASE Portal Server "+ config.getVersion()+" starting on " + port);
+  console.log("BFF for CASE Portal Server "+ config.version+" starting on " + port);
   console.log("  Use your web browser: http://localhost:"+port);
 });
 

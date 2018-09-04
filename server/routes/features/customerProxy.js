@@ -17,11 +17,11 @@
 var https=require('https');
 
 const request = require('request').defaults({strictSSL: false});
-
+const CommandsFactory = require('hystrixjs').commandFactory;
 
 var buildOptions=function(met,aPath,config){
   return {
-    url: config.getCustomerAPIURL()+aPath,
+    url: config.customerAPI+aPath,
   //  path:apath,
 
     method: met,
@@ -48,6 +48,23 @@ var processRequest = function(res,opts) {
      );
 }
 
+// what run in the command pattern. Must returns a Promise
+var run = function(config,email){
+  return new Promise(function(resolve, reject){
+      var opts = buildOptions('GET','/customers/email/'+email,config);
+      opts.headers['Content-Type']='multipart/form-data';
+      request(opts,function (error, response, body) {
+        if (error) {reject(error)}
+        resolve(body);
+      });
+  });
+}
+
+var serviceCommand =CommandsFactory.getOrCreate("getCustomerDetail")
+  .run(run)
+  .timeout(5000)
+  .requestVolumeRejectionThreshold(2)
+  .build();
 
 module.exports = {
   // Load all customers.
@@ -62,7 +79,7 @@ module.exports = {
   },
 
   getCustomerByEmail: function(config,req,res){
-    var opts = buildOptions('GET','/customers/email'+req.params.email,config);
+    var opts = buildOptions('GET','/customers/email/'+req.params.email,config);
     opts.headers['Content-Type']='multipart/form-data';
     processRequest(res,opts);
   },
@@ -80,5 +97,8 @@ module.exports = {
     var opts = buildOptions('DELETE','/customers/'+req.params.id,config);
     opts.headers['Content-Type']='multipart/form-data';
     processRequest(res,opts);
-  } // delete item
+  }, // delete item
+  getCustomerDetail : function(config,email) {
+      return serviceCommand.execute(config,email);
+  }
 } // export

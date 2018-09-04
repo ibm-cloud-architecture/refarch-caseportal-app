@@ -12,6 +12,7 @@ import { ChatResponse } from './chatresponse';
 export class TelcoChatComponent implements OnInit {
   // keep all the exchanged sentences
   currentDialog: Sentence[]=[];
+  profileControl = new FormControl('',[]);
   context: any = {"type":"base"}; // used to keep the Conversation context
   message: string;
   // variable used for the input field in html page to get user query

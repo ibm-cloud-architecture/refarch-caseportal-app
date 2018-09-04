@@ -14,16 +14,19 @@
  * limitations under the License.
  */
  /**
-Telco Demo Chat Bot Proxy. Access to micro services
-  boyerje@us.ibm.com
-*/
-var http=require('http');
+ Delegate to a Ticket management API. Here is is just a mockup from now.
+ Update 01/18/2018
+ */
 
-const request = require('request').defaults({strictSSL: false});
-var path = require('path');
+// mockup of the ticket data source
+var tickets = {}
+tickets["eddie@email.com"]={"status":"Rejected","reason":"Your current selected offering does not qualify for the second free phone "};
 
-module.exports = {
-  recommend : function(config,req,res){
 
-  }
-}
+module.exports=  {
+    getUserTicket: function(config,user,next){
+      // config to be used later when doing http request
+      var c= tickets[user];
+      next(c);
+    }
+ }

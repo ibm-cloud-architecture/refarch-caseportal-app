@@ -28,13 +28,13 @@ JWT token in authorization. The token was part of the login response
 */
 var buildOptions=function(token,met,aPath,config){
   return {
-    url: config.getGatewayUrl()+aPath,
+    url: config.apiGateway.url+aPath,
   //  path:apath,
     method: met,
     rejectUnauthorized: true,
     //ca: caCerts,
     headers: {
-      'X-IBM-Client-Id': config.getAPICClientId(),
+      'X-IBM-Client-Id': config.apiGateway.xibmclientid,
       accept: 'application/json',
       'Content-Type': 'application/json',
       authorization: 'Bearer '+token

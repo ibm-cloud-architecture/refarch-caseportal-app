@@ -40,8 +40,14 @@ module.exports = {
 
   getInventoryDAL: function() {
     return config.inventoryDAL.hostUrl + config.inventoryDAL.url;
-  }
+  },
 
+  debug: function() {
+    if (config.debug !== undefined) {
+        return config.debug;
+    }
+    return false;
+  }
 }
 
 module.exports.supportConversation = config.supportConversation;

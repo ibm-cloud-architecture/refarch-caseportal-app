@@ -18,6 +18,10 @@ const express = require('express');
 const router = express.Router();
 var request = require('request');
 const AssistantV1 = require('watson-developer-cloud/assistant/v1');
+var persist = require('./persist');
+var ticketing = require('./ticketingClient');
+var toneAnalyzer = require('./toneAnalyzerClient');
+var churnScoring = require('./WMLChurnServiceClient');
 var odmclient = require('./ODMClient');
 
 /**
@@ -26,13 +30,15 @@ Conversation delegates to the Conversation Broker Micro Service.
 module.exports = {
   chat : function(config,req,res){
     req.body.context.predefinedResponses="";
-    console.log("text "+req.body.text+".")
+    console.log("To WCS ->: "+req.body.text+".")
     // logic to handle WCS response after prompting to user a message
-  /*
-    if (req.body.context.action === "search" && req.body.context.item ==="UserRequests") {
-        getSupportTicket(config,req,res);
+
+    if (req.body.context.toneAnalyzer && req.body.text !== "" ) {
+      analyzeTone(config,req,res)
     }
-  */
+    if (req.body.context.action === "search" && req.body.context.item ==="UserRequests") {
+      getSupportTicket(config,req,res);
+    }
     if (req.body.context.action === "recommend") {
         console.log('Calling ODM from Conversation');
           odmclient.recommend(config,req.body.context,res, function(contextWithRecommendation){
@@ -59,11 +65,50 @@ module.exports = {
 };
 
 
+// ------------------------------------------------------------
+// Private
+// ------------------------------------------------------------
+/*
+Call tone analyzis and when the tone assessment is frustrated call scoring services
+Call WCS back
+**/
+function analyzeTone(config,req,res){
+  toneAnalyzer.analyzeSentence(config,req.body.text).then(function(toneArep) {
+        if (config.debug) {console.log('Tone Analyzer '+ JSON.stringify(toneArep));}
+        var tone=toneArep.utterances_tone[0].tones[0];
+        if (tone !== undefined && tone.tone_name !== undefined) {
+          req.body.context["ToneAnalysisResponse"]=tone;
+          if (tone.tone_name === "Frustrated") {
+            churnScoring.scoreCustomer(config,req,function(score){
+                      req.body.context["ChurnScore"]=score;
+                      sendToWCSAndBackToUser(config,req,res);
+                })
+          } else {
+            sendToWCSAndBackToUser(config,req,res);
+          }// frustrated
+        } else {
+          req.body.context["ToneAnalysisResponse"]={}
+          sendToWCSAndBackToUser(config,req,res);
+        }
+
+  }).catch(function(error){
+      console.error(error);
+      res.status(500).send({'msg':error.Error});
+    });
+} // analyzeTone
+
+function getSupportTicket(config,req,res){
+  ticketing.getUserTicket(config,req.body.user.email,function(ticket){
+      if (config.debug) {
+          console.log('Ticket response: ' + JSON.stringify(ticket));
+      }
+      req.body.context["Ticket"]=ticket
+      sendToWCSAndBackToUser(config,req,res);
+  })
+} // getSupportTicket
 
 
 function sendToWCSAndBackToUser(config, req, res){
-  console.log('send to WCS start');
-
   //Which Conversation?
   var conversationInfo = {};
   if(req.body.context.convType == 'productRecommendation'){
@@ -85,27 +130,11 @@ function sendToWCSAndBackToUser(config, req, res){
       console.error(error);
       res.status(500).send({'text':error.Error});
     });
-    console.log('send to WCS end')
 }
-
-
-/*
-// Support Ticket
-function getSupportTicket(config,req,res){
-  ticketing.getUserTicket(config,req.body.user.email,function(ticket){
-      if (config.debug) {
-          console.log('Ticket response: ' + JSON.stringify(ticket));
-      }
-      req.body.context["Ticket"]=ticket
-      sendToWCSAndBackToUser(config,req,res);
-  })
-} // getSupportTicket
-*/
 
 
 //Code for extra effort needed for send message
 var sendMessage = function(config,message,res,conversationInfo,next){
-  console.log('Start send message')
 
   var conversation = new AssistantV1({
       username: conversationInfo.username,
@@ -141,8 +170,6 @@ var sendMessage = function(config,message,res,conversationInfo,next){
                         resolve(response);
                   });
               } else {
-                console.log('Done Send Message');
-
                   resolve(response);
               }
             }

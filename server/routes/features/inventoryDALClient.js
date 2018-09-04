@@ -27,7 +27,7 @@ const nsPrefix = 'a:';
 var processRequest = function(res,config,body) {
   let xml = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"  xmlns:ws=\"http://ws.inventory/\"> <soapenv:Header/> <soapenv:Body> ' + body + '</soapenv:Body></soapenv:Envelope>'
   let opts = {
-    url: config.getInventoryDAL(),
+    url: config.inventoryDAL.url,
     headers: {
       'Content-Type': 'text/xml;charset=UTF-8',
       'User-Agent': 'nodejs-httpclient'

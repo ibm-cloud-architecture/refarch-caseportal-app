@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  /**
- This module defines the REST api for the front end, and implement some of the
+ This module defines the REST api for the front end, and implements some of the
  orchestration logic
   boyerje@us.ibm.com
 */
@@ -29,7 +29,6 @@ const inventory    = require('./features/inventoryDALClient');
 // const inventory    = require('./mockup/inventory');
 const customer    = require('./features/customerProxy');
 const conversation = require('./features/conversation');
-const advisor = require('./features/advisor');
 
 module.exports = function(app,config){
   app.get('/api', function(req, res){
@@ -42,7 +41,7 @@ module.exports = function(app,config){
     res.status(200).json(response);
   })
   app.get('/api/mode', (req,res) => {
-    res.send({"mode":config.getMode()});
+    res.send({"mode":config.mode});
   })
   app.post('/api/c/conversation',isLoggedIn,(req,res) => {
     req.body.context.convType = 'itSupport';
@@ -100,6 +99,7 @@ module.exports = function(app,config){
     customer.getCustomer(config,req,res);
   })
   app.get('/api/customers/email/:email',isLoggedIn, (req,res) => {
+    console.log('In /api/customers/email/');
     customer.getCustomerByEmail(config,req,res);
   })
   app.put('/api/customers', isLoggedIn,(req,res) => {

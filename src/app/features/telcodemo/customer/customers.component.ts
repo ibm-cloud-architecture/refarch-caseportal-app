@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { CustomersService }  from './customers.service';
-import { Customer } from "./Customer";
+import { TelcoDemoService }  from '../telcodemo.service';
+import { Customer } from "./customer";
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class CustomersComponent implements OnInit {
   submitError: string;
   newCustomer : boolean = false;
 
-  constructor(private router: Router, private custService : CustomersService){
+  constructor(private router: Router, private custService : TelcoDemoService){
   }
 
   // Uses in init to load data and not the constructor.
