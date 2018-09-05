@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 
 export class OperationMode {
   mode: string = "all";
+  version: string = "0.0.5";
 }
 /**
  Service to control the features to expose to end user. This is more a demo trick

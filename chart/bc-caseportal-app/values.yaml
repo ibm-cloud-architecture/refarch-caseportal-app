@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: ibmcase/casewebportal
-  tag: latest
+  tag: v0.0.6
   pullPolicy: Always
 service:
   name: casewebportalsvc

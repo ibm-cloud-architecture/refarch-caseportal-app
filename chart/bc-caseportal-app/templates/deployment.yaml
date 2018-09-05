@@ -20,7 +20,7 @@ spec:
         - containerPort: {{ .Values.service.internalPort }}
         volumeMounts:
         - name: config
-          mountPath: /caseportal/server/config.json
+          mountPath: /caseportal/server/config/config.json
           subPath: config.json
         resources:
 {{ toYaml .Values.resources | indent 10 }}

@@ -41,7 +41,7 @@ module.exports = function(app,config){
     res.status(200).json(response);
   })
   app.get('/api/mode', (req,res) => {
-    res.send({"mode":config.mode});
+    res.send({"mode":config.mode,"version": config.version});
   })
   app.post('/api/c/conversation',isLoggedIn,(req,res) => {
     req.body.context.convType = 'itSupport';

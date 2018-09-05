@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A Helm chart for Kubernetes and Case Inc Web portal app
 name: bc-caseportal-app
-version: 0.0.5
+version: 0.0.6
