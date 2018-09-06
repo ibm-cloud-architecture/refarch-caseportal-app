@@ -16,13 +16,40 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../../shared/User';
 
+
+export class OperationMode {
+  mode: string = "all";
+  version: string = "";
+}
+
 @Injectable()
 export class LoginService {
   loginUrl: string = '/bff/login';
   logoutUrl: string = '/bff/logout';
+  modeUrl ='/api/mode';
   user: User = { email: ''}
+  mode: OperationMode = new OperationMode();
 
   constructor(private http: HttpClient) {
+  }
+
+  // this method is used to control the user interface features.
+  getMode(): Observable<OperationMode> {
+    if (this.mode.version === "") {
+      this.http.get<OperationMode>(this.modeUrl).subscribe(
+        data => {
+            this.mode = data;
+            return of(this.mode);
+        },
+        error => {
+          this.mode.version="0.0.1";
+          return of(this.mode);
+        }
+      );
+    } else {
+      return of(this.mode);  // look strange but this is the pleasure of promise
+    }
+
   }
 
   login(username: string, password: string): Observable<User> {

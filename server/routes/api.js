@@ -27,7 +27,7 @@ var path = require('path');
 // const inventory    = require('./features/inventoryProxy');
 const inventory    = require('./features/inventoryDALClient');
 // const inventory    = require('./mockup/inventory');
-const customer    = require('./features/customerProxy');
+const customer    = require('./features/customerClient');
 const conversation = require('./features/conversation');
 
 module.exports = function(app,config){
@@ -99,7 +99,6 @@ module.exports = function(app,config){
     customer.getCustomer(config,req,res);
   })
   app.get('/api/customers/email/:email',isLoggedIn, (req,res) => {
-    console.log('In /api/customers/email/');
     customer.getCustomerByEmail(config,req,res);
   })
   app.put('/api/customers', isLoggedIn,(req,res) => {

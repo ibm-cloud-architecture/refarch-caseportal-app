@@ -55,20 +55,27 @@ describe('LoginService', () => {
 
   it('should get a user when calling login given username and password', () => {
       let user: User;
-      loginService.login("eddie@email.com","pwd").subscribe(
+      loginService.login("eddie@email.com","eddie").subscribe(
         user => {
-            expect(user.firstname).toEqual('Eddie');
+            expect(user.firstname).toEqual('eddie');
         },
         err => {
           fail('Unexpected error: ' + err);
         });
       const req = httpMock.expectOne(loginService.loginUrl);
       expect(req.request.method).toEqual('POST');
-      req.flush({firstname: "Eddie", email: "eddie@email.com"});
+      req.flush({firstname: "eddie", email: "eddie@email.com"});
   });
 
  it('should have loggedIn being true when user is logged in', () => {
    mockSessionStorage.setItem('user', '{"lastname": "biloute","firstname": "eddir","email": "eddie@email.com"}');
    expect(loginService.isLoggedIn()).toBeTruthy();
+ });
+
+ it('should get a valid mode', () => {
+   expect(loginService.getMode().mode).toEqual('all');
+   const req = httpMock.expectOne(loginService.modeUrl);
+   expect(req.request.method).toEqual('GET');
+   req.flush({mode:"all"});
  });
 });

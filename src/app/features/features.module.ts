@@ -11,7 +11,6 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { InventoryModule } from './inventory/inventory.module';
-import { HomeService } from './home/home.service';
 import { InventoryService } from './inventory/inventory.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { ConversationService } from './conversation/conversation.service';
@@ -34,6 +33,6 @@ import { LoginService } from './login/login.service';
   ],
   declarations: [HomeComponent,LoginComponent],
   exports: [HomeComponent, LoginComponent, InventoryModule, ConversationModule, TelcoDemoModule],
-  providers: [ HomeService, InventoryService, ConversationService, TelcoDemoService, LoginGuard, LoginService ]
+  providers: [  InventoryService, ConversationService, TelcoDemoService, LoginGuard, LoginService ]
 })
 export class FeaturesModule { }

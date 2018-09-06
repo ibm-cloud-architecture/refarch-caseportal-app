@@ -9,8 +9,10 @@ fi
 # Get current version if the version is not the first argument of this command line
 prev=$(grep -o 'v\([0-9]\+.\)\{2\}\([0-9]\+\)' server/config/config.json | head -1)
 
-if [[ $# -gt 0 ]]; then
-  if [[ $1 -eq "auto"]]; then
+if [ $# -gt 0 ]
+then
+  if [ $1 -eq "auto"]
+  then
      rep=yes
   else
   	v=v$1
@@ -34,5 +36,5 @@ if [ -z "$rep" ]
 then
   echo "Pushing..."
   docker login
-  docker push ibmcase/casewebportal:latest
+  docker push ibmcase/casewebportal:$v
 fi

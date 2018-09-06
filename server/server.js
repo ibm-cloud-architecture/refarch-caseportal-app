@@ -62,7 +62,7 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || config.port;
 var server=app.listen(port, '0.0.0.0', function() {
   console.log("BFF for CASE Portal Server "+ config.version+" starting on " + port);
-	console.log("Configuration " + JSON.stringify(config));
+	console.log("Configuration " + JSON.stringify(config,null,2));
   console.log("  Use your web browser: http://localhost:"+port);
 });
 

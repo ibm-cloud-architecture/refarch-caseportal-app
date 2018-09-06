@@ -20,8 +20,9 @@ const request = require('request').defaults({strictSSL: false});
 const CommandsFactory = require('hystrixjs').commandFactory;
 
 var buildOptions=function(met,aPath,config){
+  console.log("build option config " + JSON.stringify(config,null,2));
   return {
-    url: config.customerAPI+aPath,
+    url: config.customerAPI.url+aPath,
   //  path:apath,
 
     method: met,

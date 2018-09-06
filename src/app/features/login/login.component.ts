@@ -65,4 +65,10 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+  keyMessage(event){
+     if(event.keyCode == 13) {
+        this.clickedLogin();
+      }
+  }
 }

@@ -21,7 +21,7 @@
 const request = require('request')
 const btoa = require("btoa")
 const CommandsFactory = require('hystrixjs').commandFactory;
-const customerService = require('./customerProxy')
+const customerService = require('./customerClient')
 
 
  module.exports = {

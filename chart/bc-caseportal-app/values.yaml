@@ -17,7 +17,7 @@ ingress:
   hosts:
     - green.csplab.local
   annotations:
-    # kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   tls:
     # Secrets must be manually created in the namespace.
@@ -29,7 +29,7 @@ ingress:
 resources:
   limits:
     cpu: 100m
-    memory: 2048Mi
+    memory: 1024Mi
   requests:
     cpu: 100m
-    memory: 512Mi
+    memory: 256Mi
