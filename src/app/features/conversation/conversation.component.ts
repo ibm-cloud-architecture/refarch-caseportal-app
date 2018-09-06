@@ -1,4 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+/**
+ * Copyright 2018 IBM Corp. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ConversationService }  from './conversation.service';
 import { Sentence } from "./Sentence";
 
@@ -23,6 +38,23 @@ export class ConversationComponent  {
     // Uncomment this line if you do not have a conversation_start trigger in a node of your dialog
     this.callConversationBFF("Hello");
   }
+
+  // Support scrolling at the bottom of the window.
+ @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
+ ngOnInit() {
+     this.scrollToBottom();
+ }
+
+ ngAfterViewChecked() {
+     this.scrollToBottom();
+ }
+
+ scrollToBottom(): void {
+     try {
+         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+     } catch(err) { }
+ }
 
   callConversationBFF(msg:string) {
     this.convService.submitMessage(msg,this.context).subscribe(
@@ -56,6 +88,15 @@ export class ConversationComponent  {
     this.currentDialog.push(obj);
     this.callConversationBFF(this.queryString);
     this.queryString="";
+  }
+
+  advisorResponse(resp) {
+    let obj:Sentence = new Sentence();
+    obj.direction="to-watson";
+    this.queryString=resp;
+    obj.text=resp;
+    this.currentDialog.push(obj);
+    this.callConversationBFF(resp);
   }
 
   keyMessage(event){

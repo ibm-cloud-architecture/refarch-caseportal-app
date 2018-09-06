@@ -60,7 +60,12 @@ export class TelcoChatComponent implements OnInit {
         this.context=data.context;
         let s:Sentence = new Sentence();
         s.direction="from-watson";
-        s.text=data.output.text[0];
+        s.text="";
+        for (var t of data.output.text) {
+            s.text+=t+"<br/>";
+        }
+        // manage options - as clickable buttons
+        s.options=data.context.predefinedResponses;
         this.currentDialog.push(s)
 
         if (data.context.action === "search" || data.context.action === "recommend"){
