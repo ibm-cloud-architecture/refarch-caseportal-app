@@ -25,12 +25,12 @@ fi
 echo 'old version: ' $prev ' new version to use:' $v
 
 echo 'compile angular app'
-ng build --prod
+ng build --prod --deploy-url /portal/ --base-href /portal/ --output-path dist/portal
 echo 'Build Docker image'
 # Build docker
-docker build -t ibmcase/casewebportal .
+docker build -t ibmcase/casewebportal:$v .
 if [  -z "$rep" ]; then
-  read -p 'Push to dockerhub?: (yes)/no' rep
+  read -p 'Push to dockerhub?: (yes)/no: ' rep
 fi
 if [ -z "$rep" ]
 then

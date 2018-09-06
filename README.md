@@ -77,10 +77,9 @@ When compiling the angular typescripts the javascript code generated is saved un
 
 ## Run
 We are proposing multiple deployments and execution environments:
-* run locally using `npm run start` or `node server/server`, then load the http://localhost:6100 URL in your web browser. 
+* run locally using `npm run dev` or `node server/server`, then load the http://localhost:6100 URL in your web browser.
 * run the application in IBM Cloud Container service
 * run the application in IBM Cloud Private
-* run the application as a cloud foundry app on IBM Cloud
 
 ### Run the application locally
 
