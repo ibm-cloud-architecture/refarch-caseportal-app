@@ -1,21 +1,68 @@
 {
   "secureGateway" :{
-    "url":"https://<>ibmcloud.com:16582"
+    "url":"https://cap-sg-prd-5.integration.ibmcloud.com:16582"
   },
   "apiGateway" :{
     "hostUrl": "https://172.16.50.8",
-    "url": "csplab/sb/sample-inventory-api",
-    "xibmclientid": "8fdba02b-0251-457d-ab86-ea809459c5b8",
-    "xibmclientid0": "5d2a6edb-793d-4193-b9b0-0a087ea6c123"
+    "url": "/csplab/sb/iib-inventory-api",
+    "xibmclientid": "59a....",
+  },
+  "inventoryDAL" :{
+    "url": "http://green.csplab.local/inventory/ws"
   },
   "conversationBroker" :{
     "url":"https://refarch-wcs-broker.mybluemix.net/api/conversation"
   },
-  "advisorBroker":{
-      "url":"https://refarch-wcs-broker.mybluemix.net/api/conversation"
+  "supportConversation" :{
+    "version" : "v1",
+    "versionDate":"2017-05-26",
+    "username":"...3",
+    "password":"aDF...",
+    "conversationId":"SupportHelpDesk",
+    "workspace":"1a3b01f3-4757-444d-a933-a1e648babfc1",
+    "usePersistence": false
   },
-  "mode" : "brown",
+
+  "watsonAssistant" :{
+    "version" : "v1",
+    "versionDate":"2017-05-26",
+    "username":"...3",
+    "password":"aDF...",
+    "conversationId":"Complex Relocation",
+    "workspace":"a97a02e3-d3c3-48de-8e64-20502819e582",
+    "usePersistence": false
+  },
+
+  "customerAPI":{
+      "url": "http://green.csplab.local/caseserv/api/v1"
+  },
+  "odm" : {
+    "hostname": "172.16.40.132",
+    "port": 32764,
+    "protocol": "http:",
+    "path": "/DecisionService/rest/v1/ProductRecommendationRuleApp/1.0/ProductRecommendation/1.0/WADL",
+    "authtoken":"Basic cmVzQWRtaW46MWpldzFyNTc1enU1ZA=="
+  },
+  "toneAnalyzer":{
+      "url": "https://gateway.watsonplatform.net/tone-analyzer/api",
+      "versionDate": "2017-09-21",
+      "username":"...3",
+      "password":"aDF...",
+  },
+  "scoringService":{
+    "type":"WML",
+    "baseUrl": "https://ibm-watson-ml.mybluemix.net",
+    "instance": "/v3/wml_instances/e947215d-9d96-48d0-bdce-d50e9431ca80/published_models/face8a83-b3e2-4cee-9b5e-76aaf01b3b78/deployments/3233874f-e8bd-459d-afa3-ab1d9ca148f9/online",
+    "username":"...3",
+    "password":"aDF...",
+  },
+  "dbCredentials" : {
+    "url": "https://01bcc"
+  },
+
+  "mode" : "all",
+  "debug": true,
   "environment" : "private",
   "port" : 6100,
-  "version": "v0.0.7"
+  "version": "v0.0.6"
 }

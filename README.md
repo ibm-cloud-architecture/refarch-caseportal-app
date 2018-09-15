@@ -1,19 +1,19 @@
 # Case Inc Portal App
-In this project we are presenting how to develop an Angular 5 single page application using a Test Driven Development approach. The Back end For Front component is done using nodejs / expressjs. The code is under server folder.
+In this project we are presenting how to develop an Angular 6 single page application using a Test Driven Development approach. The Back end For Front component is done using nodejs / expressjs and is used to serve the HTML and javascript for the browser and the user access the server URL. The BFF code is under server folder.
 
 *This project is part of the 'IBM Integration Reference Architecture' suite, available at [https://github.com/ibm-cloud-architecture/refarch-integration](https://github.com/ibm-cloud-architecture/refarch-integration) and implements the 'cloud native' web application with a set of features to demonstrate all the use case for hybrid cloud, cognitive and analytics. It should be considered as an internal portal application for CASE Inc internal staff to access a set of internal features.*
 
-Update 08/21/2018
+Update 09/14/2018
 
 ## Target audiences
 
 The main target of this project and all the related content is developer, who wants to get a concrete implementation that is more than a simple hello world or a light proof of concepts as it covers:
   * Classical Angular 5 single page application served by a nodejs app. We tried to add some tricks we are discovering on Angular.
-  * Implement the back end for front end logic inside the nodejs, expressjs middleware framework
+  * Implement the back end for front end logic inside the nodejs, expressjs middleware framework.
   * How to use a [Test Driven Development](./docs/tdd.md) approach for Angular app development.
   * How to access API defined in API Connect and deploy on API gateway on premise or on ICP  
   * How to integrate with secure gateway when deployed on public cloud to access on-premise servers
-  * How to package all this as docker image
+  * How to package as a docker image
   * How to define helm chart for IBM Cloud Private and kubernetes cluster deployment.
 
 ## Table of Contents
@@ -31,14 +31,15 @@ The main target of this project and all the related content is developer, who wa
 * [Compendium](#compendium)
 
 ## Introduction
-This application illustrates how to plug and play different Angular modules with different back ends of IBM Cloud hybrid integration and analytics reference architecture, and specifically addresses:
-* the inventory management feature to demonstrate hybrid integration as presented in the [hybrid integration reference architecture center web site](https://www.ibm.com/devops/method/content/architecture/hybridArchitecture). This is a simple front end to manage old computers inventory, which is persisted in DB2, exposed via SOAP data access layer service, and with ESB mediation flow and API management. The Angular code is under `src/app/features/inventory` folder, and for the server part it is in `server/routes/feature/inventory.js`.
-* how to support login with a LDAP server running on-premise and exposed via IBM API connect: Angular feature in `src/app/features/login` and corresponding server code in passport.js, see [this article for details]()
+This application illustrates how to plug and play different Angular modules with different back ends of IBM Cloud hybrid integration and analytics reference architecture, and it specifically addresses:
+* the inventory management feature to demonstrate hybrid integration as presented in the [hybrid integration reference architecture center web site](https://www.ibm.com/devops/method/content/architecture/hybridArchitecture). This is a simple front end to manage old computers inventory, which is persisted in DB2, exposed via SOAP data access layer service, and with ESB mediation flow and API management. The Angular code is under `src/app/features/inventory` folder, and for the server part it is in `server/routes/feature/inventoryClient.js`. There are in fact two clients implementation so we can change depending of the deployment choice: One client is accessing directly the SOAP web service and do SOAP to REST mapping using Javascript, and one access API Management to get REST API.
+* how to support login with a LDAP server running on-premise and exposed via IBM API connect: Angular feature in `src/app/features/login` and corresponding server code in passport.js, see [this article for details](docs/login/README.md)
 * how to develop with Angular a simple user interface, with the master-detail pattern for Item and Inventory.
 * how to integrate with back end, on-premise services using secure gateway when deployed on IBM Cloud public.
 * how to proxy  [Watson Conversation](https://www.ibm.com/devops/method/content/architecture/cognitiveConversationDomain2#1_1)
 * how to deploy the app as Cloud Foundry on IBM Cloud, or docker container on IBM Cloud Container or Helm charts on IBM Cloud Private
 * how to use Jenkins for continuous integration and deployment
+* how to package as a docker image deployable to kubernetes based cluster.
 
 The current top level view of the home page of this application looks like:   
 
