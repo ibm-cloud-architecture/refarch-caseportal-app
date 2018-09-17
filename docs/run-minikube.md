@@ -1,12 +1,10 @@
-# Run on Minikube
+# Run on Docker Edge with Kubernetes
 
-We are presenting here a short summary on how to run this application on [minikube](https://github.com/kubernetes/minikube).
+We are presenting here a short summary on how to run this application on [Docker Edge](https://docs.docker.com/docker-for-mac/kubernetes/).
 
 ## Pre-requisites
-* minikube is installed and running on your computer
+* Docker Edge is installed and running on your computer
 * docker CLI is installed on your computer
-* start minikube with the command `minikube start`
-* get IP address of the minikube virtual machine. 192.168.99.100
 
 ## Step 1: connect docker to minikube
 Kubernetes has its own docker image registry so to build a new image into this repository you need connect the docker CLI to it. The commands below set the DOCKER_HOST to point to minikube, and then list the current docker images

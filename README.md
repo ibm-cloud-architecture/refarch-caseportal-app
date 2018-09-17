@@ -26,7 +26,7 @@ The main target of this project and all the related content is developer, who wa
    * [IBM Cloud container service](#deploy-the-caseinc-portal-app-in-ibm-cloud-kubernetes-service)
    * [IBM Cloud Private](./docs/icp/README.md)
 * [Code explanation](./docs/code-explanation.md)
-* [Security](./docs/login/README.md)
+* [Security - login authenthication](./docs/login/README.md)
 * [devops](./docs/devops/README.md)
 * [Compendium](#compendium)
 
@@ -45,7 +45,7 @@ The current top level view of the home page of this application looks like:
 
 ![home page](docs/homepage.png)  
 
-For public cloud deployment the application is up and running at the following address: http://caseincapp.mybluemix.net/. When deployed on IBM Cloud Private the URL is http://portal.brown.case. You will need some DNS or hosts mapping in your `/etc/hosts` to support this direct access.
+For public cloud deployment the application could be seen at the following address: http://caseincapp.mybluemix.net/ but for cost reduction reason we may not run it all the time. When deployed on IBM Cloud Private the URL is http://green.csplab.local/portal. You will need to define a host mapping in your `/etc/hosts` to support direct access from your laptop, and DNS settings in the on-premise environment to get Ingress resolution.
 
 ## Pre-requisites
 The common pre-requisites for the integration solution are defined [here](https://github.com/ibm-cloud-architecture/refarch-integration#prerequisites), so be sure to get them done.
@@ -58,12 +58,19 @@ npm install
 ```
 The package.json defines dependencies for the nodejs server component and the Angular application.
 
-* You need to install Angular 5 command line interface if you do not have it yet: see the [cli.angular.io website](http://cli.angular.io)
+* You need to install Angular 6 command line interface if you do not have it yet: see the [cli.angular.io website](http://cli.angular.io)
  ```
  sudo  npm install -g @angular/cli
  ```
  on Mac, as a global install you need to be `root` user or a "sudoer" user.
 * As we are using docker to build different images, you need docker engine on your laptop.
+* As the application is accessing a set of microservices a config.json needs to be updated with your own service information. You need the following services up and running:
+  * DB2 [inventory and customer](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-db2) databases
+  * Watson Assistant service in IBM Cloud
+  * [Inventory data access layer](https://github.com/ibm-cloud-architecture/refarch-integration-inventory-dal) SOAP service deployed in ICP
+  * [Customer microservice](https://github.com/ibm-cloud-architecture/refarch-integration-services) should be deployed, to access customer account data access for the Telco demo.
+  * Watson tone analyzer instance.
+  * Cloudant instance on IBM Cloud if you want to enable conversation persistence.
 
 
 ## Build
@@ -71,10 +78,9 @@ To build the angular app locally run the command:
 ```
 $ ng build
 ```
+When involving a continuous integration using Jenkins the jenkins file executes the scripts defined in the scripts folder. The stages are build, and deploy to ICP. See the [jenkinsfile](./Jenkinsfile).
 
-When involving a continuous integration using Jenkins the jenkins file executes the scripts defined in the scripts folder. The stages are build, and deploy to ICP. See the [jenkinsfile]().
-
-When compiling the angular typescripts the javascript code generated is saved under `dist` folder.
+When compiling the angular typescripts the javascript code generated is saved under `dist` folder. This folder is copied within the docker images so the nodejs can serve it while deployed in Kubernetes or docker run.
 
 ## Run
 We are proposing multiple deployments and execution environments:
@@ -103,7 +109,6 @@ To avoid conflict with existing deployed application you need to modify the Mani
 ```yaml
   host: yourcaseincapp
 ```
-and define your own conversation support.
 
 Use the set of IBM Cloud CLI commands to upload the application:
 ```
@@ -114,8 +119,6 @@ cf push
 This should create a new cloud foundry application in your IBM Cloud space as illustrated by the following screen copy.  
 ![Deployed App](docs/cf-app.png)
 
-## Deploy on Kubernetes and minikube VM
-See the note [here](docs/run-minikube.md)
 
 ## Deploy the CaseInc Portal App in IBM Cloud Kubernetes Service
 A dockerfile is defined in the root project folder to build a docker image from the node:alpine official image. The docker file is simple and use the port 6100.
@@ -197,8 +200,8 @@ $ kubectl run caseportal --image=registry.ng.bluemix.net/ibm_mls/caseportal --po
 
 ## Run on IBM Cloud Private
 
-see [this note](docs/run-icp.md)
+See details in this separate [note.](docs/run-icp.md)
 
 ## Compendium
-* [Angular 2.4 tutorial from the angular site](https://angular.io/tutorial) this tutorial is updated with new release and covers the most important features used in our angular app.
+* [Angular 6 tutorial from the angular site](https://angular.io/tutorial) this tutorial is updated with new release and covers the most important features used in our angular app.
 * [NG Develop](https://www.ngdevelop.tech/) to learn the latest news on Angular and its tutorial
