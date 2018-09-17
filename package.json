@@ -61,6 +61,8 @@
     "watson-developer-cloud": "^3.4.4",
     "webpack": "^4.0.0",
     "xml-js": "^1.6.7",
+    "url-parse": "^1.4.3",
+    "lodash": "^4.17.5",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
