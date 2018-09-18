@@ -41,7 +41,7 @@ module.exports = {
     }
     if (req.body.context.action === "recommend") {
         console.log('Calling ODM from Conversation');
-          odmclient.recommend(config,req.body.context,res, function(contextWithRecommendation){
+          odmclient.recommend(config,req.body.context, function(contextWithRecommendation){
 
             if (config.debug) {
               console.log('Context back to WCS with recommendation: ' + JSON.stringify(contextWithRecommendation));

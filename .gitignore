@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 server/config/config.json
+server/config/config.sl.json
 # dependencies
 /node_modules
 

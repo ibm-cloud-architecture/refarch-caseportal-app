@@ -18,14 +18,14 @@ This module delegate the recommendation to a decision service deployed on ODM pl
 Author: IBM - Jerome Boyer / Guilhem Molines
 */
 var http = require('http');
-var crmClient = require('./crmClient');
+var crmClient = require('./customerClient');
 
 module.exports=  {
   /**
   The wcsresponse is the Conversation response. ODM will use its variables set in the context, plus extra data to take a decision.
   ODM output will be added to the Conversation context as well.
   */
-  recommend : function(config,wcscontext,response,next){
+  recommend : function(config,wcscontext,next){
     console.log('ODM recommend start')
     // Config for the POST to the ODM Rule Execution Server
     var options = {
@@ -41,7 +41,6 @@ module.exports=  {
       }
     }
 	if (config.debug) {
-		console.log("Options: " + JSON.stringify(options));
     console.log("Response from WCS to handle: " + JSON.stringify(wcscontext));
 	}
 
@@ -78,7 +77,7 @@ module.exports=  {
     req.write(data);
     req.end();
   });
-  console.log('ODM Recommen End')
+  console.log('ODM Recommend End')
 
  } // recommend function
 } // exports
@@ -96,12 +95,48 @@ module.exports=  {
 var prepareODMInputData = function(config,wcscontext,next) {
   console.log('Preparing ODM Input Data');
   console.log(JSON.stringify(wcscontext));
-  crmClient.getUserProfile(config,wcscontext.user, function(data) {
+  if (wcscontext.user.zipcode === undefined) {
+    crmClient.getCustomerDetail(config,wcscontext.user.email).then(response => {
+      var data = JSON.parse(response);
+      // hack: THE FOLLOWING LINES ARE UGLY.... this is a problem of interface mapping.
+      data['existingProducts'] = [];
+      data.existingProducts.push({
+        "packageName": "PHONE",
+        "productCategory": "PHONE",
+        "monthlyUsage": 3,
+        "downloadSpeed": 3,
+        "price": 18
+      })
+      if (data['carOwner'] === "T") {
+        data['carOwner']=true;
+      } else {
+        data['carOwner']=false;
+      }
+      delete data.devicesOwned;
       c = {}
       data['newZipCode']=wcscontext.ZipCode;
+      data['previousZipCode'] = data.zipCode;
+      delete data.churnRisk;
+      delete data.churnClass;
+      delete data.churnStatus;
+      delete data.zipCode;
+      delete data.zipcode;
+      delete data.accountNumber;
+      delete data.longDistance;
+      delete data.longDistanceBillType;
+      delete data.international;
+      delete data.local;
+      delete data.localBillType;
+      delete data.balance;
+      delete data.usage;
+      delete data.dropped;
+      delete data.paymentMethod;
+      delete data.ratePlan;
       c['customer']=data;
       next(JSON.stringify(c));
-      console.log('Done with CRM client inside ODM Prep')
-   }
-  )
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
 } // prepareODMInputData
