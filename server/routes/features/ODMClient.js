@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 /**
-This module delegate the recommendation to a decision service deployed on ODM platform.
+When a customer is asking about recommendation to move the chat bot will ask about the date
+and the target zipcode.
+This module delegates the product recommendation to a decision service deployed on ODM platform.
 Author: IBM - Jerome Boyer / Guilhem Molines
 */
-var http = require('http');
+var request = require('request');
 var crmClient = require('./customerClient');
 
 module.exports=  {
@@ -25,60 +27,45 @@ module.exports=  {
   The wcsresponse is the Conversation response. ODM will use its variables set in the context, plus extra data to take a decision.
   ODM output will be added to the Conversation context as well.
   */
-  recommend : function(config,wcscontext,next){
-    console.log('ODM recommend start')
-    // Config for the POST to the ODM Rule Execution Server
-    var options = {
-      protocol: config.odm.protocol,
-      hostname: config.odm.hostname,
-      port: config.odm.port,
-      path: config.odm.path,
-      method: 'POST',
-      headers: {
-         "accept": "application/json",
-         "content-type": "application/json",
-         Authorization: config.odm.authtoken
-      }
-    }
-	if (config.debug) {
-    console.log("Response from WCS to handle: " + JSON.stringify(wcscontext));
-	}
-
-	var req = http.request(options, function(res) {
-		if (config.debug) {
-			console.log('STATUS: ' + res.statusCode);
-			console.log('HEADERS: ' + JSON.stringify(res.headers));
-		}
-    if (res.statusCode === 200){
-    		res.setEncoding('utf8');
-    		// the 'data' event is sent when the server responds with a data chunk.
-    		// This is where we grab this data - which is the Decision output -
-    		// and add it back to the Watson Conversation context
-    		res.on('data', function (chunk) {
-      			if (config.debug) {
-          			console.log('Received from ODM: ' + chunk);
-          	}
-            Object.assign(wcscontext,JSON.parse(chunk));
-            next(wcscontext);
-    		 });
-    } else {
-        console.log('Problem with Recommendation  from ODM: ' + res.statusCode);
-        next(wcscontext);
-    }
-    });
-
-
-	// uploads the ODM input data in the POST call
-  prepareODMInputData(config,wcscontext, function(data){
-    // for ODM just send the context
+  recommend : function(config,wcspayload,next){
     if (config.debug) {
-      console.log('Sending data: ' + data);
+      console.log('ODM recommend start');
+      console.log("Response from WCS to handle by ODM: " + JSON.stringify(wcspayload));
     }
-    req.write(data);
-    req.end();
-  });
-  console.log('ODM Recommend End')
+    prepareODMInputData(config,wcspayload, function(data){
+        // for ODM just send the context
+        if (config.debug) {
+          console.log('Sending data: ' + data);
+        }
+        // Config for the POST to the ODM Rule Execution Server
+        var options = {
+          protocol: config.odm.protocol,
+          hostname: config.odm.hostname,
+          port: config.odm.port,
+          path: config.odm.path,
+          url: config.odm.protocol + "//" + config.odm.hostname + ":" + config.odm.port + config.odm.path,
+          method: 'POST',
+          headers: {
+             "accept": "application/json",
+             "content-type": "application/json",
+             Authorization: config.odm.authtoken
+          },
+          body: data
+        }
+        request(options, (err,res,body) => {
+          if (err) {
+            console.log('Problem with Recommendation  from ODM: ' + err);
+            next(wcspayload);
+          }
+          if (config.debug) {
+              console.log('Received from ODM: ' + body);
+          }
+          response = JSON.parse(body);
 
+          wcspayload.context.recommendation=response.recommendation;
+          next(wcspayload);
+        }) // do the POST
+    }) // prepareODMInput
  } // recommend function
 } // exports
 
@@ -92,29 +79,39 @@ module.exports=  {
 // - the context part of the Watson Conversation response. This is where data that has been gathered
 //   by the bot during the conversation are stored, and the Decision Services may rely on some of these
 // data to take decision
-var prepareODMInputData = function(config,wcscontext,next) {
+var prepareODMInputData = function(config,wcspayload,next) {
   console.log('Preparing ODM Input Data');
-  console.log(JSON.stringify(wcscontext));
-  if (wcscontext.user.zipCode === undefined) {
-    crmClient.getCustomerDetail(config,wcscontext.user.email).then(response => {
+  console.log(JSON.stringify(wcspayload));
+  if (wcspayload.context.user.zipCode === undefined) {
+    crmClient.getCustomerDetail(config,wcspayload.context.user.email).then(response => {
       var data = JSON.parse(response);
+      if (data.existingProducts === undefined) {
+        data.existingProducts = [];
+      }
       // hack: THE FOLLOWING LINES ARE UGLY.... this is a problem of interface mapping.
-      data['existingProducts'] = [];
       data.existingProducts.push({
-        "packageName": "PHONE",
-        "productCategory": "PHONE",
+        "name": "ADSL p0",
+        "packageName": "ADSL 20MBPS",
+        "productCategory": "ADSL",
         "monthlyUsage": 3,
         "downloadSpeed": 3,
-        "price": 18
+        "price": 25
+      },
+      {
+        "name": "IPTV",
+        "packageName": "IPTV Basic",
+        "productCategory": "IPTV",
+        "monthlyUsage": 3,
+        "downloadSpeed": 3,
+        "price": 30
       })
       if (data['carOwner'] === "T") {
         data['carOwner']=true;
       } else {
         data['carOwner']=false;
       }
-      delete data.devicesOwned;
       c = {}
-      data['newZipCode']=wcscontext.ZipCode;
+      data['newZipCode']=wcspayload.context.ZipCode;
       data['previousZipCode'] = data.zipCode;
       delete data.churnRisk;
       delete data.churnClass;

@@ -40,17 +40,12 @@ module.exports = {
       getSupportTicket(config,req,res);
     }
     if (req.body.context.action === "recommend") {
-        console.log('Calling ODM from Conversation');
-          odmclient.recommend(config,req.body.context, function(contextWithRecommendation){
-
-            if (config.debug) {
-              console.log('Context back to WCS with recommendation: ' + JSON.stringify(contextWithRecommendation));
-            }
-            req.body.context = contextWithRecommendation;
-            console.log('Sending call for WCS');
-            sendToWCSAndBackToUser(config,req,res);
+        console.log('Conversation is asking for a product recommendation -> delegate to ODM');
+          odmclient.recommend(config,req.body, function(contextWithRecommendation){
+            // no more need to got back to WCS sendToWCSAndBackToUser(config,req,res);
+            contextWithRecommendation.output  = {"text": []};
+            res.status(200).send(contextWithRecommendation);
           })
-          console.log('Done Calling ODM');
     }
     if (req.body.context.action === "transfer") {
         console.log("Transfer to "+ req.body.context.item)
@@ -60,7 +55,7 @@ module.exports = {
         sendToWCSAndBackToUser(config,req,res);
     }
 
-    console.log('Chat finished');
+    console.log('Interaction finished');
   } // chat
 };
 
