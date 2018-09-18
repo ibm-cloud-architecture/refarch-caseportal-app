@@ -95,7 +95,7 @@ module.exports=  {
 var prepareODMInputData = function(config,wcscontext,next) {
   console.log('Preparing ODM Input Data');
   console.log(JSON.stringify(wcscontext));
-  if (wcscontext.user.zipcode === undefined) {
+  if (wcscontext.user.zipCode === undefined) {
     crmClient.getCustomerDetail(config,wcscontext.user.email).then(response => {
       var data = JSON.parse(response);
       // hack: THE FOLLOWING LINES ARE UGLY.... this is a problem of interface mapping.
@@ -120,7 +120,6 @@ var prepareODMInputData = function(config,wcscontext,next) {
       delete data.churnClass;
       delete data.churnStatus;
       delete data.zipCode;
-      delete data.zipcode;
       delete data.accountNumber;
       delete data.longDistance;
       delete data.longDistanceBillType;

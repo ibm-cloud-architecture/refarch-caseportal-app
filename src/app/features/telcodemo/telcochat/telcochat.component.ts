@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild, OnInit,AfterViewChecked } from '@angular/core';
 import { TelcoDemoService }  from '../telcodemo.service';
+import { LoginService } from '../../login/login.service';
 import { FormControl } from '@angular/forms';
 import { Sentence } from "../../conversation/Sentence";
 import { ChatResponse } from './chatresponse';
@@ -17,19 +18,15 @@ export class TelcoChatComponent implements OnInit {
   message: string;
   // variable used for the input field in html page to get user query
   queryString: string =""
-  profiles = [  {value: 'young', viewValue: 'Student'},
-                 {value: 'retiree', viewValue: 'Retiree'},
-                 {value: 'adult', viewValue: 'Standard'},
-                 {value: 'noFiber', viewValue: 'NoFiber'}
-              ];
-  selectedProfile:string = 'adult';
 
 
   /**
   When creating a conversation component, it is better to call Watson to get a greetings message
   as defined in the Dialog flow. This is more user friendly.
   */
-  constructor(private telcoService : TelcoDemoService){
+  constructor(private telcoService : TelcoDemoService,
+    private loginService: LoginService){
+    this.context.user = loginService.getCurrentUser();
     // Uncomment this line if you do not have a conversation_start trigger in a node of your dialog
     this.callConversationBFF("Hello");
   }
@@ -54,7 +51,6 @@ export class TelcoChatComponent implements OnInit {
 
   callConversationBFF(msg:string) {
       console.log('Conversation Called with '+ msg);
-      this.context.user=this.selectedProfile;
       this.telcoService.submitMessage(msg,this.context).subscribe(
       data => {
         this.context=data.context;

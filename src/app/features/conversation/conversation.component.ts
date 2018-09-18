@@ -15,6 +15,7 @@
  */
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ConversationService }  from './conversation.service';
+import { LoginService } from '../login/login.service';
 import { Sentence } from "./Sentence";
 
 @Component({
@@ -34,7 +35,9 @@ export class ConversationComponent  {
   When creating a conversation component, it is better to call Watson to get a greetings message
   as defined in the Dialog flow. This is more user friendly.
   */
-  constructor(private convService : ConversationService){
+  constructor(private convService : ConversationService,
+              private loginService: LoginService){
+    this.context.user = loginService.getCurrentUser();
     // Uncomment this line if you do not have a conversation_start trigger in a node of your dialog
     this.callConversationBFF("Hello");
   }
