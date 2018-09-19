@@ -25,7 +25,8 @@ fi
 echo 'old version: ' $prev ' new version to use:' $v
 
 echo 'compile angular app'
-ng build --prod --deploy-url /portal/ --base-href /portal/ --output-path dist/portal
+# ng build --prod --deploy-url /portal/ --base-href /portal/ --output-path dist/portal
+ng build
 echo 'Build Docker image'
 # Build docker
 docker build -t ibmcase/casewebportal:$v .

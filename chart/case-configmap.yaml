@@ -4,7 +4,7 @@ metadata:
   name: casewebportal-bc-caseportal-app
   namespace: greencompute
   labels:
-    chart: bc-caseportal-app-0.0.6
+    chart: bc-caseportal-app-0.0.7
 data:
   config.json: |+
     {
@@ -18,7 +18,7 @@ data:
           "xibmclientid0": "5d2a6edb-793d-4193-b9b0-0a087ea6c123"
         },
         "inventoryDAL" :{
-          "url": "http://green.csplab.local/inventory/ws"
+          "url": "http://172.16.40.133:31089/inventory/ws"
         },
         "conversationBroker" :{
           "url":"https://refarch-wcs-broker.mybluemix.net/api/conversation"
@@ -44,11 +44,11 @@ data:
         },
 
         "customerAPI":{
-            "url": "http://green.csplab.local/caseserv/api/v1"
+            "url": "http://172.16.40.133:30372/caseserv/api/v1"
         },
         "odm" : {
-          "hostname": "172.16.40.132",
-          "port": 32764,
+            "hostname": "172.16.40.133",
+            "port": 32429,
           "protocol": "http:",
           "path": "/DecisionService/rest/v1/ProductRecommendationRuleApp/1.0/ProductRecommendation/1.0/WADL",
           "authtoken":"Basic cmVzQWRtaW46MWpldzFyNTc1enU1ZA=="
@@ -74,5 +74,5 @@ data:
         "debug": true,
         "environment" : "private",
         "port" : 6100,
-        "version": "v0.0.6"
+        "version": "v0.0.7"
     }
