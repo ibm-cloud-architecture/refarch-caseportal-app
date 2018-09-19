@@ -8,7 +8,7 @@
 <div *ngIf="customer">
   <div class="row">
     <div class="col-lg-12">
-      <h1>{{customer.name}}'s Account</h1>
+      <h1>{{customer.firstName}}'s Account</h1>
     </div>
   </div>
 
@@ -54,16 +54,20 @@
 
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">Devices</h3>
+      <h3 class="panel-title">Products</h3>
     </div>
     <table class="table">
       <tr>
         <th class="col-md-3">Name</th>
-        <th class="col-md-9">Usage</th>
+        <th class="col-md-3">Category</th>
+        <th class="col-md-3">Usage</th>
+        <th class="col-md-3">Price</th>
       </tr>
-      <tr *ngFor="let device of customer.devicesOwned">
-        <td class="col-md-3">{{device.productName}}</td>
-        <td class="col-md-9">{{device.monthlyUsage}}</td>
+      <tr *ngFor="let device of customer.existingProducts">
+        <td class="col-md-3">{{device.name}}</td>
+        <td class="col-md-3">{{device.productCategory}}</td>
+        <td class="col-md-3">{{device.monthlyUsage}}</td>
+        <td class="col-md-3">{{device.price}}</td>
       <tr>
     </table>
   </div>
