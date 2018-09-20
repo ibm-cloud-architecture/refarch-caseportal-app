@@ -71,10 +71,11 @@ export class TelcoChatComponent implements OnInit {
           if ( data.context.recommendation !== undefined) {
             s.text="We recommend you to opt for the following: <br/>";
             for (var r of data.context.recommendation.bestRecommended1st) {
-              s.text += r.packageName + " at a cost of " + r.price + "<br/>";
+              s.text += r.packageName + " at a cost of $" + r.price + "<br/>";
             }
-              s.text += "a total price of " + data.context.recommendation.totalPrice
-                     + " applying a discount of " + data.context.recommendation.discountPercent + "% <br/>";
+              s.text += "a total price of $" + data.context.recommendation.totalPrice
+                     + " applying a discount of " + data.context.recommendation.discountPercent * 100 + "% <br/>"
+                     + "Do you want something else?<br/>";
           } else {
             this.callConversationBFF("");
           }

@@ -44,6 +44,7 @@ var processRequest = function(res,opts) {
           console.error("Process Request Error: "+error);
           return res.status(500).send({error:error});
         }
+          console.log(body);
         res.send(body);
       }
      );
@@ -56,6 +57,9 @@ var run = function(config,email){
       opts.headers['Content-Type']='multipart/form-data';
       request(opts,function (error, response, body) {
         if (error) {reject(error)}
+        if (config.debug) {
+          console.log(JSON.stringify(body,null,2));
+        }
         resolve(body);
       });
   });
