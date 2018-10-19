@@ -6,7 +6,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { HomeComponent } from './home.component';
-import { HomeService } from './home.service';
 import { LoginService } from '../login/login.service';
 import { User } from '../../shared/User';
 
@@ -22,8 +21,6 @@ describe('HomeComponent', () => {
   beforeEach(async(() => {
     loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
     loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
-    homeServiceStub = jasmine.createSpyObj('homeServiceStub', ['getMode']);
-    homeServiceStub.getMode.and.returnValue( of('brown'));
     mockRouter = {navigate: jasmine.createSpy('navigate')};
     TestBed.configureTestingModule({
       imports: [ SharedModule,
@@ -31,7 +28,7 @@ describe('HomeComponent', () => {
       declarations: [ HomeComponent ],
       providers: [
           { provide: LoginService, useValue: loginStub },
-          { provide: HomeService, useValue: homeServiceStub },
+
           { provide: Router, useValue: mockRouter }
       ]
 

@@ -71,11 +71,12 @@ describe('LoginService', () => {
    mockSessionStorage.setItem('user', '{"lastname": "biloute","firstname": "eddir","email": "eddie@email.com"}');
    expect(loginService.isLoggedIn()).toBeTruthy();
  });
-
+/*
  it('should get a valid mode', () => {
    expect(loginService.getMode().mode).toEqual('all');
    const req = httpMock.expectOne(loginService.modeUrl);
    expect(req.request.method).toEqual('GET');
    req.flush({mode:"all"});
  });
+ */
 });

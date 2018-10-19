@@ -18,7 +18,7 @@ As a end user, Bob want to access the set of features offered by the portal from
 ```
 
 Which translates into the following development tasks
-- develop a unit test to validate a home page components and navigation
+- develop a unit test to validate a home page components and navigation routing logic from this page.
 - the home page needs to display the four possible high level features: inventory, IT support, customer management, and advisor. We will details those functions later.
 
 ### Testing the home.component
@@ -32,9 +32,9 @@ For each component develop a `spec.ts` file. The base template is in `app.compon
   }));
 ```
 
-The TestBed creates a dynamically-constructed Angular test module that emulates an Angular `@NgModule`. The `TestBed.configureTestingModule()` method takes a metadata object that have most of the properties of an @NgModule.
+The TestBed creates a dynamically-constructed Angular test module that emulates an Angular `@NgModule`. The `TestBed.configureTestingModule()` method takes a metadata json object that have most of the properties of an @NgModule.
 
-1. Step 1: create a new component called home using the Angular CLI command: 'ng g component home'. This command will create the template files to start our implementation.
+1. Step 1: create a new component called `home` using the Angular CLI command: 'ng g component home'. This command will create the template files to start our implementation from.
 
 1. Step 2: Starting by the test, we work in the `home.component.spec.ts` where a first test was created by the generator. This test assesses if the component can be created. Here is an extract of the generated code inside the describe content:
  ```JavaScript
@@ -59,7 +59,7 @@ The TestBed creates a dynamically-constructed Angular test module that emulates 
   });
  ```
 
- The fixture represents the HTML element, and the first before end creates the TestBed, and the second the component and fixture. For more information on Angular testing read the tutorial at https://angular.io/guide/testing.
+ The fixture represents the HTML element, and the first beforeEach function creates the TestBed, and the second creates the component and fixture. For more information on Angular testing read the tutorial at https://angular.io/guide/testing.
 
 1. Step 3: As we want to continuously test out work we will start the test runner with the command:
 ```
@@ -89,7 +89,7 @@ export class User {
 }
 ```
 
- Add in home.component.ts
+ Add in home.component.ts a user reference.
  ```JavaScript
  export class HomeComponent {
   user:User = new User('eddie@email.con','Eddie','pwd');
@@ -98,6 +98,99 @@ export class User {
  ```
 
  Now the test succeed. But we need a login service.
+
+### Add login feature
+We need to add a new feature to support login mechanism which returns a User and adds it to the browser session.
+
+* Using Angular CLI we first create a module: it is good to package feature as module so the code management will be simpler.
+```
+ng g module features/login
+```
+* Then add a service
+```
+ng g service features/login
+```
+
+ Okay so we have code template, let add service using TDD: we want to get a User from a login operation:
+```JavaScript
+ it('should get a user when calling login given username and password', () => {
+  const user: User = loginService.login("eddie@email.com","pwd");
+  expect(user.firstname).toEqual('Eddie');
+ });
+```
+We use the Jasmine `fit` function to focus on this test so we do not need to run all the tests while developing a new function. We need to add the login function in the service, import the user, etc... so the test can compile. In the LoginService add the mockup implementation so no backend is called yet:
+
+ ```JavaScript
+  import { User } from '../../shared/User';
+
+  @Injectable()
+  export class LoginService {
+
+    constructor() { }
+
+    login(uname: string, pwd: string): User {
+      return new User('eddie@email.con','Eddie','pwd');
+    }
+  }
+ ```
+Service test succeed but we need to get the user injected in the home page. To do so we add the login service as private argument of the home component. As service is @Injectable it will be accessible to the home page, and call the service operation in the home componet constructor.
+
+  ```javascript
+  export class HomeComponent {
+    user:User;
+    title:string;
+    constructor(private loginService) {
+      this.user = loginService.getCurrentUser();
+      this.title = 'Welcome ' + this.user.firstname;
+    }
+  }
+  ```
+Oops the home test fails now... with an error like
+```
+	Error: No provider for LoginService!
+```
+To fix this issue we need to import the LoginService in `home.component.spec.ts` and then configure the TestBed to inject it via the **providers** list:
+
+  ```json
+     declarations: [
+          HomeComponent
+        ],
+        providers: [
+          LoginService
+        ]
+  ```
+The test succeed, but this is not perfect! because we are dragging the login service into the home component test. When the login service will have the code for making remote calls via HTTP our home tests will be impacted. We need to mockup the login service.
+
+* Adding mockups  
+Jasmine offers capabilities to develop stubs and mockups. So in the home component test, add a loginStub and use jasmine create spy object API to specify we want to support the getCurrentUser method and return our test user as illustrated below:
+
+  ```JavaScript
+  let loginStub;
+
+  beforeEach(async(() => {
+    loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
+    loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
+    // ...
+  }))
+  ```
+modify the providers list now by referencing the stub:
+```
+providers: [
+  { provide: LoginService, useValue: loginStub }
+]
+```
+
+* Adding more tests to login component
+The login component is to get username as email address and password with a minimum of constraints like length and special characters. In the login.component.spec.ts let add user name to be a mandatory field. To do that we use the Angular **By** feature, to access HTML element using their CSS id, and then we use a special input type with validation rule.
+  ```
+  it('should have username as mandatory field', () => {
+      const userNameElement = fixture.debugElement.query(By.css(('#usernameInput')));
+      // the requirement is not on the input as html element attribute but in validation rule
+      const componentInstance = userNameElement.componentInstance;
+      expect(componentInstance.validations[0].type).toEqual('required');
+    });
+  ```
+For the custom input element and validation rule see [the explanations in this article](./angularhowtos/custominput.md). In the HTML page we need to add the input for the username and password and then the model element in the component. The code is self explanatory and we are providing some details in [this note](./login/README.md)
 
 ### Add logout and home navigation in header
 So we want to validate there is a logout hyper link and clicking on it move the route to login page.
@@ -125,101 +218,8 @@ The html looks like
   <li><a id='logout-link' (click)="logout">Logout</a></li>
 ```
 
-### Add login feature
-We need to add a new feature to support login mechanism which return a User and add it to the browser session.
-
-* Using Angular CLI we first create a module: it is good to package feature as module so the code management will be simpler.
-```
-ng g module features/login
-```
-* Then add a service
-```
-ng g service features/login
-```
-
- Okay so we have code template, let add service using TDD: we want to get a User from a login operation:
-```JavaScript
- it('should get a user when calling login given username and password', () => {
-  const user: User = loginService.login("eddie@email.com","pwd");
-  expect(user.firstname).toEqual('Eddie');
- });
-```
-We use the Jasmine `fit` function to focus on this test so we do not need to run all the tests while developing a new function. We need to add the login function in the service, import the user, etc... so the test can compile. In the LoginService add the mockup implementation:
-
- ```JavaScript
-  import { User } from '../../shared/User';
-
-  @Injectable()
-  export class LoginService {
-
-    constructor() { }
-
-    login(uname: string, pwd: string): User {
-      return new User('eddie@email.con','Eddie','pwd');
-    }
-  }
- ```
-Service test succeed but we need to get the user injected in the home page. To do so we add the login service as private argument of the home component. As service is @Injectable it will be accessible to the home page.
-
-  ```javascript
-  export class HomeComponent {
-    user:User;
-    title:string;
-    constructor(private loginService) {
-      this.user = loginService.getCurrentUser();
-      this.title = 'Welcome ' + this.user.firstname;
-    }
-  }
-  ```
-Oops the home test fails now... with an error like
-```
-	Error: No provider for LoginService!
-```
-To fix this issue we need to import the LoginService in `home.component.spec.ts` and then configure the TestBed to inject it via the **providers** list:
-
-  ```json
-     declarations: [
-          HomeComponent
-        ],
-        providers: [
-          LoginService
-        ]
-  ```
-The test succeed, but this is not perfect, because we are dragging the login component into the home component test. When the login component will have the code for making remote calls via HTTP our home tests will be impacted. We need to mockup the login service.
-
-* Adding mockups  
-Jasmine offers capabilities to develop stub, mockups. So let add a loginStub and use jasmine create spy object API to specify we want to support the getCurrentUser method and return our test user as illustrated below:
-
-  ```JavaScript
-  let loginStub;
-
-  beforeEach(async(() => {
-    loginStub = jasmine.createSpyObj('loginStub', ['getCurrentUser']);
-    loginStub.getCurrentUser.and.returnValue(new User('eddie@email.con','Eddie','pwd'));
-    // ...
-  }))
-  ```
-modify the providers list now by referencing the stub:
-```
-providers: [
-  { provide: LoginService, useValue: loginStub }
-]
-```
-
-* Adding more tests to login component
-The login component is to get username as email address and password with a minimum of constraints like length and special characters. In the login.component.spec.ts let add user name to be a mandatory field. To do that we use the Angular **By** feature, to access HTML element using their CSS id. and then we use a special input type with validation rule.
-  ```
-  it('should have username as mandatory field', () => {
-      const userNameElement = fixture.debugElement.query(By.css(('#usernameInput')));
-      // the requirement is not on the input as html element attribute but in validation rule
-      const componentInstance = userNameElement.componentInstance;
-      expect(componentInstance.validations[0].type).toEqual('required');
-    });
-  ```
-For the custom input element and validation rule see [the explanations in this article](./angularhowtos/custominput.md). In the HTML page we need to add the input for the username and password and then the model element in the component. The code is self explanatory and we are providing some details in [this note](./login/README.md)
-
 ### Testing with HostComponent
-When developing lower level component that is included in other page, we can use the concept fo 'host' component in the test and play with it. As an example, we want to define a Tile element that will represent a reusable control with title, short description and a button to route to another internal element. It will be used in the homw page to access the list of features. The Tile has input elements. Once the Tile component is added with 'ng g component shared/tile' command we can start by the test and add a Host component:
+When developing lower level component that is included in other page, we can use the concept fo 'host' component in the test and play with it. As an example, we want to define a Tile element that will represent a reusable control with title, short description and a button to route to another internal element. It will be used in the home page to access the list of features. The Tile has input elements. Once the Tile component is added with 'ng g component shared/tile' command we can start by the test and add a Host component:
 ```JavaScript
 describe('TileComponent', () => {
   let component: TileComponent,
@@ -294,7 +294,25 @@ spyOn(window.sessionStorage, 'setItem')
 ```
 We recommend to go over the login.service.spec.ts file now that the main concepts are introduced.
 
-## Testing how to
+## Testing Guidances
+### Mockup a Observable:
+The service method is declared as:
+```
+  public getSearchResults(ref: string): Observable<SearchResult []> {...}
+```
+The mockup and spy declaration are  
+```
+let searchServiceStub;
+  beforeEach(async(() => {
+      searchServiceStub = jasmine.createSpyObj('searchServiceStub', ['getSelectedReference','getSearchResults']);
+      searchServiceStub.getSelectedReference.and.returnValue([{name:"name1"}]);
+      searchServiceStub.getSearchResults.and.returnValue(new Observable<SearchResult []>());
+      TestBed.configureTestingModule({
+        ...
+        providers: [
+        { provide: SearchService, useValue: searchServiceStub }]
+        ..
+```
 ### Testing clicking a button
 
 
@@ -302,4 +320,4 @@ We recommend to go over the login.service.spec.ts file now that the main concept
 * https://angular.io/guide/testing
 * https://programmingcroatia.wordpress.com/2017/09/22/angular-2-jasmine-testing/
 * https://reflectoring.io/consumer-driven-contracts-with-angular-and-pact/
-*
+* https://codecraft.tv/courses/angular/unit-testing/http-and-jsonp/
