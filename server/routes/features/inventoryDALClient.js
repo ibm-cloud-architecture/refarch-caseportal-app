@@ -22,10 +22,9 @@
 var convert = require('xml-js');
 
 const request = require('request-promise').defaults({strictSSL: false});
-const nsPrefix = 'a:';
 
 var processRequest = function(res,config,body) {
-  let xml = '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"  xmlns:ws=\"http://ws.inventory/\"> <soapenv:Header/> <soapenv:Body> ' + body + '</soapenv:Body></soapenv:Envelope>'
+  let xml = '<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"  xmlns:ws=\"http://ws.inventory/\"> <soap:Header/> <soap:Body> ' + body + '</soap:Body></soap:Envelope>'
   let opts = {
     url: config.inventoryDAL.url,
     headers: {
@@ -72,6 +71,11 @@ var removeJsonTextAttribute = function(value, parentElement) {
       parentElement._parent[keyName] = nativeType(value);
     } catch (e) {}
 }
+// function to convert the element namespace so it can be easy to get the json part
+function replacePrefix(name) {
+  return name.substring(name.indexOf(":") + 1);
+}
+
 var xml2jsonOptions = {
     compact: true,
     trim: true,
@@ -81,7 +85,8 @@ var xml2jsonOptions = {
     ignoreComment: true,
     ignoreCdata: true,
     ignoreDoctype: true,
-    textFn: removeJsonTextAttribute
+    textFn: removeJsonTextAttribute,
+    elementNameFn: replacePrefix
   };
 
 module.exports = {
@@ -93,7 +98,7 @@ module.exports = {
         console.log(jsonrepstr);
         let jsonrep = JSON.parse(jsonrepstr);
 
-        var items = jsonrep['soap:Envelope']['soap:Body'][nsPrefix+'getItemsResponse']['return'];
+        var items = jsonrep['Envelope']['Body']['getItemsResponse']['return'];
         var itemsStr = JSON.stringify(items);
         console.log("getItems " + itemsStr);
         res.send(itemsStr);
@@ -115,7 +120,7 @@ module.exports = {
         let jsonrepstr = convert.xml2json(data, xml2jsonOptions);
         console.log(jsonrepstr);
         let jsonrep = JSON.parse(jsonrepstr);
-        var inventories = jsonrep['soap:Envelope']['soap:Body'][nsPrefix+'getInventoryCrossSiteResponse']['return'];
+        var inventories = jsonrep['Envelope']['Body']['getInventoryCrossSiteResponse']['return'];
         var inventoriesStr = JSON.stringify(inventories);
         console.log("getEntries " + inventoriesStr);
         res.send(inventoriesStr);
@@ -137,7 +142,7 @@ module.exports = {
         let jsonrepstr = convert.xml2json(data, xml2jsonOptions);
         console.log(jsonrepstr);
         let jsonrep = JSON.parse(jsonrepstr);
-        var suppliers = jsonrep['soap:Envelope']['soap:Body'][nsPrefix+'suppliersResponse']['return'];
+        var suppliers = jsonrep['Envelope']['Body']['suppliersResponse']['return'];
         var suppliersStr = JSON.stringify(suppliers);
         console.log("getSuppliers " + suppliersStr);
         res.send(suppliersStr);
