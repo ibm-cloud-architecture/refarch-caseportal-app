@@ -22,7 +22,7 @@ export class Customer {
   international: number;
   local: number;
   balance: number;
-  usage: number;
+  usage: number; 
   dropped: number;
   paymentMethod: string;
   localBillType: string;
